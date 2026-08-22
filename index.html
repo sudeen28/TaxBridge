@@ -1,0 +1,1650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TaxBridge.ng — Your sureplug for tax & accounting help</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23F77331'/%3E%3Ctext x='32' y='43' font-family='Arial,sans-serif' font-weight='800' font-size='28' fill='white' text-anchor='middle'%3ETB%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#F8F4E3;
+    --cream-deep:#F3EDD6;
+    --orange:#F77331;
+    --orange-dark:#D9601F;
+    --maroon:#5A2A1B;
+    --maroon-deep:#3E1C11;
+    --green:#0D4229;
+    --green-deep:#093019;
+    --amber:#F5B942;
+    --amber-deep:#E8A527;
+    --ink:#1A1410;
+    --ink-soft:#5C5346;
+    --paper-card:#FFFFFF;
+    --line:#E8E0C8;
+    --line-strong:#D9CFAE;
+    --peach:#FBEADB;
+    --radius:16px;
+    --radius-sm:10px;
+    --radius-pill:999px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--cream);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    font-size:16px;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.display{
+    font-family:'Plus Jakarta Sans',sans-serif;
+    font-weight:800;
+    color:var(--ink);
+    margin:0;
+    letter-spacing:-0.02em;
+    line-height:1.05;
+  }
+  .mono{font-family:'IBM Plex Mono',monospace;}
+  a{color:var(--orange-dark);}
+  button{font-family:inherit;cursor:pointer;}
+  .container{max-width:1140px;margin:0 auto;padding:0 28px;}
+  @media(prefers-reduced-motion: reduce){ *{animation:none !important; transition:none !important;} }
+
+  /* generic scroll reveal */
+  .reveal{opacity:0;transform:translateY(30px);transition:opacity .7s cubic-bezier(.16,1,.3,1), transform .7s cubic-bezier(.16,1,.3,1);}
+  .reveal.in-view{opacity:1;transform:translateY(0);}
+  .reveal-stagger.in-view .stagger-child{opacity:1;transform:translateY(0);}
+  .stagger-child{opacity:0;transform:translateY(24px);transition:opacity .6s cubic-bezier(.16,1,.3,1), transform .6s cubic-bezier(.16,1,.3,1);}
+  .stagger-child:nth-child(1){transition-delay:.02s;}
+  .stagger-child:nth-child(2){transition-delay:.1s;}
+  .stagger-child:nth-child(3){transition-delay:.18s;}
+  .stagger-child:nth-child(4){transition-delay:.26s;}
+  .stagger-child:nth-child(5){transition-delay:.34s;}
+  .stagger-child:nth-child(6){transition-delay:.42s;}
+
+  /* hero entrance */
+  @keyframes heroIn{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+  .hero h1{animation:heroIn .8s cubic-bezier(.16,1,.3,1) both;}
+  .hero .lede{animation:heroIn .8s cubic-bezier(.16,1,.3,1) .15s both;}
+  .hero-ctas{animation:heroIn .8s cubic-bezier(.16,1,.3,1) .28s both;}
+  .photo-strip .ph{opacity:0;animation:heroIn .7s cubic-bezier(.16,1,.3,1) forwards;}
+  .photo-strip .ph:nth-child(1){animation-delay:.4s;}
+  .photo-strip .ph:nth-child(2){animation-delay:.46s;}
+  .photo-strip .ph:nth-child(3){animation-delay:.52s;}
+  .photo-strip .ph:nth-child(4){animation-delay:.58s;}
+  .photo-strip .ph:nth-child(5){animation-delay:.64s;}
+
+  /* NAV */
+  nav.topnav{
+    position:sticky;top:0;z-index:50;
+    background:var(--cream);
+    padding:16px 0;
+  }
+  .navwrap{
+    display:flex;align-items:center;justify-content:space-between;
+    max-width:1140px;margin:0 auto;padding:8px 10px 8px 18px;
+    flex-wrap:wrap;gap:12px;
+    background:rgba(255,255,255,.6);
+    border-radius:var(--radius-pill);
+    backdrop-filter:blur(6px);
+  }
+  .brand{display:flex;align-items:center;gap:10px;cursor:pointer;}
+  .brand-mark{
+    width:34px;height:34px;background:var(--orange);border-radius:10px;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:15px;color:#fff;
+    transition:transform .35s cubic-bezier(.34,1.56,.64,1);
+  }
+  .brand:hover .brand-mark{transform:rotate(-10deg) scale(1.1);}
+  .brand-name{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:20px;}
+  .navlinks{display:flex;gap:2px;align-items:center;flex-wrap:nowrap;}
+  .navlinks button{
+    background:none;border:none;color:var(--ink);
+    font-size:14.5px;font-weight:600;padding:9px 15px;border-radius:var(--radius-pill);
+    transition:background .15s;white-space:nowrap;
+  }
+  .navlinks button:hover{background:rgba(0,0,0,0.05);}
+  .navlinks button.active{background:var(--ink);color:var(--cream);}
+  .navlinks .nav-cta{
+    background:var(--orange);color:#fff;margin-left:6px;padding:11px 20px;
+  }
+  .navlinks .nav-cta:hover{background:var(--orange-dark);}
+
+  .nav-burger{
+    display:none;background:var(--ink);color:var(--cream);border:none;width:44px;height:44px;
+    border-radius:50%;align-items:center;justify-content:center;flex-shrink:0;
+  }
+  .nav-burger svg{width:19px;height:19px;}
+  @media(max-width:920px){
+    .navlinks .nav-link{display:none !important;}
+    .nav-burger{display:flex !important;}
+  }
+
+  .nav-drawer-overlay{
+    position:fixed;inset:0;background:rgba(26,20,16,.5);z-index:90;
+    opacity:0;pointer-events:none;transition:opacity .3s ease;
+  }
+  .nav-drawer-overlay.open{opacity:1;pointer-events:auto;}
+  .nav-drawer{
+    position:fixed;top:0;right:0;bottom:0;width:min(320px,82vw);background:var(--cream);z-index:91;
+    box-shadow:-16px 0 40px rgba(0,0,0,.18);
+    transform:translateX(100%);transition:transform .38s cubic-bezier(.16,1,.3,1);
+    padding:26px 24px;display:flex;flex-direction:column;gap:6px;
+  }
+  .nav-drawer.open{transform:translateX(0);}
+  .nav-drawer-close{
+    align-self:flex-end;background:none;border:none;width:38px;height:38px;
+    border-radius:50%;display:flex;align-items:center;justify-content:center;
+  }
+  .nav-drawer-close:hover{background:rgba(0,0,0,.06);}
+  .nav-drawer button.drawer-link{
+    background:none;border:none;text-align:left;font-size:18px;font-weight:700;
+    padding:14px 6px;color:var(--ink);border-bottom:1px solid var(--line);
+  }
+  .nav-drawer .drawer-cta{
+    margin-top:16px;background:var(--orange);color:#fff;padding:14px;border-radius:var(--radius-pill);
+    text-align:center;font-weight:700;border:none;
+  }
+
+  .scroll-top-btn{
+    position:fixed;bottom:26px;right:26px;width:50px;height:50px;border-radius:50%;
+    background:var(--ink);color:var(--cream);border:none;display:flex;align-items:center;justify-content:center;
+    box-shadow:0 12px 26px rgba(0,0,0,.22);opacity:0;pointer-events:none;
+    transform:translateY(14px) scale(.9);transition:opacity .3s ease, transform .3s ease, background .2s ease;
+    z-index:80;
+  }
+  .scroll-top-btn.visible{opacity:1;pointer-events:auto;transform:translateY(0) scale(1);}
+  .scroll-top-btn:hover{background:var(--orange);transform:translateY(-4px) scale(1.05);}
+
+  section.view{display:none;}
+  section.view.active{display:block;animation:fadein .35s ease;}
+  @keyframes fadein{from{opacity:0;}to{opacity:1;}}
+
+  /* HERO */
+  .hero{padding:96px 0 56px;text-align:center;}
+  .hero h1{font-size:78px;max-width:960px;margin:0 auto;}
+  .hero h1 .rot-wrap{
+    display:block;color:var(--orange);position:relative;height:1.15em;overflow:hidden;
+  }
+  .hero h1 .rot-word{
+    position:absolute;left:50%;top:0;transform:translateX(-50%);
+    opacity:0;transition:opacity .5s ease, transform .5s ease;
+  }
+  .hero h1 .rot-word.showing{opacity:1;transform:translateX(-50%) translateY(0);}
+  .hero h1 .rot-word.leaving{opacity:0;transform:translateX(-50%) translateY(-14px);}
+  .hero .lede{font-size:21px;color:var(--ink-soft);max-width:640px;margin:26px auto 0;}
+  .hero-ctas{display:flex;gap:14px;margin-top:36px;justify-content:center;flex-wrap:wrap;}
+
+  .trust-bar{
+    display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;
+    margin-top:30px;font-size:14px;color:var(--ink-soft);font-weight:600;
+  }
+  .trust-bar strong{color:var(--ink);font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;}
+  .trust-dot{opacity:.4;}
+  .trust-guarantee{
+    background:var(--peach);color:var(--maroon-deep);padding:5px 13px;border-radius:var(--radius-pill);
+    font-size:12.5px;font-weight:700;
+  }
+  @media(max-width:560px){.trust-bar{font-size:13px;}}
+
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:17px 32px;border-radius:var(--radius-pill);font-weight:700;font-size:16.5px;
+    border:none;transition:transform .18s cubic-bezier(.34,1.56,.64,1), background .15s ease, box-shadow .2s ease;
+  }
+  .btn:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(0,0,0,.14);}
+  .btn:active{transform:scale(.97) translateY(0);}
+  .btn-primary{background:var(--ink);color:var(--cream);}
+  .btn-primary:hover{background:#000;}
+  .btn-brass, .btn-orange{background:var(--orange);color:#fff;}
+  .btn-brass:hover, .btn-orange:hover{background:var(--orange-dark);}
+  .btn-outline{background:var(--maroon);color:#fff;}
+  .btn-outline:hover{background:var(--maroon-deep);}
+  .btn-sm{padding:10px 18px;font-size:13.5px;}
+  .btn:disabled{opacity:.45;cursor:not-allowed;}
+  .btn-full{width:100%;justify-content:center;}
+
+  /* hero photo strip */
+  .photo-strip{display:flex;gap:16px;margin-top:52px;overflow:hidden;padding:0 4px;}
+  .photo-strip .ph{
+    flex:1;min-width:0;aspect-ratio:3/4;border-radius:28px 28px 0 0;
+    background:linear-gradient(160deg,var(--peach),var(--amber));
+    display:flex;align-items:flex-end;justify-content:center;padding-bottom:14px;
+    font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;color:var(--maroon-deep);font-size:13px;
+    transition:transform .4s cubic-bezier(.16,1,.3,1);
+  }
+  .photo-strip .ph:hover{transform:translateY(-14px) scale(1.02);}
+  @media(max-width:720px){.photo-strip{display:none;}}
+
+  /* FULL BLEED COLOR SECTIONS */
+  .band{padding:88px 0;}
+  .band.dark{color:#fff;}
+  .band-maroon{background:var(--maroon);}
+  .band-green{background:var(--green);}
+  .band-amber{background:var(--amber);}
+  .band.dark h2, .band.dark .eyebrow{color:#fff;}
+  .band-amber h2{color:var(--maroon-deep);}
+
+  .eyebrow-pill{
+    display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.08em;
+    text-transform:uppercase;padding:7px 16px;border-radius:var(--radius-pill);margin-bottom:20px;
+    background:rgba(0,0,0,0.08);color:var(--ink-soft);
+  }
+  .band.dark .eyebrow-pill{background:rgba(255,255,255,0.14);color:rgba(255,255,255,.85);}
+  .band-amber .eyebrow-pill{background:rgba(90,42,27,0.12);color:var(--maroon-deep);}
+
+  .band h2{font-size:38px;text-align:center;max-width:760px;margin:0 auto;}
+  .band .band-sub{text-align:center;color:var(--ink-soft);max-width:520px;margin:16px auto 0;font-size:16px;}
+  .band.dark .band-sub{color:rgba(255,255,255,.75);}
+
+  /* problem section — fades in fully within one normal scroll, no scroll-jacking */
+  .fade-lines{max-width:640px;margin:48px auto 0;text-align:center;}
+  .fade-line{
+    font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:23px;
+    margin:12px 0;
+  }
+  .fade-line.final{color:var(--orange);}
+  .fade-lines.reveal-stagger .stagger-child{transition-duration:.55s;}
+  .fade-lines.reveal-stagger .stagger-child:nth-child(1){transition-delay:0s;}
+  .fade-lines.reveal-stagger .stagger-child:nth-child(2){transition-delay:.07s;}
+  .fade-lines.reveal-stagger .stagger-child:nth-child(3){transition-delay:.14s;}
+  .fade-lines.reveal-stagger .stagger-child:nth-child(4){transition-delay:.21s;}
+  .fade-lines.reveal-stagger .stagger-child:nth-child(5){transition-delay:.28s;}
+  .fade-lines.reveal-stagger .stagger-child:nth-child(6){transition-delay:.35s;}
+  .fade-lines.reveal-stagger .stagger-child:nth-child(7){transition-delay:.42s;}
+
+  /* solution / mockup section */
+  .solution-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;margin-top:52px;}
+  @media(max-width:820px){.solution-grid{grid-template-columns:1fr;}}
+  .solution-copy h3{font-size:32px;color:#fff;}
+  .solution-copy p{color:rgba(255,255,255,.78);font-size:15.5px;margin-top:14px;max-width:420px;}
+  .phone-mock{
+    background:#0B0B0C;border-radius:56px;padding:14px;max-width:360px;margin:0 auto;
+    box-shadow:0 40px 90px rgba(0,0,0,.4);border:4px solid #000;position:relative;
+    animation:phoneFloat 5.5s ease-in-out infinite;
+  }
+  @keyframes phoneFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-14px);}}
+  .phone-screen{background:var(--cream);border-radius:44px;overflow:hidden;min-height:600px;display:flex;flex-direction:column;position:relative;}
+  .dynamic-island{
+    position:absolute;top:16px;left:50%;transform:translateX(-50%);
+    width:118px;height:34px;background:#000;border-radius:20px;z-index:6;
+  }
+  .phone-statusbar{
+    height:58px;flex-shrink:0;display:flex;align-items:flex-end;justify-content:space-between;
+    padding:0 28px 10px;font-size:13px;font-weight:700;color:var(--ink);font-family:'IBM Plex Mono',monospace;
+  }
+  .phone-topbar{padding:14px 22px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--line);flex-shrink:0;}
+  .phone-topbar .av{width:38px;height:38px;border-radius:12px;background:var(--orange);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#fff;flex-shrink:0;}
+  .phone-topbar .who{font-size:16px;font-weight:700;color:var(--ink);}
+  .phone-topbar .status{font-size:12.5px;color:var(--green);font-weight:600;}
+  .phone-body{flex:1;padding:22px;display:flex;flex-direction:column;gap:16px;}
+  .phone-bubble{max-width:84%;padding:14px 17px;border-radius:18px;font-size:15.5px;line-height:1.42;background:#fff;border:1px solid var(--line);align-self:flex-start;color:var(--ink);font-weight:500;box-shadow:0 2px 6px rgba(0,0,0,.04);}
+  .phone-bubble.mine{align-self:flex-end;background:var(--green);color:#fff;border:none;}
+  .typing-dots{align-self:flex-start;background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px 18px;display:flex;gap:5px;box-shadow:0 2px 6px rgba(0,0,0,.04);}
+  .typing-dots span{width:8px;height:8px;border-radius:50%;background:var(--green);opacity:.35;animation:bounce 1.2s infinite;}
+  .typing-dots span:nth-child(2){animation-delay:.15s;}
+  .typing-dots span:nth-child(3){animation-delay:.3s;}
+  @keyframes bounce{0%,60%,100%{transform:translateY(0);opacity:.35;}30%{transform:translateY(-5px);opacity:1;}}
+
+  /* accordion steps */
+  .steps-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;margin-top:52px;align-items:stretch;}
+  @media(max-width:820px){.steps-grid{grid-template-columns:1fr;}}
+  .steps-list{background:#fff;border-radius:var(--radius);overflow:hidden;}
+  .step-item{padding:24px 26px;border-bottom:1px solid var(--line);cursor:pointer;position:relative;overflow:hidden;transition:background .3s ease;}
+  .step-item:last-child{border-bottom:none;}
+  .step-item:not(.active):hover{background:rgba(90,42,27,.05);}
+  .step-item h4{font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:17px;position:relative;z-index:2;}
+  .step-item p{margin:8px 0 0;font-size:14px;color:var(--ink-soft);max-height:0;overflow:hidden;transition:max-height .35s ease, margin .35s ease;position:relative;z-index:2;}
+  .step-item.active{background:var(--maroon-deep);color:#fff;}
+  .step-item.active h4{color:#fff;}
+  .step-item.active p{color:rgba(255,255,255,.8);max-height:100px;margin-top:10px;}
+  .step-progress{position:absolute;bottom:0;left:0;height:3px;background:var(--orange);width:0%;z-index:1;}
+  .step-item.active .step-progress{animation:stepfill 4.5s linear forwards;}
+  @keyframes stepfill{from{width:0%;}to{width:100%;}}
+  .step-visual{
+    border-radius:var(--radius);background:linear-gradient(160deg,var(--orange),var(--amber));
+    min-height:340px;display:flex;align-items:center;justify-content:center;padding:32px;
+  }
+  .step-visual-inner{background:#fff;border-radius:14px;padding:24px;max-width:280px;box-shadow:0 20px 40px rgba(0,0,0,.15);
+    animation:visualPop .4s cubic-bezier(.34,1.56,.64,1);}
+  @keyframes visualPop{from{opacity:0;transform:scale(.92) translateY(8px);}to{opacity:1;transform:scale(1) translateY(0);}}
+
+  /* business/pro cards */
+  .biz-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:52px;}
+  @media(max-width:900px){.biz-grid{grid-template-columns:repeat(2,1fr);}}
+  @media(max-width:520px){.biz-grid{grid-template-columns:1fr;}}
+  .biz-card{background:#fff;border-radius:18px;overflow:hidden;transition:transform .35s cubic-bezier(.16,1,.3,1), box-shadow .35s ease;}
+  .biz-card:hover{transform:translateY(-8px);box-shadow:0 20px 36px rgba(0,0,0,.14);}
+  .biz-card-icon{
+    background:var(--peach);min-height:150px;display:flex;align-items:center;justify-content:center;
+    transition:transform .35s cubic-bezier(.34,1.56,.64,1);
+  }
+  .biz-card:hover .biz-card-icon{transform:scale(1.12) rotate(-4deg);}
+  .biz-card-body{padding:20px;}
+  .biz-card-body h4{font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:16px;}
+  .biz-card-body p{margin:6px 0 0;font-size:13.5px;color:var(--ink-soft);}
+
+  /* FAQ */
+  .faq-list{max-width:720px;margin:52px auto 0;}
+  .faq-item{border-bottom:1px solid var(--line-strong);padding:22px 4px;cursor:pointer;transition:background .2s ease;border-radius:10px;}
+  .faq-item:hover{background:rgba(0,0,0,.025);}
+  .faq-q{display:flex;justify-content:space-between;align-items:center;font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:17px;}
+  .faq-q .plus{font-size:24px;color:var(--orange);transition:transform .35s cubic-bezier(.34,1.56,.64,1);flex-shrink:0;margin-left:16px;}
+  .faq-item.open .faq-q .plus{transform:rotate(135deg);}
+  .faq-a-wrap{max-height:0;overflow:hidden;transition:max-height .4s cubic-bezier(.4,0,.2,1);}
+  .faq-a{font-size:14.5px;color:var(--ink-soft);opacity:0;transform:translateY(-6px);transition:opacity .3s ease .05s, transform .3s ease .05s;padding-top:12px;}
+  .faq-item.open .faq-a{opacity:1;transform:translateY(0);}
+
+  footer{background:var(--ink);color:rgba(255,255,255,.6);padding:44px 0;font-size:13.5px;}
+  footer a{color:#fff;}
+  .footer-top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;padding-bottom:24px;border-bottom:1px solid rgba(255,255,255,.12);margin-bottom:24px;}
+  .footer-top .brand-name{color:#fff;}
+
+  @media(max-width:720px){.hero h1{font-size:36px;}.band h2{font-size:28px;}}
+
+  /* ===== shared app-view styles (portal / admin / forms) ===== */
+  .section-label{
+    font-family:'IBM Plex Mono',monospace;font-size:12px;text-transform:uppercase;
+    letter-spacing:.1em;color:var(--ink-soft);margin-bottom:10px;
+  }
+  .section-title{font-size:30px;font-weight:800;margin-bottom:8px;font-family:'Plus Jakarta Sans',sans-serif;}
+  .card{background:var(--paper-card);border:1px solid var(--line-strong);border-radius:var(--radius);padding:32px;max-width:640px;}
+  .card + .card{margin-top:24px;}
+  label{display:block;font-size:13.5px;font-weight:700;margin:18px 0 6px;color:var(--ink);}
+  label:first-child{margin-top:0;}
+  input,select,textarea{
+    width:100%;padding:12px 14px;border:1px solid var(--line-strong);border-radius:var(--radius-sm);
+    font-family:inherit;font-size:14.5px;background:var(--cream);color:var(--ink);
+  }
+  input:focus,select:focus,textarea:focus{outline:2px solid var(--orange);outline-offset:1px;border-color:var(--orange);}
+  textarea{min-height:90px;resize:vertical;}
+  .hint{font-size:12.5px;color:var(--ink-soft);margin-top:4px;}
+  .form-title{font-size:22px;margin-bottom:6px;font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;}
+  .form-sub{color:var(--ink-soft);font-size:14px;margin-bottom:8px;}
+
+  .msg{padding:12px 16px;border-radius:var(--radius-sm);font-size:14px;margin-top:16px;}
+  .msg.success{background:#E4F0E7;color:var(--green);border:1px solid var(--green);}
+  .msg.error{background:#FBE4DD;color:#B0442E;border:1px solid #B0442E;}
+
+  .pro-card{border:1px solid var(--line-strong);background:var(--paper-card);padding:20px;border-radius:var(--radius-sm);margin-top:14px;transition:transform .25s ease, box-shadow .25s ease;}
+  .pro-card:hover{transform:translateY(-3px);box-shadow:0 12px 24px rgba(0,0,0,.07);}
+  .pro-card-top{display:flex;justify-content:space-between;align-items:center;}
+  .pro-card h4{margin:0;font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:17px;}
+
+  table.ledger-table{width:100%;border-collapse:collapse;margin-top:14px;font-size:14px;}
+  table.ledger-table th{
+    text-align:left;font-family:'IBM Plex Mono',monospace;font-size:11.5px;text-transform:uppercase;
+    letter-spacing:.06em;color:var(--ink-soft);border-bottom:1px solid var(--line-strong);padding:8px 10px;
+  }
+  table.ledger-table td{border-bottom:1px solid var(--line);padding:10px;vertical-align:top;}
+  table.ledger-table tr:hover td{background:rgba(247,115,49,.05);}
+
+  .fee-breakdown{border:1px dashed var(--line-strong);padding:16px 18px;border-radius:var(--radius-sm);margin-top:16px;font-size:14px;}
+  .fee-row{display:flex;justify-content:space-between;padding:6px 0;}
+  .fee-row.total{border-top:1px solid var(--line-strong);margin-top:6px;padding-top:10px;font-weight:700;}
+
+  .disclaimer{
+    font-size:12.5px;color:var(--ink-soft);background:var(--peach);border:1px solid var(--amber);
+    padding:12px 16px;border-radius:var(--radius-sm);margin-top:18px;
+  }
+
+  .scope-note{
+    font-size:13.5px;color:var(--ink-soft);background:var(--cream);border:1px solid var(--line-strong);
+    padding:12px 16px;border-radius:var(--radius-sm);margin-top:14px;
+  }
+  .scope-note strong{color:var(--ink);}
+  .rating-line{font-size:18px;color:var(--amber-deep);letter-spacing:2px;margin-top:6px;}
+  .star-picker{display:flex;gap:4px;margin:10px 0 14px;}
+  .star-btn{
+    background:none;border:none;font-size:30px;color:var(--line-strong);padding:0;
+    transition:transform .15s cubic-bezier(.34,1.56,.64,1), color .15s ease;line-height:1;
+  }
+  .star-btn:hover{transform:scale(1.15);}
+  .star-btn.picked{color:var(--amber-deep);}
+
+  .empty{color:var(--ink-soft);font-size:14px;padding:24px 0;}
+  .tag{font-family:'IBM Plex Mono',monospace;font-size:11px;padding:4px 10px;border-radius:var(--radius-pill);border:1px solid var(--line-strong);color:var(--ink-soft);}
+  .tag.status-pending{border-color:var(--amber-deep);color:var(--amber-deep);background:#FCF3E0;}
+  .tag.status-matched{border-color:var(--green);color:var(--green);background:#E4F0E7;}
+  .tag.status-engaged{border-color:var(--maroon);color:var(--maroon);background:#F5E7E2;}
+  .tag.status-paid{border-color:var(--green);color:var(--green);background:#E4F0E7;}
+
+  .stamp{
+    display:inline-flex;align-items:center;gap:6px;
+    border:1px solid var(--green);color:var(--green);background:#E4F0E7;
+    font-family:'IBM Plex Mono',monospace;font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;
+    padding:5px 10px;border-radius:var(--radius-pill);
+  }
+  .stamp::before{content:"✓";font-weight:700;}
+  .stamp.pending{border-color:var(--amber-deep);color:var(--amber-deep);background:#FCF3E0;}
+  .stamp.pending::before{content:"…";}
+
+  .grid-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;}
+  .subtle-btn{background:none;border:1px solid var(--line-strong);padding:8px 14px;border-radius:var(--radius-pill);font-size:12.5px;color:var(--ink-soft);}
+  .subtle-btn:hover{border-color:var(--orange);color:var(--orange-dark);}
+  .subtle-btn.on{border-color:var(--green);color:var(--green);background:#E4F0E7;}
+
+  .loading{color:var(--ink-soft);font-size:13.5px;font-family:'IBM Plex Mono',monospace;}
+
+  .auth-tabs{display:flex;gap:4px;margin-bottom:22px;border-bottom:1px solid var(--line-strong);}
+  .auth-tabs button{
+    background:none;border:none;padding:10px 4px;margin-right:22px;font-size:14.5px;font-weight:700;
+    color:var(--ink-soft);border-bottom:2px solid transparent;
+  }
+  .auth-tabs button.active{color:var(--ink);border-bottom-color:var(--orange);}
+  .session-bar{
+    display:flex;justify-content:space-between;align-items:center;
+    background:var(--paper-card);border:1px solid var(--line-strong);border-radius:var(--radius-sm);
+    padding:14px 20px;margin-bottom:28px;flex-wrap:wrap;gap:10px;
+  }
+  .session-bar .who{font-size:14px;}
+  .session-bar .who strong{font-family:'Plus Jakarta Sans',sans-serif;}
+  .auth-screen{max-width:480px;margin:0 auto;text-align:center;}
+  .auth-screen .card{margin:24px auto 0;text-align:left;max-width:460px;}
+  @media(max-width:640px){
+    .auth-screen{min-height:64vh;display:flex;flex-direction:column;justify-content:center;}
+  }
+  .app-section{padding:56px 0 80px;}
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="navwrap">
+    <div class="brand" onclick="go('home')">
+      <div class="brand-mark">TB</div>
+      <div class="brand-name">taxbridge</div>
+    </div>
+    <div class="navlinks">
+      <button class="nav-link" data-view="home" onclick="scrollToSection('process')">How it works</button>
+      <button class="nav-link" data-view="home" onclick="scrollToSection('solution')">How we match</button>
+      <button class="nav-link" data-view="home" onclick="scrollToSection('business')">For professionals</button>
+      <button class="nav-link" data-view="home" onclick="scrollToSection('faqs')">FAQs</button>
+      <button class="nav-link nav-cta" onclick="go('client')">Get matched</button>
+      <button class="nav-burger" onclick="openDrawer()" aria-label="Open menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<div class="nav-drawer-overlay" id="nav-overlay" onclick="closeDrawer()"></div>
+<div class="nav-drawer" id="nav-drawer">
+  <button class="nav-drawer-close" onclick="closeDrawer()" aria-label="Close menu">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><line x1="4" y1="4" x2="20" y2="20"/><line x1="20" y1="4" x2="4" y2="20"/></svg>
+  </button>
+  <button class="drawer-link" onclick="scrollToSection('process');closeDrawer()">How it works</button>
+  <button class="drawer-link" onclick="scrollToSection('solution');closeDrawer()">How we match</button>
+  <button class="drawer-link" onclick="scrollToSection('business');closeDrawer()">For professionals</button>
+  <button class="drawer-link" onclick="scrollToSection('faqs');closeDrawer()">FAQs</button>
+  <button class="drawer-cta" onclick="go('client');closeDrawer()">Get matched</button>
+</div>
+
+<button class="scroll-top-btn" id="scroll-top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Scroll to top">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg>
+</button>
+
+<!-- HOME -->
+<section class="view active" id="view-home">
+
+  <div class="hero container">
+    <h1>Your sureplug for
+      <span class="rot-wrap" id="rot-wrap"></span>
+    </h1>
+    <p class="lede">Tell us what you need. We match you with a vetted tax or accounting professional, handle the contract, and keep the payment safe until the work is done.</p>
+    <div class="hero-ctas">
+      <button class="btn btn-orange" onclick="go('client')">Get matched →</button>
+      <button class="btn btn-outline" onclick="go('pro')">Apply as a professional</button>
+    </div>
+    <div class="trust-bar" id="trust-bar">
+      <span class="trust-item"><strong id="trust-pros">—</strong> verified professionals</span>
+      <span class="trust-dot">·</span>
+      <span class="trust-item"><strong id="trust-engagements">—</strong> completed engagements</span>
+      <span class="trust-dot">·</span>
+      <span class="trust-item trust-guarantee">Free re-match guarantee</span>
+    </div>
+    <div class="photo-strip">
+      <div class="ph">Tax filing</div>
+      <div class="ph">Bookkeeping</div>
+      <div class="ph">Audit prep</div>
+      <div class="ph">Payroll</div>
+      <div class="ph">Advisory</div>
+    </div>
+  </div>
+
+  <div class="band band-maroon dark" id="problem-band">
+    <div class="container">
+      <div style="text-align:center;" class="reveal">
+        <span class="eyebrow-pill">The problem</span>
+      </div>
+      <h2 class="reveal">Finding anyone is easy. Finding someone you can trust is the hard part.</h2>
+      <div class="fade-lines reveal-stagger" id="fade-lines">
+        <div class="fade-line stagger-child">You get a name off a directory.</div>
+        <div class="fade-line stagger-child">You call. You explain the job twice.</div>
+        <div class="fade-line stagger-child">You agree a price.</div>
+        <div class="fade-line stagger-child">Then the excuses start.</div>
+        <div class="fade-line stagger-child">The scope changes. The price changes.</div>
+        <div class="fade-line stagger-child">Something goes wrong and there's no one to call.</div>
+        <div class="fade-line stagger-child final">TaxBridge stays in the deal, start to finish.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="band band-green dark" id="solution">
+    <div class="container">
+      <div class="solution-grid reveal">
+        <div class="solution-copy">
+          <span class="eyebrow-pill">Our solution</span>
+          <h3>How we match you.</h3>
+          <p>Tell us the work — what you need, your budget, any deadline. Our team hand-reviews it and checks every professional against ICAN, ANAN, or CITN before they can accept a client.</p>
+          <p>You get two or three vetted matches, not a random name off a list.</p>
+          <button class="btn btn-orange" style="margin-top:22px;" onclick="go('client')">Start a request</button>
+        </div>
+        <div class="phone-mock">
+          <div class="phone-screen">
+            <div class="dynamic-island"></div>
+            <div class="phone-statusbar">
+              <span>9:41</span>
+              <span>100%</span>
+            </div>
+            <div class="phone-topbar">
+              <div class="av">TB</div>
+              <div>
+                <div class="who">TaxBridge matching</div>
+                <div class="status">reviewing your request</div>
+              </div>
+            </div>
+            <div class="phone-body" id="phone-body">
+              <div class="phone-bubble mine">I need help filing VAT for my small business. Budget around ₦150k.</div>
+              <div class="typing-dots" id="phone-typing"><span></span><span></span><span></span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="band" id="process">
+    <div class="container">
+      <div style="text-align:center;" class="reveal">
+        <span class="eyebrow-pill">Our process in 4 steps</span>
+      </div>
+      <h2 class="reveal">From start to finish, we've got you covered.</h2>
+      <p class="band-sub reveal">You make the request. TaxBridge handles the rest.</p>
+
+      <div class="steps-grid reveal">
+        <div class="steps-list" id="steps-list">
+          <div class="step-item active" data-step="0">
+            <div class="step-progress"></div>
+            <h4>Request</h4>
+            <p>Tell us what you need — the work, your budget, and any deadline. Takes under two minutes.</p>
+          </div>
+          <div class="step-item" data-step="1">
+            <div class="step-progress"></div>
+            <h4>Match</h4>
+            <p>We hand-review your request and introduce two to three vetted professionals. No contact details yet.</p>
+          </div>
+          <div class="step-item" data-step="2">
+            <div class="step-progress"></div>
+            <h4>Sign & pay</h4>
+            <p>Choose one, sign a one-page digital contract, and pay into TaxBridge. Nothing changes hands until this step.</p>
+          </div>
+          <div class="step-item" data-step="3">
+            <div class="step-progress"></div>
+            <h4>Get to work</h4>
+            <p>You get their direct contact details. We release payment, minus our commission, once work is delivered.</p>
+          </div>
+        </div>
+        <div class="step-visual">
+          <div class="step-visual-inner" id="step-visual-inner">
+            <div class="section-label" style="margin-bottom:10px;">TXB-4821</div>
+            <div style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:16px;">Tax filing (VAT)</div>
+            <div class="hint" style="margin-top:6px;">₦100,000 – ₦300,000</div>
+            <span class="tag status-pending" style="margin-top:14px;display:inline-block;">Pending match</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="band band-amber" id="business">
+    <div class="container">
+      <div style="text-align:center;" class="reveal">
+        <span class="eyebrow-pill">For professionals of every kind</span>
+      </div>
+      <h2 class="reveal">Get matched to clients who are ready to hire.</h2>
+      <p class="band-sub reveal" style="color:var(--maroon-deep);">Apply once. Once we verify your credentials, we bring qualified client briefs to you.</p>
+
+      <div class="biz-grid reveal-stagger">
+        <div class="biz-card stagger-child">
+          <div class="biz-card-icon">
+            <svg width="64" height="64" viewBox="0 0 64 64" fill="none" stroke="var(--maroon-deep)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 10h18l6 6v34a2 2 0 01-2 2H20a2 2 0 01-2-2V12a2 2 0 012-2z"/>
+              <path d="M38 10v6h6"/>
+              <path d="M24 28h16M24 34h16M24 40h10"/>
+              <circle cx="46" cy="46" r="7" fill="var(--orange)" stroke="none"/>
+              <path d="M43.5 46l1.8 1.8L48.5 44" stroke="#fff" stroke-width="2"/>
+            </svg>
+          </div>
+          <div class="biz-card-body"><h4>Tax filing & advisory</h4><p>PAYE, VAT, CIT filings and planning.</p></div>
+        </div>
+        <div class="biz-card stagger-child">
+          <div class="biz-card-icon">
+            <svg width="64" height="64" viewBox="0 0 64 64" fill="none" stroke="var(--maroon-deep)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 16c0-2.2 1.8-4 4-4h10v40H18c-2.2 0-4-1.8-4-4V16z"/>
+              <path d="M50 16c0-2.2-1.8-4-4-4H36v40h10c2.2 0 4-1.8 4-4V16z"/>
+              <path d="M28 12v40"/>
+              <path d="M20 20h6M20 26h6M38 20h6M38 26h6"/>
+            </svg>
+          </div>
+          <div class="biz-card-body"><h4>Bookkeeping</h4><p>Ongoing books for SMEs and startups.</p></div>
+        </div>
+        <div class="biz-card stagger-child">
+          <div class="biz-card-icon">
+            <svg width="64" height="64" viewBox="0 0 64 64" fill="none" stroke="var(--maroon-deep)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="14" y="12" width="26" height="34" rx="2"/>
+              <path d="M20 20h14M20 26h14M20 32h9"/>
+              <circle cx="40" cy="42" r="9" fill="var(--peach)"/>
+              <circle cx="40" cy="42" r="9"/>
+              <path d="M46.5 48.5L52 54"/>
+            </svg>
+          </div>
+          <div class="biz-card-body"><h4>Audit preparation</h4><p>Get records ready before an audit lands.</p></div>
+        </div>
+        <div class="biz-card stagger-child">
+          <div class="biz-card-icon">
+            <svg width="64" height="64" viewBox="0 0 64 64" fill="none" stroke="var(--maroon-deep)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M24 18v-4a4 4 0 014-4h8a4 4 0 014 4v4"/>
+              <rect x="12" y="18" width="40" height="30" rx="4"/>
+              <path d="M12 30h40"/>
+              <circle cx="32" cy="30" r="3" fill="var(--orange)" stroke="none"/>
+            </svg>
+          </div>
+          <div class="biz-card-body"><h4>Payroll setup</h4><p>PAYE-compliant payroll, set up right.</p></div>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:32px;" class="reveal">
+        <button class="btn btn-primary" onclick="go('pro')">Apply as a professional →</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="band" id="faqs">
+    <div class="container">
+      <div style="text-align:center;" class="reveal">
+        <span class="eyebrow-pill">Frequently asked questions</span>
+      </div>
+      <h2 class="reveal">A few questions you might have.</h2>
+      <div class="faq-list reveal-stagger" id="faq-list"></div>
+    </div>
+  </div>
+
+  <div class="band band-maroon dark" style="text-align:center;">
+    <div class="container reveal">
+      <h2>Don't spend the whole day looking for who to call.</h2>
+      <p class="band-sub">Tell TaxBridge what you need. We'll figure out the rest.</p>
+      <div style="margin-top:26px;"><button class="btn btn-orange" onclick="go('client')">Get matched →</button></div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      <div class="footer-top">
+        <div class="brand" style="cursor:default;">
+          <div class="brand-mark">TB</div>
+          <div class="brand-name">taxbridge</div>
+        </div>
+        <div style="display:flex;gap:18px;flex-wrap:wrap;">
+          <a href="#" onclick="scrollToSection('process');return false;">How it works</a>
+          <a href="#" onclick="scrollToSection('solution');return false;">How we match</a>
+          <a href="#" onclick="scrollToSection('business');return false;">For professionals</a>
+          <a href="#" onclick="scrollToSection('faqs');return false;">FAQs</a>
+          <a href="#" onclick="go('admin');return false;">Team access</a>
+        </div>
+      </div>
+      © 2026 TaxBridge.ng. A managed marketplace for vetted tax and accounting professionals in Nigeria.
+    </div>
+  </footer>
+</section>
+
+<!-- CLIENT PORTAL -->
+<section class="view" id="view-client">
+  <div class="container app-section">
+    <div id="client-auth-area"></div>
+    <div id="client-dash-area"></div>
+  </div>
+</section>
+
+<!-- PRO PORTAL -->
+<section class="view" id="view-pro">
+  <div class="container app-section">
+    <div id="pro-auth-area"></div>
+    <div id="pro-dash-area"></div>
+  </div>
+</section>
+
+<!-- ADMIN -->
+<section class="view" id="view-admin">
+  <div class="container app-section">
+    <div id="admin-gate" class="auth-screen">
+      <div class="section-label">Team dashboard</div>
+      <h2 class="section-title" id="admin-title">Team access</h2>
+      <div class="card">
+        <label>Team passcode</label>
+        <input id="admin-pass" type="password" placeholder="Enter passcode" onkeydown="if(event.key==='Enter')checkAdminPass()">
+        <div style="margin-top:18px;"><button class="btn btn-primary" onclick="checkAdminPass()">Enter</button></div>
+        <p class="hint" style="margin-top:14px;">Demo passcode: <span class="mono">taxbridge2026</span></p>
+        <div id="admin-gate-msg"></div>
+      </div>
+    </div>
+    <div id="admin-panel" style="display:none;">
+      <div class="section-label">Team dashboard</div>
+      <h2 class="section-title" id="admin-title-2">Leads, applications & engagements</h2>
+      <div id="admin-content"></div>
+    </div>
+  </div>
+</section>
+<script>
+/* ---------- landing page animations ---------- */
+
+/* rotating hero word */
+const rotWords = ['tax filing.', 'bookkeeping.', 'audit prep.', 'payroll setup.', 'tax advisory.'];
+let rotIdx = 0;
+function initRotatingWord(){
+  const wrap = document.getElementById('rot-wrap');
+  if(!wrap) return;
+  wrap.innerHTML = `<span class="rot-word showing" id="rot-current">${rotWords[0]}</span>`;
+  setInterval(() => {
+    const current = document.getElementById('rot-current');
+    if(current) current.classList.replace('showing','leaving');
+    setTimeout(() => {
+      rotIdx = (rotIdx + 1) % rotWords.length;
+      wrap.innerHTML = `<span class="rot-word showing" id="rot-current">${rotWords[rotIdx]}</span>`;
+    }, 350);
+  }, 2400);
+}
+
+/* phone mockup typing/reply loop */
+function initPhoneMock(){
+  const body = document.getElementById('phone-body');
+  const typing = document.getElementById('phone-typing');
+  if(!body || !typing) return;
+  setTimeout(() => {
+    typing.remove();
+    const reply = document.createElement('div');
+    reply.className = 'phone-bubble';
+    reply.textContent = "Got it. We're matching you with 2–3 ICAN or CITN verified professionals now.";
+    body.appendChild(reply);
+  }, 2200);
+}
+
+/* step accordion — auto-advances, click to jump */
+let stepTimer = null;
+function initSteps(){
+  const items = Array.from(document.querySelectorAll('.step-item'));
+  if(!items.length) return;
+  const visuals = [
+    `<div class="section-label" style="margin-bottom:10px;">TXB-4821</div>
+     <div style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:16px;">Tax filing (VAT)</div>
+     <div class="hint" style="margin-top:6px;">₦100,000 – ₦300,000</div>
+     <span class="tag status-pending" style="margin-top:14px;display:inline-block;">Pending match</span>`,
+    `<div class="section-label" style="margin-bottom:10px;">TXB-4821</div>
+     <div style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:16px;">2 professionals matched</div>
+     <div class="hint" style="margin-top:6px;">ICAN verified · 8 yrs experience</div>
+     <span class="tag status-matched" style="margin-top:14px;display:inline-block;">Matched</span>`,
+    `<div class="section-label" style="margin-bottom:10px;">TXB-4821</div>
+     <div style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:16px;">Contract signed</div>
+     <div class="hint" style="margin-top:6px;">₦200,000 engagement fee</div>
+     <span class="tag status-engaged" style="margin-top:14px;display:inline-block;">Awaiting payment</span>`,
+    `<div class="section-label" style="margin-bottom:10px;">TXB-4821</div>
+     <div style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:16px;">Payment received</div>
+     <div class="hint" style="margin-top:6px;">Contact details unlocked</div>
+     <span class="tag status-paid" style="margin-top:14px;display:inline-block;">In progress</span>`
+  ];
+  const visualBox = document.getElementById('step-visual-inner');
+
+  function activate(i){
+    items.forEach((it, idx) => it.classList.toggle('active', idx === i));
+    if(visualBox){
+      visualBox.innerHTML = visuals[i];
+      visualBox.style.animation = 'none';
+      void visualBox.offsetWidth;
+      visualBox.style.animation = '';
+    }
+  }
+  function startAuto(){
+    if(stepTimer) clearInterval(stepTimer);
+    let i = items.findIndex(it => it.classList.contains('active'));
+    if(i < 0) i = 0;
+    stepTimer = setInterval(() => {
+      i = (i + 1) % items.length;
+      activate(i);
+    }, 4500);
+  }
+  items.forEach((it, idx) => {
+    it.addEventListener('click', () => { activate(idx); startAuto(); });
+  });
+  activate(0);
+  startAuto();
+}
+
+/* FAQ */
+const faqData = [
+  {q:"How is this different from just finding someone on a directory?", a:"Directories hand you a name and a phone number, then you're on your own. TaxBridge vets every professional against ICAN, ANAN, or CITN before they can accept a client, and keeps the contract and payment on record."},
+  {q:"How long does matching take?", a:"Usually within one business day. Some requests move faster if we already have a strong match in that specialty."},
+  {q:"When do I pay?", a:"Only after you've chosen a matched professional and signed the one-page contract. Nothing is charged before that."},
+  {q:"Do I get the professional's contact details?", a:"Yes — once payment is confirmed, you get their direct contact details so you can coordinate the work."},
+  {q:"What if the professional isn't a good fit?", a:"Tell us and we'll re-match you with someone else at no extra cost to start over."},
+  {q:"How does TaxBridge make money?", a:"We take a commission on each engagement, and on renewals or repeat work for a period after the introduction."}
+];
+function initFaq(){
+  const list = document.getElementById('faq-list');
+  if(!list) return;
+  list.innerHTML = faqData.map((f, i) => `
+    <div class="faq-item" data-i="${i}" onclick="toggleFaq(${i})">
+      <div class="faq-q"><span>${f.q}</span><span class="plus">+</span></div>
+      <div class="faq-a-wrap"><div class="faq-a">${f.a}</div></div>
+    </div>`).join('');
+}
+function toggleFaq(i){
+  const item = document.querySelector(`.faq-item[data-i="${i}"]`);
+  if(!item) return;
+  const wrap = item.querySelector('.faq-a-wrap');
+  const isOpen = item.classList.contains('open');
+  // close any other open items
+  document.querySelectorAll('.faq-item.open').forEach(o => {
+    if(o !== item){ o.classList.remove('open'); o.querySelector('.faq-a-wrap').style.maxHeight = '0px'; }
+  });
+  if(isOpen){
+    item.classList.remove('open');
+    wrap.style.maxHeight = '0px';
+  } else {
+    item.classList.add('open');
+    wrap.style.maxHeight = wrap.scrollHeight + 'px';
+  }
+}
+
+function initScrollTop(){
+  const btn = document.getElementById('scroll-top-btn');
+  if(!btn) return;
+  window.addEventListener('scroll', () => {
+    btn.classList.toggle('visible', window.scrollY > 420);
+  }, {passive:true});
+}
+
+function initScrollTop(){
+  const btn = document.getElementById('scroll-top-btn');
+  if(!btn) return;
+  window.addEventListener('scroll', () => {
+    btn.classList.toggle('visible', window.scrollY > 420);
+  }, {passive:true});
+}
+
+/* live trust stats — real counts from storage, not fabricated numbers */
+async function initTrustStats(){
+  const prosEl = document.getElementById('trust-pros');
+  const engEl = document.getElementById('trust-engagements');
+  if(!prosEl || !engEl) return;
+  try{
+    const userKeys = await slist('user:');
+    const leadKeys = await slist('lead:');
+    const users = (await Promise.all(userKeys.map(sget))).filter(Boolean);
+    const leads = (await Promise.all(leadKeys.map(sget))).filter(Boolean);
+    const verifiedCount = users.filter(u => u.role === 'pro' && u.verified).length;
+    const releasedCount = leads.filter(l => l.status === 'released').length;
+    prosEl.textContent = verifiedCount;
+    engEl.textContent = releasedCount;
+  } catch(e){
+    prosEl.textContent = '0';
+    engEl.textContent = '0';
+  }
+}
+
+function openDrawer(){
+  document.getElementById('nav-drawer').classList.add('open');
+  document.getElementById('nav-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeDrawer(){
+  document.getElementById('nav-drawer').classList.remove('open');
+  document.getElementById('nav-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+/* generic scroll-reveal for sections/cards */
+function initRevealObserver(){
+  const targets = document.querySelectorAll('.reveal, .reveal-stagger');
+  if(!targets.length) return;
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        entry.target.classList.add('in-view');
+        io.unobserve(entry.target);
+      }
+    });
+  }, {threshold:0.15});
+  targets.forEach(t => io.observe(t));
+}
+
+function scrollToSection(id){
+  go('home');
+  setTimeout(() => {
+    const el = document.getElementById(id);
+    if(el) el.scrollIntoView({behavior:'smooth', block:'start'});
+  }, 50);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  initRotatingWord();
+  initPhoneMock();
+  initSteps();
+  initFaq();
+  initRevealObserver();
+  initScrollTop();
+  initTrustStats();
+});
+</script>
+<script>
+/* ---------- storage helpers ---------- */
+async function sget(key){
+  try{ const r = await window.storage.get(key, true); return r ? JSON.parse(r.value) : null; }
+  catch(e){ return null; }
+}
+async function sset(key, value){
+  try{ await window.storage.set(key, JSON.stringify(value), true); return true; }
+  catch(e){ console.error('storage set failed', e); return false; }
+}
+async function slist(prefix){
+  try{ const r = await window.storage.list(prefix, true); return r ? r.keys : []; }
+  catch(e){ return []; }
+}
+function refCode(prefix){ return prefix + '-' + Math.floor(1000 + Math.random()*9000); }
+function esc(s){ return (s||'').toString().replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function normEmail(s){ return (s||'').trim().toLowerCase(); }
+
+/* password hashing — SHA-256 via SubtleCrypto. Demo-grade only: no per-user salt beyond
+   the email itself, no server-side rate limiting, no password reset flow. Good enough to
+   avoid storing plaintext passwords in this prototype, not a substitute for real auth. */
+async function hashPassword(email, password){
+  const enc = new TextEncoder();
+  const data = enc.encode(normEmail(email) + '::' + password);
+  const digest = await crypto.subtle.digest('SHA-256', data);
+  return Array.from(new Uint8Array(digest)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
+
+/* ---------- session (in-memory only — refreshing the page logs you out, since a real
+   persistent session needs a server to issue and verify tokens) ---------- */
+let session = { client: null, pro: null }; // holds email of logged-in user per role
+
+/* ---------- nav ---------- */
+function go(view){
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById('view-' + view).classList.add('active');
+  document.querySelectorAll('.navlinks button').forEach(b => b.classList.toggle('active', b.dataset.view === view));
+  window.scrollTo({top:0, behavior:'instant'});
+  if(view === 'client') renderClientPortal();
+  if(view === 'pro') renderProPortal();
+  if(view === 'admin' && adminAuthed) renderAdmin();
+}
+
+function statusTag(status){
+  const map = {
+    pending:['Pending match','status-pending'],
+    matched:['Matched — choose a professional','status-matched'],
+    engaged:['Engaged — awaiting payment','status-engaged'],
+    paid:['Paid — work in progress','status-paid'],
+    delivered:['Delivered — awaiting release','status-paid'],
+    released:['Complete','status-paid']
+  };
+  const [label, cls] = map[status] || [status, 'status-pending'];
+  return `<span class="tag ${cls}">${label}</span>`;
+}
+
+/* =========================================================
+   CLIENT PORTAL
+   ========================================================= */
+let clientAuthTab = 'login';
+
+function renderClientPortal(){
+  const authArea = document.getElementById('client-auth-area');
+  const dashArea = document.getElementById('client-dash-area');
+
+  if(!session.client){
+    dashArea.innerHTML = '';
+    authArea.innerHTML = `
+      <div class="auth-screen">
+        <div class="section-label">Client portal</div>
+        <h2 class="section-title">${clientAuthTab === 'login' ? 'Log in' : 'Create your account'}</h2>
+        <div class="card">
+          <div class="auth-tabs">
+            <button class="${clientAuthTab==='login'?'active':''}" onclick="setClientAuthTab('login')">Log in</button>
+            <button class="${clientAuthTab==='signup'?'active':''}" onclick="setClientAuthTab('signup')">Sign up</button>
+          </div>
+          <div id="client-auth-form"></div>
+        </div>
+      </div>`;
+    renderClientAuthForm();
+  } else {
+    authArea.innerHTML = '';
+    renderClientDashboard();
+  }
+}
+
+function setClientAuthTab(tab){ clientAuthTab = tab; renderClientPortal(); }
+
+function renderClientAuthForm(){
+  const el = document.getElementById('client-auth-form');
+  if(clientAuthTab === 'login'){
+    el.innerHTML = `
+      <label>Email</label>
+      <input id="cl-email" type="email" placeholder="you@example.com">
+      <label>Password</label>
+      <input id="cl-pass" type="password" placeholder="Your password">
+      <div style="margin-top:20px;"><button class="btn btn-brass btn-full" onclick="clientLogin()">Log in</button></div>
+      <div id="cl-msg"></div>`;
+  } else {
+    el.innerHTML = `
+      <label>Full name</label>
+      <input id="cs-name" placeholder="e.g. Amina Bello">
+      <label>Email</label>
+      <input id="cs-email" type="email" placeholder="you@example.com">
+      <label>Phone (optional)</label>
+      <input id="cs-phone" placeholder="For matches to reach you if needed">
+      <label>Password</label>
+      <input id="cs-pass" type="password" placeholder="At least 8 characters">
+      <div style="margin-top:20px;"><button class="btn btn-brass btn-full" onclick="clientSignup()">Create account</button></div>
+      <div id="cl-msg"></div>`;
+  }
+}
+
+async function clientSignup(){
+  const name = document.getElementById('cs-name').value.trim();
+  const email = normEmail(document.getElementById('cs-email').value);
+  const phone = document.getElementById('cs-phone').value.trim();
+  const pass = document.getElementById('cs-pass').value;
+  const msg = document.getElementById('cl-msg');
+  if(!name || !email || !pass){ msg.innerHTML = '<div class="msg error">Name, email, and password are required.</div>'; return; }
+  if(pass.length < 8){ msg.innerHTML = '<div class="msg error">Password should be at least 8 characters.</div>'; return; }
+  const existing = await sget('user:' + email);
+  if(existing){ msg.innerHTML = '<div class="msg error">An account already exists for that email. Try logging in instead.</div>'; return; }
+  const passHash = await hashPassword(email, pass);
+  const user = { email, name, phone, role:'client', passHash, createdAt: Date.now() };
+  const ok = await sset('user:' + email, user);
+  if(!ok){ msg.innerHTML = '<div class="msg error">Something went wrong. Try again.</div>'; return; }
+  session.client = email;
+  renderClientPortal();
+}
+
+async function clientLogin(){
+  const email = normEmail(document.getElementById('cl-email').value);
+  const pass = document.getElementById('cl-pass').value;
+  const msg = document.getElementById('cl-msg');
+  const user = await sget('user:' + email);
+  if(!user || user.role !== 'client'){ msg.innerHTML = '<div class="msg error">No client account found for that email.</div>'; return; }
+  const passHash = await hashPassword(email, pass);
+  if(passHash !== user.passHash){ msg.innerHTML = '<div class="msg error">Incorrect password.</div>'; return; }
+  session.client = email;
+  renderClientPortal();
+}
+
+function clientLogout(){ session.client = null; renderClientPortal(); }
+
+async function renderClientDashboard(){
+  const area = document.getElementById('client-dash-area');
+  const user = await sget('user:' + session.client);
+  if(!user){ session.client = null; renderClientPortal(); return; }
+
+  const keys = await slist('lead:');
+  const allLeads = (await Promise.all(keys.map(sget))).filter(Boolean);
+  const myLeads = allLeads.filter(l => l.ownerEmail === session.client).sort((a,b)=>b.createdAt-a.createdAt);
+
+  let html = `
+    <div class="session-bar">
+      <div class="who">Signed in as <strong>${esc(user.name)}</strong> · ${esc(user.email)}</div>
+      <button class="subtle-btn" onclick="clientLogout()">Log out</button>
+    </div>
+    <div class="section-label">Client portal</div>
+    <h2 class="section-title">Your requests</h2>
+    <div class="card" style="margin-bottom:28px;">
+      <h3 class="form-title">New request</h3>
+      <p class="form-sub">Submit a new need — you can have several requests open at once.</p>
+      <label>What do you need?</label>
+      <select id="nr-need">
+        <option>Tax filing (PAYE, VAT, CIT)</option>
+        <option>Bookkeeping</option>
+        <option>Audit preparation</option>
+        <option>Tax advisory / planning</option>
+        <option>Payroll setup</option>
+        <option>Something else</option>
+      </select>
+      <label>Budget range</label>
+      <select id="nr-budget">
+        <option>Under ₦100,000</option>
+        <option>₦100,000 – ₦300,000</option>
+        <option>₦300,000 – ₦750,000</option>
+        <option>₦750,000+</option>
+        <option>Not sure yet</option>
+      </select>
+      <label>Company (optional)</label>
+      <input id="nr-company" placeholder="e.g. Bello Textiles Ltd">
+      <label>Details</label>
+      <textarea id="nr-details" placeholder="Anything that helps us match you well — timeline, business size, past issues, etc."></textarea>
+      <div style="margin-top:20px;"><button class="btn btn-brass btn-full" onclick="submitNewRequest()">Submit request</button></div>
+      <div id="nr-msg"></div>
+    </div>`;
+
+  if(!myLeads.length){
+    html += `<div class="empty">No requests yet — submit one above.</div>`;
+  } else {
+    for(const lead of myLeads){
+      html += await renderClientLeadCard(lead, user);
+    }
+  }
+  area.innerHTML = html;
+}
+
+async function submitNewRequest(){
+  const user = await sget('user:' + session.client);
+  const details = document.getElementById('nr-details').value.trim();
+  const msg = document.getElementById('nr-msg');
+  if(!details){ msg.innerHTML = '<div class="msg error">Add a few details about what you need.</div>'; return; }
+  const id = refCode('TXB');
+  const lead = {
+    id, ownerEmail: session.client,
+    name: user.name, contact: user.phone || user.email,
+    company: document.getElementById('nr-company').value.trim(),
+    need: document.getElementById('nr-need').value,
+    budget: document.getElementById('nr-budget').value,
+    details,
+    status: 'pending',
+    matches: [], chosenPro: null, feeAmount: null, scopeNote: null,
+    rating: null, review: '',
+    createdAt: Date.now()
+  };
+  await sset('lead:' + id, lead);
+  renderClientDashboard();
+}
+
+/* average rating + review count for a professional, computed from real completed engagements */
+async function getProRating(proEmail){
+  const keys = await slist('lead:');
+  const leads = (await Promise.all(keys.map(sget))).filter(Boolean);
+  const rated = leads.filter(l => l.chosenPro === proEmail && typeof l.rating === 'number');
+  if(!rated.length) return null;
+  const avg = rated.reduce((sum, l) => sum + l.rating, 0) / rated.length;
+  return { avg, count: rated.length };
+}
+function starString(avg){
+  const rounded = Math.round(avg);
+  return '★'.repeat(rounded) + '☆'.repeat(5 - rounded);
+}
+
+async function renderClientLeadCard(lead, user){
+  let html = `<div class="pro-card">
+    <div class="pro-card-top">
+      <h4>${esc(lead.need)}</h4>
+      ${statusTag(lead.status)}
+    </div>
+    <p class="hint">${esc(lead.budget)}${lead.company ? ' · ' + esc(lead.company) : ''} · submitted ${new Date(lead.createdAt).toLocaleDateString()}</p>
+    <p style="font-size:14px;">${esc(lead.details)}</p>`;
+
+  if(lead.status === 'pending'){
+    html += `<p class="hint">Our team is reviewing this and will match you with two to three vetted professionals soon.</p>`;
+  }
+
+  if(lead.status === 'matched' && lead.matches.length){
+    html += `<p class="hint" style="margin-top:8px;">Choose one of your matched professionals. You'll get their contact details once payment is confirmed.</p>`;
+    for(const proEmail of lead.matches){
+      const pro = await sget('user:' + proEmail);
+      if(!pro) continue;
+      const rating = await getProRating(proEmail);
+      html += `<div class="pro-card">
+        <div class="pro-card-top">
+          <h4>${esc(pro.name.split(' ')[0])} ${esc((pro.name.split(' ')[1]||'')[0]||'')}.</h4>
+          <span class="stamp">${esc(pro.body)} verified</span>
+        </div>
+        <p class="hint">${esc(pro.expertise)} · ${esc(pro.years)} yrs experience</p>
+        ${rating ? `<p class="rating-line">${starString(rating.avg)} <span class="hint">${rating.avg.toFixed(1)} · ${rating.count} review${rating.count>1?'s':''}</span></p>` : `<p class="hint">No reviews yet</p>`}
+        <p style="font-size:14px;margin-top:8px;">${esc(pro.bio)}</p>
+        <div class="grid-actions"><button class="btn btn-brass btn-sm" onclick="chooseMatch('${lead.id}','${proEmail}')">Choose this professional</button></div>
+      </div>`;
+    }
+  }
+
+  if(lead.status === 'engaged'){
+    html += `<div class="fee-breakdown">
+      <div class="fee-row"><span>Engagement fee</span><span>₦${Number(lead.feeAmount||0).toLocaleString()}</span></div>
+      <div class="fee-row"><span>TaxBridge commission (15%)</span><span>−₦${Math.round((lead.feeAmount||0)*0.15).toLocaleString()}</span></div>
+      <div class="fee-row total"><span>Professional receives</span><span>₦${Math.round((lead.feeAmount||0)*0.85).toLocaleString()}</span></div>
+    </div>
+    ${lead.scopeNote ? `<div class="scope-note"><strong>What's included:</strong> ${esc(lead.scopeNote)}</div>` : ''}
+    <button class="btn btn-brass btn-full" style="margin-top:16px;" onclick="paySim('${lead.id}')">Pay ₦${Number(lead.feeAmount||0).toLocaleString()} to TaxBridge</button>
+    <div class="disclaimer">This is a working simulation of the payment step — no real charge happens. A production build would swap this for a live Paystack or Flutterwave checkout. Once payment clears, you'll get the professional's direct contact details.</div>`;
+  }
+
+  if(['paid','delivered','released'].includes(lead.status)){
+    const pro = await sget('user:' + lead.chosenPro);
+    if(pro){
+      html += `<div class="pro-card" style="margin-top:14px;">
+        <h4 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:16px;">Your professional's contact details</h4>
+        <p style="font-size:14px;margin-top:8px;"><strong>${esc(pro.name)}</strong><br>${esc(pro.contact)}</p>
+        <p class="hint">Payment is confirmed, so you're free to coordinate directly. Your contract and payment record stay on TaxBridge either way.</p>
+        ${lead.scopeNote ? `<div class="scope-note"><strong>What's included:</strong> ${esc(lead.scopeNote)}</div>` : ''}
+      </div>`;
+    }
+  }
+
+  if(lead.status === 'released'){
+    if(typeof lead.rating === 'number'){
+      html += `<div class="pro-card" style="margin-top:14px;">
+        <h4 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:16px;">Your review</h4>
+        <p class="rating-line" style="margin-top:6px;">${starString(lead.rating)} <span class="hint">${lead.rating}/5</span></p>
+        ${lead.review ? `<p style="font-size:14px;margin-top:6px;">${esc(lead.review)}</p>` : ''}
+      </div>`;
+    } else {
+      html += `<div class="pro-card" style="margin-top:14px;">
+        <h4 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:16px;">Rate this engagement</h4>
+        <p class="hint">Help future clients — how was working with this professional?</p>
+        <div class="star-picker" id="star-picker-${lead.id}">
+          ${[1,2,3,4,5].map(n => `<button class="star-btn" data-n="${n}" onclick="setStarPick('${lead.id}',${n})">☆</button>`).join('')}
+        </div>
+        <textarea id="review-text-${lead.id}" placeholder="Optional — a line or two about the experience"></textarea>
+        <button class="btn btn-outline btn-sm" style="margin-top:12px;" onclick="submitRating('${lead.id}')">Submit review</button>
+        <div id="rating-msg-${lead.id}"></div>
+      </div>`;
+    }
+  }
+
+  html += `</div>`;
+  return html;
+}
+
+let starPicks = {};
+function setStarPick(leadId, n){
+  starPicks[leadId] = n;
+  const picker = document.getElementById('star-picker-' + leadId);
+  if(!picker) return;
+  picker.querySelectorAll('.star-btn').forEach(btn => {
+    const val = Number(btn.dataset.n);
+    btn.textContent = val <= n ? '★' : '☆';
+    btn.classList.toggle('picked', val <= n);
+  });
+}
+async function submitRating(leadId){
+  const n = starPicks[leadId];
+  const msg = document.getElementById('rating-msg-' + leadId);
+  if(!n){ msg.innerHTML = '<div class="msg error">Pick a star rating first.</div>'; return; }
+  const lead = await sget('lead:' + leadId);
+  if(!lead) return;
+  lead.rating = n;
+  lead.review = document.getElementById('review-text-' + leadId).value.trim();
+  await sset('lead:' + leadId, lead);
+  renderClientDashboard();
+}
+
+async function chooseMatch(leadId, proEmail){
+  const lead = await sget('lead:' + leadId);
+  if(!lead) return;
+  lead.chosenPro = proEmail;
+  lead.status = 'engaged';
+  lead.feeAmount = lead.feeAmount || 200000;
+  await sset('lead:' + leadId, lead);
+  renderClientDashboard();
+}
+
+async function paySim(leadId){
+  const lead = await sget('lead:' + leadId);
+  if(!lead) return;
+  lead.status = 'paid';
+  lead.paidAt = Date.now();
+  await sset('lead:' + leadId, lead);
+  renderClientDashboard();
+}
+
+/* =========================================================
+   PROFESSIONAL PORTAL
+   ========================================================= */
+let proAuthTab = 'login';
+
+function renderProPortal(){
+  const authArea = document.getElementById('pro-auth-area');
+  const dashArea = document.getElementById('pro-dash-area');
+
+  if(!session.pro){
+    dashArea.innerHTML = '';
+    authArea.innerHTML = `
+      <div class="auth-screen">
+        <div class="section-label">Professional portal</div>
+        <h2 class="section-title">${proAuthTab === 'login' ? 'Log in' : 'Apply as a professional'}</h2>
+        <div class="card">
+          <div class="auth-tabs">
+            <button class="${proAuthTab==='login'?'active':''}" onclick="setProAuthTab('login')">Log in</button>
+            <button class="${proAuthTab==='signup'?'active':''}" onclick="setProAuthTab('signup')">Apply</button>
+          </div>
+          <div id="pro-auth-form"></div>
+        </div>
+      </div>`;
+    renderProAuthForm();
+  } else {
+    authArea.innerHTML = '';
+    renderProDashboard();
+  }
+}
+
+function setProAuthTab(tab){ proAuthTab = tab; renderProPortal(); }
+
+function renderProAuthForm(){
+  const el = document.getElementById('pro-auth-form');
+  if(proAuthTab === 'login'){
+    el.innerHTML = `
+      <label>Email</label>
+      <input id="pl-email" type="email" placeholder="you@example.com">
+      <label>Password</label>
+      <input id="pl-pass" type="password" placeholder="Your password">
+      <div style="margin-top:20px;"><button class="btn btn-brass btn-full" onclick="proLogin()">Log in</button></div>
+      <div id="pl-msg"></div>`;
+  } else {
+    el.innerHTML = `
+      <label>Full name</label>
+      <input id="ps-name" placeholder="e.g. Chidi Okonkwo, ACA">
+      <label>Email</label>
+      <input id="ps-email" type="email" placeholder="you@example.com">
+      <label>Phone</label>
+      <input id="ps-phone" placeholder="How clients reach you once engaged">
+      <label>Password</label>
+      <input id="ps-pass" type="password" placeholder="At least 8 characters">
+      <label>Professional body</label>
+      <select id="ps-body"><option>ICAN</option><option>ANAN</option><option>CITN</option><option>Other</option></select>
+      <label>Registration / membership number</label>
+      <input id="ps-regno" placeholder="For verification">
+      <label>Years of experience</label>
+      <input id="ps-years" type="number" min="0" placeholder="e.g. 6">
+      <label>Areas of expertise</label>
+      <input id="ps-expertise" placeholder="e.g. VAT filing, SME bookkeeping, payroll">
+      <label>Expected rate</label>
+      <input id="ps-rate" placeholder="e.g. ₦150,000 per engagement, or hourly">
+      <label>Short bio</label>
+      <textarea id="ps-bio" placeholder="A couple of sentences clients will see once matched."></textarea>
+      <div style="margin-top:20px;"><button class="btn btn-brass btn-full" onclick="proSignup()">Submit application</button></div>
+      <div id="pl-msg"></div>`;
+  }
+}
+
+async function proSignup(){
+  const name = document.getElementById('ps-name').value.trim();
+  const email = normEmail(document.getElementById('ps-email').value);
+  const phone = document.getElementById('ps-phone').value.trim();
+  const pass = document.getElementById('ps-pass').value;
+  const regno = document.getElementById('ps-regno').value.trim();
+  const msg = document.getElementById('pl-msg');
+  if(!name || !email || !pass || !regno){ msg.innerHTML = '<div class="msg error">Name, email, password, and registration number are required.</div>'; return; }
+  if(pass.length < 8){ msg.innerHTML = '<div class="msg error">Password should be at least 8 characters.</div>'; return; }
+  const existing = await sget('user:' + email);
+  if(existing){ msg.innerHTML = '<div class="msg error">An account already exists for that email. Try logging in instead.</div>'; return; }
+  const passHash = await hashPassword(email, pass);
+  const pro = {
+    email, name, phone, contact: phone || email, role:'pro', passHash,
+    body: document.getElementById('ps-body').value,
+    regno,
+    years: document.getElementById('ps-years').value.trim(),
+    expertise: document.getElementById('ps-expertise').value.trim(),
+    rate: document.getElementById('ps-rate').value.trim(),
+    bio: document.getElementById('ps-bio').value.trim(),
+    verified: false,
+    createdAt: Date.now()
+  };
+  const ok = await sset('user:' + email, pro);
+  if(!ok){ msg.innerHTML = '<div class="msg error">Something went wrong. Try again.</div>'; return; }
+  session.pro = email;
+  renderProPortal();
+}
+
+async function proLogin(){
+  const email = normEmail(document.getElementById('pl-email').value);
+  const pass = document.getElementById('pl-pass').value;
+  const msg = document.getElementById('pl-msg');
+  const user = await sget('user:' + email);
+  if(!user || user.role !== 'pro'){ msg.innerHTML = '<div class="msg error">No professional account found for that email.</div>'; return; }
+  const passHash = await hashPassword(email, pass);
+  if(passHash !== user.passHash){ msg.innerHTML = '<div class="msg error">Incorrect password.</div>'; return; }
+  session.pro = email;
+  renderProPortal();
+}
+
+function proLogout(){ session.pro = null; renderProPortal(); }
+
+async function renderProDashboard(){
+  const area = document.getElementById('pro-dash-area');
+  const pro = await sget('user:' + session.pro);
+  if(!pro){ session.pro = null; renderProPortal(); return; }
+
+  let html = `
+    <div class="session-bar">
+      <div class="who">Signed in as <strong>${esc(pro.name)}</strong> · ${esc(pro.email)}</div>
+      <button class="subtle-btn" onclick="proLogout()">Log out</button>
+    </div>
+    <div class="section-label">Professional portal</div>
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <h2 class="section-title">Your profile</h2>
+      ${pro.verified ? '<span class="stamp">Verified</span>' : '<span class="stamp pending">Pending verification</span>'}
+    </div>
+    <p class="hint">${esc(pro.body)} · ${esc(pro.regno)} · ${esc(pro.expertise)}</p>`;
+
+  if(!pro.verified){
+    html += `<p class="hint" style="margin-top:8px;">Our team is checking your ${esc(pro.body)} record. This usually takes a day or two.</p>`;
+    area.innerHTML = html;
+    return;
+  }
+
+  const proRating = await getProRating(session.pro);
+  html += `<p class="rating-line" style="margin-top:8px;">${proRating ? starString(proRating.avg) + ` <span class="hint">${proRating.avg.toFixed(1)} · ${proRating.count} review${proRating.count>1?'s':''}</span>` : '<span class="hint" style="font-size:13px;letter-spacing:normal;">No reviews yet</span>'}</p>`;
+
+  const keys = await slist('lead:');
+  const allLeads = (await Promise.all(keys.map(sget))).filter(Boolean);
+  const engagements = allLeads.filter(l => l.chosenPro === session.pro).sort((a,b)=>b.createdAt-a.createdAt);
+
+  html += `<h3 style="font-size:19px;margin:32px 0 4px;">Your engagements <span class="hint">(${engagements.length})</span></h3>`;
+  if(!engagements.length){
+    html += `<div class="empty">Verified and ready. We'll bring client briefs to you as they're matched — check back here.</div>`;
+  } else {
+    for(const lead of engagements){
+      html += `<div class="pro-card">
+        <div class="pro-card-top">
+          <h4>${esc(lead.need)}</h4>
+          ${statusTag(lead.status)}
+        </div>
+        <p class="hint">${esc(lead.details).slice(0,160)}${lead.details.length>160?'…':''}</p>`;
+      if(['paid','delivered','released'].includes(lead.status)){
+        html += `<p style="font-size:14px;margin-top:8px;"><strong>Client contact:</strong> ${esc(lead.name)} — ${esc(lead.contact)}</p>`;
+        if(lead.scopeNote) html += `<div class="scope-note"><strong>What's included:</strong> ${esc(lead.scopeNote)}</div>`;
+        if(lead.status === 'paid'){
+          html += `<button class="btn btn-outline btn-sm" style="margin-top:12px;" onclick="markDelivered('${lead.id}')">Mark work delivered</button>`;
+        }
+        if(lead.status === 'released' && typeof lead.rating === 'number'){
+          html += `<p class="rating-line" style="margin-top:10px;">${starString(lead.rating)} <span class="hint">${lead.rating}/5</span></p>`;
+          if(lead.review) html += `<p style="font-size:14px;margin-top:4px;">"${esc(lead.review)}"</p>`;
+        }
+      } else if(lead.status === 'engaged'){
+        html += `<p class="hint">Awaiting client payment before contact details are shared.</p>`;
+      }
+      html += `</div>`;
+    }
+  }
+  area.innerHTML = html;
+}
+
+async function markDelivered(leadId){
+  const lead = await sget('lead:' + leadId);
+  if(!lead) return;
+  lead.status = 'delivered';
+  await sset('lead:' + leadId, lead);
+  renderProDashboard();
+}
+
+/* =========================================================
+   ADMIN
+   ========================================================= */
+let adminAuthed = false;
+function checkAdminPass(){
+  const val = document.getElementById('admin-pass').value;
+  if(val === 'taxbridge2026'){
+    adminAuthed = true;
+    document.getElementById('admin-gate').style.display = 'none';
+    document.getElementById('admin-panel').style.display = 'block';
+    renderAdmin();
+  } else {
+    document.getElementById('admin-gate-msg').innerHTML = '<div class="msg error">Incorrect passcode.</div>';
+  }
+}
+
+async function renderAdmin(){
+  const content = document.getElementById('admin-content');
+  content.innerHTML = '<div class="loading">Loading dashboard…</div>';
+
+  const userKeys = await slist('user:');
+  const leadKeys = await slist('lead:');
+  const users = (await Promise.all(userKeys.map(sget))).filter(Boolean);
+  const leads = (await Promise.all(leadKeys.map(sget))).filter(Boolean).sort((a,b)=>b.createdAt-a.createdAt);
+  const pros = users.filter(u => u.role === 'pro').sort((a,b)=>b.createdAt-a.createdAt);
+  const verifiedPros = pros.filter(p => p.verified);
+
+  let html = '';
+
+  html += `<h3 style="font-size:19px;margin:36px 0 4px;">Professional accounts <span class="hint">(${pros.length})</span></h3>`;
+  if(!pros.length){
+    html += `<div class="empty">No professional accounts yet.</div>`;
+  } else {
+    html += `<table class="ledger-table"><thead><tr><th>Name</th><th>Email</th><th>Body / Reg No.</th><th>Expertise</th><th>Rating</th><th>Status</th><th></th></tr></thead><tbody>`;
+    for(const p of pros){
+      const rating = await getProRating(p.email);
+      html += `<tr>
+        <td>${esc(p.name)}</td>
+        <td class="mono">${esc(p.email)}</td>
+        <td>${esc(p.body)} · ${esc(p.regno)}</td>
+        <td>${esc(p.expertise)}</td>
+        <td>${rating ? `${rating.avg.toFixed(1)}★ (${rating.count})` : '—'}</td>
+        <td>${p.verified ? '<span class="stamp">Verified</span>' : '<span class="stamp pending">Pending</span>'}</td>
+        <td>${p.verified ? '' : `<button class="subtle-btn" onclick="verifyPro('${p.email}')">Verify</button>`}</td>
+      </tr>`;
+    }
+    html += `</tbody></table>`;
+  }
+
+  html += `<h3 style="font-size:19px;margin:36px 0 4px;">Client requests <span class="hint">(${leads.length})</span></h3>`;
+  if(!leads.length){
+    html += `<div class="empty">No requests yet.</div>`;
+  } else {
+    for(const lead of leads){
+      html += `<div class="pro-card">
+        <div class="pro-card-top">
+          <h4>${esc(lead.need)} — ${esc(lead.name)}</h4>
+          ${statusTag(lead.status)}
+        </div>
+        <p class="hint">${esc(lead.budget)} · ${esc(lead.ownerEmail)}</p>
+        <p style="font-size:14px;">${esc(lead.details)}</p>`;
+
+      if(lead.status === 'pending'){
+        if(!verifiedPros.length){
+          html += `<p class="hint">No verified professionals available to match yet.</p>`;
+        } else {
+          html += `<div class="hint" style="margin-bottom:6px;">Select 2–3 professionals to match:</div><div class="grid-actions">`;
+          for(const p of verifiedPros){
+            const selected = (lead.matches||[]).includes(p.email);
+            html += `<button class="subtle-btn ${selected?'on':''}" onclick="toggleMatch('${lead.id}','${p.email}')">${selected?'✓ ':''}${esc(p.name)}</button>`;
+          }
+          html += `</div><button class="btn btn-outline btn-sm" style="margin-top:12px;" onclick="confirmMatch('${lead.id}')">Confirm match &amp; notify client</button>`;
+        }
+      }
+
+      if(lead.status === 'engaged'){
+        html += `<label style="margin-top:12px;">Engagement fee (₦)</label>
+        <div style="display:flex;gap:8px;max-width:280px;">
+          <input id="fee-${lead.id}" type="number" value="${lead.feeAmount||200000}">
+        </div>
+        <label style="margin-top:12px;">What's included (optional — shown to the client)</label>
+        <textarea id="scope-${lead.id}" placeholder="e.g. VAT filing for Q1–Q2, one advisory call, filed receipts included">${esc(lead.scopeNote||'')}</textarea>
+        <button class="btn btn-outline btn-sm" style="margin-top:10px;" onclick="setFee('${lead.id}')">Save</button>
+        <p class="hint" style="margin-top:8px;">Matched with ${esc(lead.chosenPro)} — awaiting client payment.</p>`;
+      }
+
+      if(lead.status === 'paid'){
+        html += `<p class="hint">Client has paid. Waiting for the professional to mark work delivered.</p>`;
+      }
+
+      if(lead.status === 'delivered'){
+        const commission = Math.round((lead.feeAmount||0)*0.15);
+        const payout = Math.round((lead.feeAmount||0)*0.85);
+        html += `<div class="fee-breakdown">
+          <div class="fee-row"><span>Collected from client</span><span>₦${Number(lead.feeAmount||0).toLocaleString()}</span></div>
+          <div class="fee-row"><span>TaxBridge commission</span><span>₦${commission.toLocaleString()}</span></div>
+          <div class="fee-row total"><span>Release to ${esc(lead.chosenPro)}</span><span>₦${payout.toLocaleString()}</span></div>
+        </div>
+        <button class="btn btn-brass btn-sm" style="margin-top:12px;" onclick="releasePayment('${lead.id}')">Release payment to professional</button>`;
+      }
+
+      if(lead.status === 'released'){
+        html += `<p class="hint" style="color:var(--green);">Payment released. Engagement complete — non-circumvention term applies for 12–24 months.</p>`;
+        if(typeof lead.rating === 'number'){
+          html += `<p class="rating-line" style="margin-top:6px;">${starString(lead.rating)} <span class="hint">${lead.rating}/5${lead.review ? ' — "' + esc(lead.review) + '"' : ''}</span></p>`;
+        }
+      }
+
+      html += `</div>`;
+    }
+  }
+
+  content.innerHTML = html;
+}
+
+async function verifyPro(email){
+  const pro = await sget('user:' + email);
+  if(!pro) return;
+  pro.verified = true;
+  await sset('user:' + email, pro);
+  renderAdmin();
+}
+
+async function toggleMatch(leadId, proEmail){
+  const lead = await sget('lead:' + leadId);
+  if(!lead) return;
+  lead.matches = lead.matches || [];
+  const idx = lead.matches.indexOf(proEmail);
+  if(idx >= 0) lead.matches.splice(idx,1);
+  else if(lead.matches.length < 3) lead.matches.push(proEmail);
+  await sset('lead:' + leadId, lead);
+  renderAdmin();
+}
+
+async function confirmMatch(leadId){
+  const lead = await sget('lead:' + leadId);
+  if(!lead || !(lead.matches||[]).length) return;
+  lead.status = 'matched';
+  await sset('lead:' + leadId, lead);
+  renderAdmin();
+}
+
+async function setFee(leadId){
+  const val = Number(document.getElementById('fee-' + leadId).value) || 0;
+  const scopeEl = document.getElementById('scope-' + leadId);
+  const lead = await sget('lead:' + leadId);
+  if(!lead) return;
+  lead.feeAmount = val;
+  lead.scopeNote = scopeEl ? scopeEl.value.trim() : lead.scopeNote;
+  await sset('lead:' + leadId, lead);
+  renderAdmin();
+}
+
+async function releasePayment(leadId){
+  const lead = await sget('lead:' + leadId);
+  if(!lead) return;
+  lead.status = 'released';
+  await sset('lead:' + leadId, lead);
+  renderAdmin();
+}
+</script>
+</body>
+</html>
