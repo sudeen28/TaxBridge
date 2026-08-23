@@ -3,16 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TaxBridge.ng — Find a Trusted Tax & Accounting Professional in Nigeria</title>
-<meta name="description" content="TaxBridge connects Nigerian businesses and individuals with vetted tax and accounting professionals. Tell us what you need, get matched with verified experts, and pay securely through TaxBridge — for VAT, PAYE, corporate tax, bookkeeping, payroll, and more.">
-<meta name="keywords" content="tax consultant Nigeria, tax accountant Nigeria, accountant Nigeria, tax filing Nigeria, VAT consultant Nigeria, PAYE Nigeria, corporate tax Nigeria, bookkeeping Nigeria, accounting services Nigeria, tax professionals Nigeria">
-<meta property="og:title" content="TaxBridge.ng — Find a Trusted Tax & Accounting Professional in Nigeria">
-<meta property="og:description" content="Tell us what you need. We connect you with vetted tax and accounting professionals, manage the engagement, and help protect your payment until the work is delivered.">
+<title>TaxBridge.ng — The Right Accounting Firm for the Job</title>
+<meta name="description" content="TaxBridge matches Nigerian businesses with the right specialist accounting, tax, audit, forensic and financial firm — based on the nature of the engagement, location, and sensitivity. Not a directory. A managed match.">
+<meta name="keywords" content="accounting firm Nigeria, tax firm Nigeria, forensic accounting Nigeria, tax investigation Nigeria, asset tracing Nigeria, audit firm Nigeria, litigation support Nigeria, financial due diligence Nigeria, accounting marketplace Nigeria">
+<meta property="og:title" content="TaxBridge.ng — The Right Accounting Firm for the Job">
+<meta property="og:description" content="Tell us what you're dealing with. TaxBridge matches you with a verified specialist firm — reviewed by our team, not an algorithm.">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="en_NG">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="TaxBridge.ng — Find a Trusted Tax & Accounting Professional in Nigeria">
-<meta name="twitter:description" content="Vetted tax and accounting professionals in Nigeria, matched to your business, with payment protection built in.">
+<meta name="twitter:title" content="TaxBridge.ng — The Right Accounting Firm for the Job">
+<meta name="twitter:description" content="Bookkeeping, tax disputes, forensic investigations and financial restructuring need very different expertise. TaxBridge matches you with the right specialist firm.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%230E9F6E'/%3E%3Ctext x='32' y='43' font-family='Arial,sans-serif' font-weight='800' font-size='28' fill='white' text-anchor='middle'%3ETB%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -572,6 +572,13 @@
     color:var(--ink-soft);border-bottom:2px solid transparent;
   }
   .auth-tabs button.active{color:var(--ink);border-bottom-color:var(--orange);}
+  .dash-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:24px;border-bottom:1px solid var(--line-strong);padding-bottom:0;}
+  .dash-tabs button{
+    background:none;border:none;padding:10px 14px;font-size:13.5px;font-weight:600;
+    color:var(--ink-soft);border-bottom:2px solid transparent;white-space:nowrap;
+  }
+  .dash-tabs button:hover{color:var(--ink);}
+  .dash-tabs button.active{color:var(--orange-dark);border-bottom-color:var(--orange);}
   .session-bar{
     display:flex;justify-content:space-between;align-items:center;
     background:var(--paper-card);border:1px solid var(--line-strong);border-radius:var(--radius-sm);
@@ -633,28 +640,28 @@
 
   <div class="hero container">
     <h1>
-      <span class="hero-line">Find a trusted</span>
+      <span class="hero-line">The right</span>
       <span class="rot-wrap" id="rot-wrap"><span id="rot-text"></span><span class="rot-cursor" id="rot-cursor"></span></span>
-      <span class="hero-line">professional in Nigeria.</span>
+      <span class="hero-line">for the job.</span>
     </h1>
-    <p class="lede">Tell us what you need. We connect you with vetted professionals, manage the engagement, and help protect your payment until the work is delivered.</p>
+    <p class="lede">Tell us what you're dealing with. Our team personally reviews your request and matches you with a verified specialist firm — based on the nature of the work, location, and how sensitive it is. No algorithm, no match score; a person makes the call.</p>
     <div class="hero-ctas">
-      <button class="btn btn-orange" onclick="go('client')">Get started →</button>
-      <button class="btn btn-outline" onclick="go('client')">Find a professional</button>
+      <button class="btn btn-orange" onclick="go('client')">Get Matched →</button>
+      <button class="btn btn-outline" onclick="go('list-firm')">List My Firm</button>
     </div>
     <div class="trust-bar" id="trust-bar">
-      <span class="trust-item">✓ Verified professionals</span>
+      <span class="trust-item">✓ Verified firms</span>
       <span class="trust-dot">·</span>
-      <span class="trust-item">✓ Payment protection</span>
+      <span class="trust-item">✓ Human-reviewed matching</span>
       <span class="trust-dot">·</span>
-      <span class="trust-item">✓ End-to-end support</span>
+      <span class="trust-item">✓ Specialist-first, not generalist</span>
     </div>
     <div class="photo-strip">
-      <div class="ph">Tax filing</div>
       <div class="ph">Bookkeeping</div>
-      <div class="ph">Audit prep</div>
-      <div class="ph">Payroll</div>
-      <div class="ph">Advisory</div>
+      <div class="ph">Tax disputes</div>
+      <div class="ph">Forensic accounting</div>
+      <div class="ph">Audit</div>
+      <div class="ph">Restructuring</div>
     </div>
   </div>
 
@@ -682,10 +689,10 @@
       <div class="solution-grid reveal">
         <div class="solution-copy">
           <span class="eyebrow-pill">Our solution</span>
-          <h3>How we match you.</h3>
-          <p>Tell us the work — what you need, your budget, any deadline. Our team reviews it and only introduces professionals whose ICAN, ANAN, or CITN credentials we've checked.</p>
-          <p>You get two or three vetted matches, not a random name off a list.</p>
-          <button class="btn btn-orange" style="margin-top:22px;" onclick="go('client')">Start a request</button>
+          <h3>How TaxBridge matches you to a firm.</h3>
+          <p>Tell us the work, the industry, the location, and how sensitive it is. Our team reviews every request personally and identifies which specialist firm is the right fit — not just any accountant.</p>
+          <p>You get a short-list of firms whose specialisation, location and capacity actually fit the engagement, with our reasoning explained — not a long list to sift through yourself.</p>
+          <button class="btn btn-orange" style="margin-top:22px;" onclick="go('client')">Get Matched</button>
         </div>
         <div class="phone-mock">
           <div class="phone-screen">
@@ -702,7 +709,7 @@
               </div>
             </div>
             <div class="phone-body" id="phone-body">
-              <div class="phone-bubble mine">I need help filing VAT for my small business. Budget around ₦150k.</div>
+              <div class="phone-bubble mine">We're facing a tax authority investigation and need the right specialist firm — ideally based in Lagos.</div>
               <div class="typing-dots" id="phone-typing"><span></span><span></span><span></span></div>
             </div>
           </div>
@@ -816,12 +823,23 @@
   <div class="band band-amber" id="services">
     <div class="container">
       <div style="text-align:center;" class="reveal">
-        <span class="eyebrow-pill">Services</span>
+        <span class="eyebrow-pill">Not one-size-fits-all</span>
       </div>
-      <h2 class="reveal">Whatever the tax or accounting need, we can match it.</h2>
-      <p class="band-sub reveal" style="color:var(--ink-soft);">Tell us which of these fits — or describe something that doesn't, and we'll still find the right professional.</p>
+      <h2 class="reveal">Not every accounting problem needs the same accountant.</h2>
+      <p class="band-sub reveal" style="color:var(--ink-soft);">Bookkeeping, tax disputes, forensic investigations and financial restructuring require very different expertise. Tell us the problem — we'll point you to the specialist.</p>
 
       <div class="biz-grid reveal-stagger">
+        <div class="biz-card stagger-child">
+          <div class="biz-card-icon">
+            <svg width="64" height="64" viewBox="0 0 64 64" fill="none" stroke="var(--ink)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 16c0-2.2 1.8-4 4-4h10v40H18c-2.2 0-4-1.8-4-4V16z"/>
+              <path d="M50 16c0-2.2-1.8-4-4-4H36v40h10c2.2 0 4-1.8 4-4V16z"/>
+              <path d="M28 12v40"/>
+              <path d="M20 20h6M20 26h6M38 20h6M38 26h6"/>
+            </svg>
+          </div>
+          <div class="biz-card-body"><h4>Need monthly bookkeeping?</h4><p>→ Bookkeeping specialist</p></div>
+        </div>
         <div class="biz-card stagger-child">
           <div class="biz-card-icon">
             <svg width="64" height="64" viewBox="0 0 64 64" fill="none" stroke="var(--ink)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -832,45 +850,66 @@
               <path d="M43.5 46l1.8 1.8L48.5 44" stroke="#fff" stroke-width="2"/>
             </svg>
           </div>
-          <div class="biz-card-body"><h4>Tax filing & advisory</h4><p>PAYE, VAT, CIT filings and planning.</p></div>
+          <div class="biz-card-body"><h4>Facing a tax investigation?</h4><p>→ Tax investigation specialist</p></div>
         </div>
         <div class="biz-card stagger-child">
           <div class="biz-card-icon">
             <svg width="64" height="64" viewBox="0 0 64 64" fill="none" stroke="var(--ink)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M14 16c0-2.2 1.8-4 4-4h10v40H18c-2.2 0-4-1.8-4-4V16z"/>
-              <path d="M50 16c0-2.2-1.8-4-4-4H36v40h10c2.2 0 4-1.8 4-4V16z"/>
-              <path d="M28 12v40"/>
-              <path d="M20 20h6M20 26h6M38 20h6M38 26h6"/>
+              <circle cx="27" cy="27" r="14"/>
+              <path d="M37 37l15 15"/>
+              <circle cx="27" cy="27" r="5" fill="var(--orange)" stroke="none"/>
             </svg>
           </div>
-          <div class="biz-card-body"><h4>Bookkeeping</h4><p>Ongoing books for SMEs and startups.</p></div>
+          <div class="biz-card-body"><h4>Suspect financial fraud?</h4><p>→ Forensic accounting specialist</p></div>
         </div>
         <div class="biz-card stagger-child">
           <div class="biz-card-icon">
             <svg width="64" height="64" viewBox="0 0 64 64" fill="none" stroke="var(--ink)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="14" y="12" width="26" height="34" rx="2"/>
-              <path d="M20 20h14M20 26h14M20 32h9"/>
-              <circle cx="40" cy="42" r="9" fill="var(--peach)"/>
-              <circle cx="40" cy="42" r="9"/>
-              <path d="M46.5 48.5L52 54"/>
+              <path d="M32 10a13 13 0 00-13 13c0 10 13 27 13 27s13-17 13-27a13 13 0 00-13-13z"/>
+              <circle cx="32" cy="23" r="4.5" fill="var(--orange)" stroke="none"/>
             </svg>
           </div>
-          <div class="biz-card-body"><h4>Audit preparation</h4><p>Get records ready before an audit lands.</p></div>
+          <div class="biz-card-body"><h4>Need to trace hidden assets?</h4><p>→ Asset tracing / financial investigation specialist</p></div>
         </div>
         <div class="biz-card stagger-child">
           <div class="biz-card-icon">
             <svg width="64" height="64" viewBox="0 0 64 64" fill="none" stroke="var(--ink)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M24 18v-4a4 4 0 014-4h8a4 4 0 014 4v4"/>
-              <rect x="12" y="18" width="40" height="30" rx="4"/>
-              <path d="M12 30h40"/>
-              <circle cx="32" cy="30" r="3" fill="var(--orange)" stroke="none"/>
+              <path d="M32 8v46"/>
+              <path d="M13 16h38"/>
+              <path d="M13 16l-8 15a8 8 0 0016 0z"/>
+              <path d="M51 16l-8 15a8 8 0 0016 0z"/>
+              <rect x="23" y="49" width="18" height="5" fill="var(--orange)" stroke="none"/>
             </svg>
           </div>
-          <div class="biz-card-body"><h4>Payroll setup</h4><p>PAYE-compliant payroll, set up right.</p></div>
+          <div class="biz-card-body"><h4>Preparing for litigation?</h4><p>→ Litigation-support specialist</p></div>
+        </div>
+        <div class="biz-card stagger-child">
+          <div class="biz-card-icon">
+            <svg width="64" height="64" viewBox="0 0 64 64" fill="none" stroke="var(--ink)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="16" y="10" width="32" height="44" rx="2"/>
+              <path d="M22 20h4M22 28h4M22 36h4M30 20h4M30 28h4M30 36h4M38 20h4M38 28h4M38 36h4"/>
+              <rect x="26" y="46" width="12" height="8" fill="var(--orange)" stroke="none"/>
+            </svg>
+          </div>
+          <div class="biz-card-body"><h4>Need a large corporate audit?</h4><p>→ Audit firm with the right capacity</p></div>
         </div>
       </div>
       <div style="text-align:center;margin-top:32px;" class="reveal">
-        <button class="btn btn-orange" onclick="go('client')">Get started →</button>
+        <button class="btn btn-orange" onclick="go('client')">Get Matched →</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="band band-green dark" id="location-matching">
+    <div class="container" style="max-width:820px;text-align:center;">
+      <div class="reveal">
+        <span class="eyebrow-pill">Location matters — sometimes</span>
+      </div>
+      <h2 class="reveal">Local when it matters. Remote when it doesn't.</h2>
+      <p class="band-sub reveal">For engagements that need someone on the ground, we prioritize firms based in or near your location. For work that can be handled remotely, geography matters a lot less — and that's factored into which firms we suggest.</p>
+      <div class="fb-grid reveal-stagger" style="grid-template-columns:1fr 1fr;">
+        <div class="fb-item dark stagger-child"><strong>On-site work</strong><span>Investigations, audits with physical records, and matters requiring an in-person presence get matched to firms who can actually show up — starting with firms in your city or state.</span></div>
+        <div class="fb-item dark stagger-child"><strong>Remote-friendly work</strong><span>Bookkeeping, filings, and advisory that don't need anyone on-site open up to well-suited firms further afield, so you're not limited to who happens to be local.</span></div>
       </div>
     </div>
   </div>
@@ -937,7 +976,7 @@
       <div id="about" class="stub-block reveal">
         <div class="section-label">About</div>
         <h3 class="stub-h3">About TaxBridge</h3>
-        <p class="stub-p">TaxBridge is a managed marketplace connecting Nigerian businesses and individuals with vetted tax and accounting professionals. Instead of leaving you to find and vet someone on your own, TaxBridge reviews requests, introduces matched professionals, and manages the contract and payment for the engagement.</p>
+        <p class="stub-p">TaxBridge is a managed marketplace that matches Nigerian businesses and individuals with the right accounting, tax, audit, forensic and financial specialist firm for their specific engagement — not just any accountant. Instead of leaving you to find and vet someone on your own, TaxBridge reviews requests, identifies the right specialist firm, and manages the introduction.</p>
       </div>
       <div id="contact" class="stub-block reveal">
         <div class="section-label">Contact</div>
@@ -960,7 +999,7 @@
           <div class="brand-name">TaxBridge</div>
         </div>
         <div style="display:flex;gap:18px;flex-wrap:wrap;">
-          <a href="#" onclick="go('client');return false;">Find a Professional</a>
+          <a href="#" onclick="go('firms');return false;">Find a Firm</a>
           <a href="#" onclick="go('pro');return false;">For Professionals</a>
           <a href="#" onclick="scrollToSection('process');return false;">How It Works</a>
           <a href="#" onclick="scrollToSection('faqs');return false;">Resources</a>
@@ -971,7 +1010,7 @@
           <a href="#" onclick="scrollToSection('legal');return false;">Privacy</a>
         </div>
       </div>
-      © 2026 TaxBridge.ng. A managed marketplace for vetted tax and accounting professionals in Nigeria.
+      © 2026 TaxBridge.ng. A managed marketplace matching Nigerian businesses with the right specialist accounting, tax, audit and forensic firms.
     </div>
   </footer>
 </section>
@@ -1039,7 +1078,7 @@
 
 /* typewriter word in hero — types out, pauses, deletes, moves to next.
    Width tracks the actual text instead of reserving space for the longest word. */
-const rotWords = ['tax', 'accounting', 'bookkeeping', 'payroll', 'audit'];
+const rotWords = ['accounting firm', 'tax firm', 'forensic firm', 'audit firm', 'investigation firm'];
 function initRotatingWord(){
   const textEl = document.getElementById('rot-text');
   if(!textEl) return;
@@ -1080,7 +1119,7 @@ function initPhoneMock(){
     typing.remove();
     const reply = document.createElement('div');
     reply.className = 'phone-bubble';
-    reply.textContent = "Got it. We're matching you with 2–3 ICAN or CITN verified professionals now.";
+    reply.textContent = "Got it. We're reviewing this and identifying specialist firms with the right experience for a matter like this.";
     body.appendChild(reply);
   }, 2200);
 }
@@ -1277,6 +1316,195 @@ const VERIFICATION_STATUSES = {
   rejected: {label:'Not approved', cls:'v-rejected'}
 };
 
+/* ---------- Phase 6: granular verification levels ----------
+   The single verificationStatus above stays as the one-line headline badge
+   used everywhere (marketplace cards, sorting, etc.) — untouched.
+   This adds a more detailed, additive layer: which specific things TaxBridge
+   has actually checked. A firm can be "pending" overall while already having
+   Identity Verified ticked, for example. All manual — admin ticks these by hand. */
+const VERIFICATION_LEVEL_DEFS = [
+  {id:'identity', label:'Identity Verified', desc:'Firm identity confirmed by TaxBridge.'},
+  {id:'credentials', label:'Credentials Verified', desc:"Professional credentials (ICAN/ANAN/CITN/other) confirmed."},
+  {id:'firm', label:'Firm Verified', desc:'Business/professional registration and credentials reviewed as a whole.'}
+];
+function firmVerificationLevels(firm){
+  return Object.assign({identity:false, credentials:false, firm:false}, firm.verificationLevels || {});
+}
+function firmVerifiedSpecialisations(firm){
+  return firm.verifiedSpecialisations || [];
+}
+/* Renders the granular checklist. `editable` (admin-only) adds toggle buttons per level
+   and a specialisation picker for Specialist Verified — still 100% manual, one click each. */
+function renderVerificationLevelsHtml(firm, editable){
+  const levels = firmVerificationLevels(firm);
+  const verifiedSpecs = firmVerifiedSpecialisations(firm);
+  const levelRows = VERIFICATION_LEVEL_DEFS.map(def => {
+    const on = !!levels[def.id];
+    const status = `<span class="verify-badge ${on ? 'v-verified' : 'v-pending'}">${on ? '✓ ' + def.label : def.label + ' — not yet'}</span>`;
+    const toggle = editable ? `<button class="subtle-btn" onclick="setFirmVerificationLevel('${firm.id}','${def.id}',${!on})">${on ? 'Revoke' : 'Mark verified'}</button>` : '';
+    return `<div class="grid-actions" style="justify-content:space-between;align-items:center;margin-bottom:8px;">
+      <span>${status} <span class="hint">${esc(def.desc)}</span></span>${toggle}
+    </div>`;
+  }).join('');
+
+  const allSpecs = firm.specialisations || [];
+  let specialistBlock;
+  if(!allSpecs.length){
+    specialistBlock = '<p class="hint">This firm hasn\'t listed any specialisations yet.</p>';
+  } else if(editable){
+    specialistBlock = `<div class="grid-actions">${allSpecs.map(s => {
+      const on = verifiedSpecs.includes(s);
+      return `<button class="subtle-btn ${on?'on':''}" onclick="toggleFirmVerifiedSpecialisation('${firm.id}', ${JSON.stringify(s).replace(/"/g,'&quot;')})">${on?'✓ ':''}${esc(s)}</button>`;
+    }).join('')}</div>`;
+  } else {
+    specialistBlock = verifiedSpecs.length
+      ? `<div class="firm-tags">${verifiedSpecs.map(s => `<span class="firm-tag" style="background:var(--peach);">✓ ${esc(s)}</span>`).join('')}</div>`
+      : '<p class="hint">No specific specialisation has been individually reviewed by TaxBridge yet.</p>';
+  }
+
+  return `
+    <div class="taxo-group-title" style="margin-top:0;">Verification levels</div>
+    ${levelRows}
+    <div class="taxo-group-title">Specialist Verified</div>
+    <p class="hint" style="margin-top:-6px;margin-bottom:10px;">TaxBridge has reviewed evidence supporting these specific specialisations${editable ? ' — click to toggle' : ''}.</p>
+    ${specialistBlock}`;
+}
+
+function toggleAdminVerifyPanel(firmId){
+  const row = document.getElementById('admin-verify-row-' + firmId);
+  if(!row) return;
+  row.style.display = row.style.display === 'none' ? 'table-row' : 'none';
+}
+async function setFirmVerificationLevel(firmId, levelId, value){
+  const firm = await sget('firm:' + firmId);
+  if(!firm) return;
+  firm.verificationLevels = firmVerificationLevels(firm);
+  firm.verificationLevels[levelId] = value;
+  await sset('firm:' + firmId, firm);
+  await renderAdmin();
+  toggleAdminVerifyPanel(firmId);
+}
+async function toggleFirmVerifiedSpecialisation(firmId, spec){
+  const firm = await sget('firm:' + firmId);
+  if(!firm) return;
+  const list = firmVerifiedSpecialisations(firm);
+  const idx = list.indexOf(spec);
+  if(idx >= 0) list.splice(idx,1); else list.push(spec);
+  firm.verifiedSpecialisations = list;
+  await sset('firm:' + firmId, firm);
+  await renderAdmin();
+  toggleAdminVerifyPanel(firmId);
+}
+
+/* ---------- engagement requests (Phase 2) — manual matching only.
+   TaxBridge staff select the firm by hand; there is no scoring engine.
+   The data below is structured so an automated engine could be added
+   later without changing this shape, but nothing here ranks or
+   auto-assigns firms. ---------- */
+const ENGAGEMENT_TYPES = ['Bookkeeping', 'Tax compliance', 'Tax investigation', 'Tax dispute', 'Audit', 'Forensic accounting', 'Fraud investigation', 'Asset tracing', 'Litigation support', 'Due diligence', 'Valuation', 'Restructuring', 'Other'];
+const BUSINESS_SIZES = ['Sole proprietor / freelancer', 'Small business (1–9 employees)', 'Medium business (10–249 employees)', 'Large business (250–999 employees)', 'Enterprise (1000+ employees)'];
+const SENSITIVITY_LEVELS = [
+  {id:'standard', label:'Standard', desc:'Routine accounting and bookkeeping.'},
+  {id:'confidential', label:'Confidential', desc:'Sensitive business or financial information.'},
+  {id:'high', label:'High Sensitivity', desc:'e.g. tax investigation, fraud investigation, financial misconduct, litigation, asset tracing, corporate disputes.'},
+  {id:'highly_sensitive', label:'Highly Sensitive', desc:'Complex investigations or matters with major financial, legal, or regulatory consequences.'}
+];
+const ENGAGEMENT_STATUSES = {
+  new:              {label:'New request',            stage:'reviewing'},
+  under_review:     {label:'Under review',            stage:'reviewing'},
+  matching:         {label:'Matching in progress',    stage:'reviewing'},
+  firm_selected:    {label:'Firm selected',           stage:'matched'},
+  introduction_sent:{label:'Introduction sent',       stage:'matched'},
+  client_accepted:  {label:'Client accepted',         stage:'matched'},
+  firm_accepted:    {label:'Firm accepted',           stage:'matched'},
+  active:           {label:'Engagement active',       stage:'matched'},
+  completed:        {label:'Completed',               stage:'completed'},
+  declined:         {label:'Declined',                stage:'closed'},
+  rematch:          {label:'Re-matching required',    stage:'reviewing'},
+  closed:           {label:'Closed',                  stage:'closed'}
+};
+const ENGAGEMENT_STATUS_ORDER = Object.keys(ENGAGEMENT_STATUSES);
+
+/* ---------- Phase 4: type-specific follow-up questions (manual matching only) ----------
+   These exist purely to collect richer, more relevant detail per engagement type so the
+   TaxBridge team has what they need to hand-pick a firm. There is no scoring, ranking,
+   or auto-elimination of firms based on these answers — they're for a human to read. */
+const ENGAGEMENT_QUESTIONS = {
+  'Bookkeeping': [
+    {id:'monthlyTransactions', label:'Approximate monthly transaction volume', type:'select', options:['Under 50','50–200','200–500','500–2,000','2,000+']},
+    {id:'bankAccounts', label:'Number of bank accounts to reconcile', type:'text', placeholder:'e.g. 2'},
+    {id:'accountingSoftware', label:'Accounting software in use (if any)', type:'text', placeholder:'e.g. QuickBooks, Excel, none yet'},
+    {id:'revenueRange', label:'Approximate annual revenue range', type:'text', placeholder:'e.g. ₦20m–₦50m'},
+    {id:'frequency', label:'How often do you need this?', type:'select', options:['Monthly','Quarterly','One-off catch-up','Ongoing/weekly']}
+  ],
+  'Tax compliance': [
+    {id:'taxTypes', label:'Which tax types does this cover?', type:'text', placeholder:'e.g. VAT, PAYE, CIT'},
+    {id:'filingFrequency', label:'Filing frequency needed', type:'select', options:['Monthly','Quarterly','Annually','One-off']}
+  ],
+  'Tax investigation': [
+    {id:'taxAuthority', label:'Which tax authority is involved?', type:'text', placeholder:'e.g. FIRS, LIRS'},
+    {id:'activeInvestigation', label:'Is there an active investigation?', type:'select', options:['Yes','No','Not sure']},
+    {id:'receivedNotice', label:'Have you received a formal notice?', type:'select', options:['Yes','No']},
+    {id:'disputeExists', label:'Is there a dispute over the amount claimed?', type:'select', options:['Yes','No','Not yet']}
+  ],
+  'Tax dispute': [
+    {id:'taxAuthority', label:'Which tax authority is involved?', type:'text', placeholder:'e.g. FIRS, LIRS'},
+    {id:'disputeStage', label:'What stage is the dispute at?', type:'select', options:['Informal query','Formal objection filed','Escalated/tribunal','Litigation']},
+    {id:'disputedAmount', label:'Approximate amount in dispute', type:'text', placeholder:'e.g. ₦15,000,000'}
+  ],
+  'Audit': [
+    {id:'auditType', label:'Type of audit needed', type:'select', options:['Statutory audit','Internal audit','External audit','Audit preparation','Risk-based audit','Compliance audit']},
+    {id:'priorAuditor', label:'Do you have a previous auditor?', type:'text', placeholder:'e.g. name, or "first-time audit"'},
+    {id:'numLocations', label:'Number of locations/entities to be covered', type:'text', placeholder:'e.g. 1 head office, 3 branches'}
+  ],
+  'Forensic accounting': [
+    {id:'natureOfMatter', label:'Nature of the matter', type:'textarea', placeholder:'What triggered the need for forensic review?'},
+    {id:'litigationPending', label:'Is litigation pending or anticipated?', type:'select', options:['Yes','No','Not sure']},
+    {id:'legalCounselInvolved', label:'Is legal counsel already involved?', type:'select', options:['Yes','No']},
+    {id:'entitiesInvolved', label:'Approximate number of entities/persons involved', type:'text', placeholder:'e.g. 2 companies, 3 individuals'}
+  ],
+  'Fraud investigation': [
+    {id:'natureOfMatter', label:'Nature of the suspected fraud', type:'textarea', placeholder:'What has been observed or suspected?'},
+    {id:'litigationPending', label:'Is litigation pending or anticipated?', type:'select', options:['Yes','No','Not sure']},
+    {id:'legalCounselInvolved', label:'Is legal counsel already involved?', type:'select', options:['Yes','No']},
+    {id:'internalOrExternal', label:'Is the suspected fraud internal or external?', type:'select', options:['Internal (staff/management)','External (third party)','Not sure']}
+  ],
+  'Asset tracing': [
+    {id:'natureOfDispute', label:'Nature of the dispute', type:'textarea', placeholder:'What is the background to this?'},
+    {id:'jurisdiction', label:'Jurisdiction(s) involved', type:'text', placeholder:'e.g. Nigeria, UK'},
+    {id:'litigationPending', label:'Is litigation pending?', type:'select', options:['Yes','No','Not sure']},
+    {id:'legalCounselInvolved', label:'Is legal counsel involved?', type:'select', options:['Yes','No']},
+    {id:'entitiesInvolved', label:'Number of entities/persons involved', type:'text', placeholder:'e.g. 1 individual, 2 companies'},
+    {id:'geographicScope', label:'Geographic scope of the tracing', type:'text', placeholder:'e.g. Lagos and Dubai'}
+  ],
+  'Litigation support': [
+    {id:'caseStage', label:'What stage is the case at?', type:'select', options:['Pre-litigation','Filed/in progress','Trial preparation','Ongoing trial']},
+    {id:'expertWitnessNeeded', label:'Is expert-witness testimony required?', type:'select', options:['Yes','No','Not sure']},
+    {id:'counselName', label:'Name of law firm/counsel (optional)', type:'text', placeholder:'e.g. Firm & Co.'}
+  ],
+  'Due diligence': [
+    {id:'transactionType', label:'Type of transaction', type:'select', options:['Acquisition','Merger','Investment/fundraising','Divestment','Other']},
+    {id:'targetInfo', label:'Brief description of the target company', type:'textarea'},
+    {id:'dealSize', label:'Approximate deal size', type:'text', placeholder:'e.g. ₦500m'}
+  ],
+  'Valuation': [
+    {id:'valuationPurpose', label:'Purpose of the valuation', type:'select', options:['Sale/acquisition','Fundraising','Dispute/litigation','Tax/regulatory','Internal planning']},
+    {id:'entityType', label:'What is being valued?', type:'text', placeholder:'e.g. whole company, a division, IP'}
+  ],
+  'Restructuring': [
+    {id:'restructuringType', label:'Type of restructuring', type:'select', options:['Business restructuring','Insolvency/administration','Debt restructuring','Corporate reorganisation']},
+    {id:'creditorsInvolved', label:'Are creditors or regulators formally involved?', type:'select', options:['Yes','No','Not yet']}
+  ],
+  'Other': []
+};
+function engagementQuestionsFor(type){ return ENGAGEMENT_QUESTIONS[type] || []; }
+
+function engagementStatusTag(status){
+  const s = ENGAGEMENT_STATUSES[status] || ENGAGEMENT_STATUSES.new;
+  const clsMap = {reviewing:'status-pending', matched:'status-matched', completed:'status-paid', closed:'status-engaged'};
+  return `<span class="tag ${clsMap[s.stage]||'status-pending'}">${s.label}</span>`;
+}
+
 /* password hashing — SHA-256 via SubtleCrypto. Demo-grade only: no per-user salt beyond
    the email itself, no server-side rate limiting, no password reset flow. Good enough to
    avoid storing plaintext passwords in this prototype, not a substitute for real auth. */
@@ -1412,14 +1640,10 @@ async function renderClientDashboard(){
   const user = await sget('user:' + session.client);
   if(!user){ session.client = null; renderClientPortal(); return; }
 
-  const keys = await slist('lead:');
-  const allLeads = (await Promise.all(keys.map(sget))).filter(Boolean);
-  const myLeads = allLeads.filter(l => l.ownerEmail === session.client).sort((a,b)=>b.createdAt-a.createdAt);
-
   let interestNote = '';
   if(pendingFirmInterest){
     const f = await sget('firm:' + pendingFirmInterest);
-    if(f) interestNote = `<div class="msg success" style="margin-bottom:16px;">You're requesting a match with <strong>${esc(f.firmName)}</strong> in mind. TaxBridge still reviews the engagement before any introduction — submit your request below and we'll factor this in.</div>`;
+    if(f) interestNote = `<div class="msg success" style="margin-bottom:16px;">You're requesting a match with <strong>${esc(f.firmName)}</strong> in mind. Our team still reviews the engagement before any introduction — submit your request below and we'll factor this in.</div>`;
   }
 
   let html = `
@@ -1428,9 +1652,233 @@ async function renderClientDashboard(){
       <button class="subtle-btn" onclick="clientLogout()">Log out</button>
     </div>
     <div class="section-label">Client portal</div>
-    <h2 class="section-title">Your requests</h2>
+    <h2 class="section-title">Get matched to a specialist firm</h2>
+    <p class="hint" style="margin-bottom:20px;">Tell us what you're dealing with — our team reviews every request personally and identifies the right firm. No algorithm, no match percentage; a person makes this call.</p>
     ${interestNote}
-    <div class="card" style="margin-bottom:28px;">
+    ${renderEngagementForm(user)}`;
+
+  const engKeys = await slist('engagement:');
+  const allEngagements = (await Promise.all(engKeys.map(sget))).filter(Boolean);
+  const myEngagements = allEngagements.filter(e => e.ownerEmail === session.client).sort((a,b)=>b.createdAt-a.createdAt);
+
+  if(!myEngagements.length){
+    html += `<div class="empty">No engagement requests yet — submit one above.</div>`;
+  } else {
+    for(const eng of myEngagements){
+      html += await renderEngagementCard(eng);
+    }
+  }
+
+  html += `
+    <div style="margin-top:52px;padding-top:32px;border-top:1px solid var(--line-strong);">
+      <div class="section-label">Legacy flow</div>
+      <h3 style="font-size:20px;font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;">Individual professional requests</h3>
+      <p class="hint" style="margin-bottom:20px;">TaxBridge's original individual-professional matching flow — still functional, kept separate from firm matching above.</p>
+      <div id="legacy-lead-area"></div>
+    </div>`;
+
+  area.innerHTML = html;
+  renderDynamicEngagementQuestions();
+  renderLegacyLeadSection(user);
+}
+
+function renderEngagementForm(user){
+  return `
+    <div class="card" style="max-width:100%;margin-bottom:28px;">
+      <h3 class="form-title">New engagement request</h3>
+      <p class="form-sub">The more detail you give us, the better our team can identify the right firm.</p>
+
+      <div class="taxo-group-title" style="margin-top:0;">Basic information</div>
+      <label>Company name (optional)</label>
+      <input id="eq-company" placeholder="e.g. Bello Textiles Ltd">
+      <label>Industry</label>
+      <select id="eq-industry">${INDUSTRY_TAXONOMY.map(i => `<option>${i}</option>`).join('')}<option>Other</option></select>
+      <label>Business size</label>
+      <select id="eq-size">${BUSINESS_SIZES.map(b => `<option>${b}</option>`).join('')}</select>
+
+      <div class="taxo-group-title">Engagement</div>
+      <label>What do you need help with?</label>
+      <select id="eq-type" onchange="renderDynamicEngagementQuestions()">${ENGAGEMENT_TYPES.map(t => `<option>${t}</option>`).join('')}</select>
+      <label>Describe the problem in your own words</label>
+      <textarea id="eq-details" placeholder="What's happening, what you need, and anything that helps us understand it."></textarea>
+      <label>Deadline (optional)</label>
+      <input id="eq-deadline" type="date">
+      <label>Estimated engagement size/value (optional)</label>
+      <input id="eq-value" placeholder="e.g. ₦2,000,000, or 'not sure yet'">
+      <label>Expected duration (optional)</label>
+      <input id="eq-duration" placeholder="e.g. 2 weeks, 3 months, ongoing">
+
+      <div id="eq-dynamic-questions"></div>
+
+      <div class="taxo-group-title">Location</div>
+      <label>Country</label>
+      <input id="eq-country" value="Nigeria">
+      <label>State</label>
+      <input id="eq-state" placeholder="e.g. Lagos">
+      <label>City</label>
+      <input id="eq-city" placeholder="e.g. Ikeja">
+      <div class="checkrow">
+        <input type="checkbox" id="eq-onsite">
+        <label for="eq-onsite" style="margin:0;">This requires physical/on-site presence — remote firms won't work for this</label>
+      </div>
+
+      <div class="taxo-group-title">Sensitivity</div>
+      <p class="hint">This is an internal note to help our team pick an appropriate firm — it's never shown publicly.</p>
+      ${SENSITIVITY_LEVELS.map((s,i) => `
+        <label style="display:flex;align-items:flex-start;gap:10px;font-weight:400;margin-top:${i===0?'10':'12'}px;">
+          <input type="radio" name="eq-sensitivity" value="${s.id}" ${i===0?'checked':''} style="margin-top:3px;">
+          <span><strong style="font-weight:700;">${s.label}</strong> — <span class="hint">${s.desc}</span></span>
+        </label>`).join('')}
+
+      <div style="margin-top:22px;"><button class="btn btn-brass btn-full" onclick="submitEngagement()">Submit request</button></div>
+      <div id="eq-msg"></div>
+    </div>`;
+}
+
+function renderDynamicEngagementQuestions(){
+  const typeSelect = document.getElementById('eq-type');
+  const container = document.getElementById('eq-dynamic-questions');
+  if(!typeSelect || !container) return;
+  const qs = engagementQuestionsFor(typeSelect.value);
+  if(!qs.length){ container.innerHTML = ''; return; }
+  container.innerHTML = `<div class="taxo-group-title">${esc(typeSelect.value)} — a few more details</div>
+    <p class="hint" style="margin-top:-6px;margin-bottom:10px;">This just helps our team understand the engagement — there's no scoring, a person reviews it.</p>
+    ${qs.map(renderDynamicQuestionField).join('')}`;
+}
+function renderDynamicQuestionField(q){
+  const id = 'eqd-' + q.id;
+  if(q.type === 'select'){
+    return `<label>${esc(q.label)}</label><select id="${id}"><option value="">Select…</option>${q.options.map(o => `<option>${esc(o)}</option>`).join('')}</select>`;
+  }
+  if(q.type === 'textarea'){
+    return `<label>${esc(q.label)}</label><textarea id="${id}" placeholder="${esc(q.placeholder||'')}"></textarea>`;
+  }
+  return `<label>${esc(q.label)}</label><input id="${id}" placeholder="${esc(q.placeholder||'')}">`;
+}
+function collectDynamicEngagementAnswers(type){
+  const qs = engagementQuestionsFor(type);
+  const answers = [];
+  qs.forEach(q => {
+    const el = document.getElementById('eqd-' + q.id);
+    const value = el ? el.value.trim() : '';
+    if(value) answers.push({id:q.id, label:q.label, value});
+  });
+  return answers;
+}
+function renderTypeAnswersHtml(eng){
+  if(!eng.typeAnswers || !eng.typeAnswers.length) return '';
+  return `<div class="scope-note" style="margin-top:10px;">
+    <strong>${esc(eng.engagementType)} details</strong>
+    <ul style="margin:6px 0 0;padding-left:18px;">
+      ${eng.typeAnswers.map(a => `<li><span class="hint">${esc(a.label)}:</span> ${esc(a.value)}</li>`).join('')}
+    </ul>
+  </div>`;
+}
+
+async function submitEngagement(){
+  const user = await sget('user:' + session.client);
+  const details = document.getElementById('eq-details').value.trim();
+  const msg = document.getElementById('eq-msg');
+  if(!details){ msg.innerHTML = '<div class="msg error">Describe the problem before submitting.</div>'; return; }
+  const sensitivityInput = document.querySelector('input[name="eq-sensitivity"]:checked');
+  const id = refCode('ENG');
+  const engagementType = document.getElementById('eq-type').value;
+  const engagement = {
+    id, ownerEmail: session.client,
+    clientName: user.name, clientEmail: user.email, clientPhone: user.phone || '',
+    company: document.getElementById('eq-company').value.trim(),
+    industry: document.getElementById('eq-industry').value,
+    businessSize: document.getElementById('eq-size').value,
+    engagementType,
+    typeAnswers: collectDynamicEngagementAnswers(engagementType),
+    details,
+    deadline: document.getElementById('eq-deadline').value,
+    estimatedValue: document.getElementById('eq-value').value.trim(),
+    expectedDuration: document.getElementById('eq-duration').value.trim(),
+    country: document.getElementById('eq-country').value.trim(),
+    state: document.getElementById('eq-state').value.trim(),
+    city: document.getElementById('eq-city').value.trim(),
+    onSiteRequired: document.getElementById('eq-onsite').checked,
+    sensitivity: sensitivityInput ? sensitivityInput.value : 'standard',
+    status: 'new',
+    selectedFirms: [],
+    matchReasonNote: '',
+    interestedFirmId: pendingFirmInterest || null,
+    createdAt: Date.now()
+  };
+  await sset('engagement:' + id, engagement);
+  pendingFirmInterest = null;
+  renderClientDashboard();
+}
+
+async function renderEngagementCard(eng){
+  const statusInfo = ENGAGEMENT_STATUSES[eng.status] || ENGAGEMENT_STATUSES.new;
+  let html = `<div class="pro-card">
+    <div class="pro-card-top">
+      <h4>${esc(eng.engagementType)}</h4>
+      ${engagementStatusTag(eng.status)}
+    </div>
+    <p class="hint">${esc(eng.industry)}${eng.company ? ' · ' + esc(eng.company) : ''} · submitted ${new Date(eng.createdAt).toLocaleDateString()}</p>
+    <p style="font-size:14px;">${esc(eng.details)}</p>
+    ${renderTypeAnswersHtml(eng)}`;
+
+  if(statusInfo.stage === 'reviewing'){
+    html += `<div class="msg success" style="margin-top:12px;">We're reviewing your request. Our team is identifying the most suitable specialist firm based on your requirements, location, complexity, and sensitivity.</div>`;
+  }
+
+  if(statusInfo.stage === 'matched' && (eng.selectedFirms||[]).length){
+    html += `<div class="msg success" style="margin-top:12px;">We've found a specialist for your request.</div>`;
+    for(const firmId of eng.selectedFirms){
+      const f = await sget('firm:' + firmId);
+      if(!f) continue;
+      html += `<div class="pro-card">
+        <div class="pro-card-top">
+          <h4>${esc(f.firmName)}</h4>
+          ${verifyBadgeHtml(f.verificationStatus)}
+        </div>
+        <p class="hint">${(f.specialisations||[]).slice(0,3).map(esc).join(', ')} · ${esc(f.headquarters)||'Location not set'}</p>
+        ${eng.matchReasonNote ? `<div class="scope-note"><strong>Why we selected them:</strong> ${esc(eng.matchReasonNote)}</div>` : ''}
+        <div class="grid-actions">
+          <button class="btn btn-outline btn-sm" onclick="selectedFirmId='${f.id}';go('firm-profile')">View Firm</button>
+          ${eng.status !== 'client_accepted' && eng.status !== 'active' && eng.status !== 'completed' ? `<button class="btn btn-brass btn-sm" onclick="acceptIntroduction('${eng.id}')">Accept Introduction</button>` : `<span class="stamp">Introduction accepted</span>`}
+        </div>
+      </div>`;
+    }
+  }
+
+  if(statusInfo.stage === 'completed'){
+    html += `<p class="hint" style="color:var(--green);margin-top:10px;">This engagement is marked complete.</p>`;
+  }
+  if(eng.status === 'declined' || eng.status === 'closed'){
+    html += `<p class="hint" style="margin-top:10px;">This request has been closed.</p>`;
+  }
+  if(eng.status === 'rematch'){
+    html += `<p class="hint" style="margin-top:10px;">Our team is finding you a different firm.</p>`;
+  }
+
+  html += `</div>`;
+  return html;
+}
+
+async function acceptIntroduction(engId){
+  const eng = await sget('engagement:' + engId);
+  if(!eng) return;
+  eng.status = 'client_accepted';
+  await sset('engagement:' + engId, eng);
+  renderClientDashboard();
+}
+
+/* ---------- legacy individual-professional request flow (unchanged, kept for backward compatibility) ---------- */
+async function renderLegacyLeadSection(user){
+  const area = document.getElementById('legacy-lead-area');
+  if(!area) return;
+
+  const keys = await slist('lead:');
+  const allLeads = (await Promise.all(keys.map(sget))).filter(Boolean);
+  const myLeads = allLeads.filter(l => l.ownerEmail === session.client).sort((a,b)=>b.createdAt-a.createdAt);
+
+  let html = `
+    <div class="card" style="max-width:100%;margin-bottom:28px;">
       <h3 class="form-title">New request</h3>
       <p class="form-sub">Submit a new need — you can have several requests open at once.</p>
       <label>What do you need?</label>
@@ -1896,6 +2344,8 @@ function renderFirmAuthForm(){
     <input id="fs-name" placeholder="e.g. Maximum Value Consulting">
     <label>Firm email</label>
     <input id="fs-email" type="email" placeholder="you@yourfirm.com">
+    <label>Phone</label>
+    <input id="fs-phone" placeholder="Contact number for accepted engagements">
     <label>Password</label>
     <input id="fs-pass" type="password" placeholder="At least 8 characters">
     <label>Website (optional)</label>
@@ -1961,6 +2411,7 @@ async function firmSignup(){
   const firm = {
     id: email, ownerEmail: email, passHash,
     firmName: name,
+    phone: document.getElementById('fs-phone').value.trim(),
     logoInitials: name.split(' ').filter(Boolean).slice(0,2).map(w => w[0].toUpperCase()).join('') || 'TB',
     website: document.getElementById('fs-website').value.trim(),
     yearEstablished: document.getElementById('fs-year').value.trim(),
@@ -1981,6 +2432,9 @@ async function firmSignup(){
     capacity: document.getElementById('fs-capacity').value,
     availability: document.getElementById('fs-availability').value,
     verificationStatus: 'pending',
+    verificationLevels: {identity:false, credentials:false, firm:false},
+    verifiedSpecialisations: [],
+    adminNotes: '',
     createdAt: Date.now()
   };
   const ok = await sset('firm:' + email, firm);
@@ -2007,14 +2461,23 @@ function verifyBadgeHtml(status){
   return `<span class="verify-badge ${v.cls}">${v.label}</span>`;
 }
 
+let firmDashTab = 'overview';
+function setFirmDashTab(tab){ firmDashTab = tab; renderFirmDashboard(); }
+
 async function renderFirmDashboard(){
   const area = document.getElementById('firm-dash-area');
   const firm = await sget('firm:' + session.firm);
   if(!firm){ session.firm = null; renderFirmPortal(); return; }
 
-  const keys = await slist('lead:');
-  const allLeads = (await Promise.all(keys.map(sget))).filter(Boolean);
-  const interested = allLeads.filter(l => l.interestedFirmId === firm.id);
+  const tabs = [
+    {id:'overview', label:'Overview'},
+    {id:'profile', label:'Firm Profile'},
+    {id:'capacity', label:'Capacity & Availability'},
+    {id:'credentials', label:'Credentials'},
+    {id:'engagements', label:'Leads & Engagements'},
+    {id:'verification', label:'Verification'},
+    {id:'settings', label:'Settings'}
+  ];
 
   area.innerHTML = `
     <div class="session-bar">
@@ -2022,30 +2485,234 @@ async function renderFirmDashboard(){
       <button class="subtle-btn" onclick="firmLogout()">Log out</button>
     </div>
     <div class="section-label">Firm dashboard</div>
-    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
-      <h2 class="section-title">${esc(firm.firmName)}</h2>
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:18px;">
+      <h2 class="section-title" style="margin-bottom:0;">${esc(firm.firmName)}</h2>
       ${verifyBadgeHtml(firm.verificationStatus)}
     </div>
-    <p class="hint">${esc(firm.headquarters)}${firm.yearEstablished ? ' · Est. ' + esc(firm.yearEstablished) : ''}</p>
+    <div class="dash-tabs">${tabs.map(t => `<button class="${firmDashTab===t.id?'active':''}" onclick="setFirmDashTab('${t.id}')">${t.label}</button>`).join('')}</div>
+    <div id="firm-dash-tab-content"></div>`;
 
-    <div class="card" style="max-width:100%;margin-top:24px;">
+  const content = document.getElementById('firm-dash-tab-content');
+  if(firmDashTab === 'overview') content.innerHTML = await firmDashOverviewHtml(firm);
+  if(firmDashTab === 'profile') { content.innerHTML = firmDashProfileHtml(firm); renderFirmEditChips(firm); }
+  if(firmDashTab === 'capacity') content.innerHTML = firmDashCapacityHtml(firm);
+  if(firmDashTab === 'credentials') content.innerHTML = firmDashCredentialsHtml(firm);
+  if(firmDashTab === 'engagements') content.innerHTML = await firmDashEngagementsHtml(firm);
+  if(firmDashTab === 'verification') content.innerHTML = firmDashVerificationHtml(firm);
+  if(firmDashTab === 'settings') content.innerHTML = firmDashSettingsHtml(firm);
+}
+
+async function firmDashOverviewHtml(firm){
+  const engKeys = await slist('engagement:');
+  const allEng = (await Promise.all(engKeys.map(sget))).filter(Boolean);
+  const matchedToMe = allEng.filter(e => (e.selectedFirms||[]).includes(firm.id));
+  const active = matchedToMe.filter(e => ['firm_selected','introduction_sent','client_accepted','firm_accepted','active'].includes(e.status));
+  const completed = matchedToMe.filter(e => e.status === 'completed');
+  const awaitingFirmAccept = matchedToMe.filter(e => e.status === 'client_accepted');
+
+  return `
+    <div class="biz-grid" style="grid-template-columns:repeat(3,1fr);margin-top:0;">
+      <div class="firm-sidebar-card"><h4>Active engagements</h4><p style="font-size:22px;font-weight:800;font-family:'Plus Jakarta Sans',sans-serif;">${active.length}</p></div>
+      <div class="firm-sidebar-card"><h4>Awaiting your acceptance</h4><p style="font-size:22px;font-weight:800;font-family:'Plus Jakarta Sans',sans-serif;">${awaitingFirmAccept.length}</p></div>
+      <div class="firm-sidebar-card"><h4>Completed</h4><p style="font-size:22px;font-weight:800;font-family:'Plus Jakarta Sans',sans-serif;">${completed.length}</p></div>
+    </div>
+    <div class="card" style="max-width:100%;margin-top:20px;">
       <h3 class="form-title">Profile summary</h3>
-      <p class="form-sub">${esc(firm.description) || 'No description added yet.'}</p>
-      <div class="firm-tags">${(firm.specialisations||[]).map(s => `<span class="firm-tag">${esc(s)}</span>`).join('')}</div>
+      <p class="form-sub">${esc(firm.description) || 'No description added yet — add one in Firm Profile.'}</p>
+      <div class="firm-tags">${(firm.specialisations||[]).map(s => `<span class="firm-tag">${esc(s)}</span>`).join('') || '<span class="hint">No specialisations selected yet.</span>'}</div>
       <div class="grid-actions">
         <button class="btn btn-outline btn-sm" onclick="selectedFirmId='${firm.id}';go('firm-profile')">View public profile</button>
+        <button class="btn btn-outline btn-sm" onclick="setFirmDashTab('engagements')">Go to Leads & Engagements</button>
       </div>
-      <p class="hint" style="margin-top:16px;">Full profile editing, capacity controls, leads, and engagements land in the next phase of the firm dashboard — for now, reach out if anything above needs correcting.</p>
-    </div>
-
-    <div class="card" style="max-width:100%;margin-top:20px;">
-      <h3 class="form-title">Client interest <span class="hint">(${interested.length})</span></h3>
-      ${interested.length ? interested.map(l => `
-        <div class="pro-card">
-          <div class="pro-card-top"><h4>${esc(l.need)}</h4>${statusTag(l.status)}</div>
-          <p class="hint">A client requested a match referencing your firm. Our team reviews this before any introduction is made.</p>
-        </div>`).join('') : '<div class="empty">No client interest yet.</div>'}
     </div>`;
+}
+
+function firmDashProfileHtml(firm){
+  taxoState['fe'] = {specialisations: [...(firm.specialisations||[])], industries: [...(firm.industries||[])]};
+  return `
+    <div class="card" style="max-width:100%;">
+      <h3 class="form-title">Edit firm profile</h3>
+      <label>Firm name</label>
+      <input id="fe-name" value="${esc(firm.firmName)}">
+      <label>Website</label>
+      <input id="fe-website" value="${esc(firm.website)}">
+      <label>Year established</label>
+      <input id="fe-year" type="number" value="${esc(firm.yearEstablished)}">
+      <label>Headquarters (city, state)</label>
+      <input id="fe-hq" value="${esc(firm.headquarters)}">
+      <label>Cities served (comma-separated)</label>
+      <input id="fe-cities" value="${esc((firm.citiesServed||[]).join(', '))}">
+      <label>States served (comma-separated)</label>
+      <input id="fe-states" value="${esc((firm.statesServed||[]).join(', '))}">
+      <label>Countries served (comma-separated)</label>
+      <input id="fe-countries" value="${esc((firm.countriesServed||[]).join(', '))}">
+      <div class="checkrow">
+        <input type="checkbox" id="fe-remote" ${firm.remoteAvailable?'checked':''}>
+        <label for="fe-remote" style="margin:0;">We can serve clients remotely, outside our office locations</label>
+      </div>
+      <label>Firm description</label>
+      <textarea id="fe-desc">${esc(firm.description)}</textarea>
+
+      <div class="taxo-group-title">Specialisations</div>
+      <div id="fe-spec-chips"></div>
+      <div class="taxo-group-title">Industries served</div>
+      <div id="fe-industry-chips"></div>
+
+      <div style="margin-top:22px;"><button class="btn btn-brass" onclick="saveFirmProfile()">Save changes</button></div>
+      <div id="fe-msg"></div>
+    </div>`;
+}
+function renderFirmEditChips(firm){ renderFirmOnboardingChips('fe'); }
+
+async function saveFirmProfile(){
+  const firm = await sget('firm:' + session.firm);
+  if(!firm) return;
+  const splitList = (v) => v.split(',').map(s => s.trim()).filter(Boolean);
+  const state = taxoState['fe'] || {specialisations:[], industries:[]};
+  firm.firmName = document.getElementById('fe-name').value.trim();
+  firm.website = document.getElementById('fe-website').value.trim();
+  firm.yearEstablished = document.getElementById('fe-year').value.trim();
+  firm.headquarters = document.getElementById('fe-hq').value.trim();
+  firm.citiesServed = splitList(document.getElementById('fe-cities').value);
+  firm.statesServed = splitList(document.getElementById('fe-states').value);
+  firm.countriesServed = splitList(document.getElementById('fe-countries').value);
+  firm.remoteAvailable = document.getElementById('fe-remote').checked;
+  firm.description = document.getElementById('fe-desc').value.trim();
+  firm.specialisations = state.specialisations;
+  firm.industries = state.industries;
+  await sset('firm:' + firm.id, firm);
+  document.getElementById('fe-msg').innerHTML = '<div class="msg success">Saved.</div>';
+}
+
+function firmDashCapacityHtml(firm){
+  return `
+    <div class="card" style="max-width:100%;">
+      <h3 class="form-title">Capacity & availability</h3>
+      <p class="form-sub">Keep this current — TaxBridge's team uses it when manually matching engagements to your firm.</p>
+      <label>Typical engagement capacity</label>
+      <select id="fc-capacity">${CAPACITY_LEVELS.map(c => `<option value="${c.id}" ${c.id===firm.capacity?'selected':''}>${c.label}</option>`).join('')}</select>
+      <label>Current availability</label>
+      <select id="fc-availability">${AVAILABILITY_LEVELS.map(a => `<option value="${a.id}" ${a.id===firm.availability?'selected':''}>${a.label}</option>`).join('')}</select>
+      <div style="margin-top:20px;"><button class="btn btn-brass" onclick="saveFirmCapacity()">Save</button></div>
+      <div id="fc-msg"></div>
+    </div>`;
+}
+async function saveFirmCapacity(){
+  const firm = await sget('firm:' + session.firm);
+  if(!firm) return;
+  firm.capacity = document.getElementById('fc-capacity').value;
+  firm.availability = document.getElementById('fc-availability').value;
+  await sset('firm:' + firm.id, firm);
+  document.getElementById('fc-msg').innerHTML = '<div class="msg success">Saved.</div>';
+}
+
+function firmDashCredentialsHtml(firm){
+  return `
+    <div class="card" style="max-width:100%;">
+      <h3 class="form-title">Professional credentials</h3>
+      <p class="form-sub">Registration numbers our team checks before your firm shows as verified.</p>
+      <label>ICAN registration number</label>
+      <input id="fcr-ican" value="${esc(firm.credentials?.ican)}" placeholder="Leave blank if not applicable">
+      <label>ANAN registration number</label>
+      <input id="fcr-anan" value="${esc(firm.credentials?.anan)}" placeholder="Leave blank if not applicable">
+      <label>CITN registration number</label>
+      <input id="fcr-citn" value="${esc(firm.credentials?.citn)}" placeholder="Leave blank if not applicable">
+      <label>Other certifications / regulatory registrations</label>
+      <input id="fcr-other" value="${esc(firm.credentials?.other)}">
+      <div class="disclaimer">Editing credentials moves your firm back to "Verification pending" until our team reviews the change.</div>
+      <div style="margin-top:16px;"><button class="btn btn-brass" onclick="saveFirmCredentials()">Save credentials</button></div>
+      <div id="fcr-msg"></div>
+    </div>`;
+}
+async function saveFirmCredentials(){
+  const firm = await sget('firm:' + session.firm);
+  if(!firm) return;
+  firm.credentials = {
+    ican: document.getElementById('fcr-ican').value.trim(),
+    anan: document.getElementById('fcr-anan').value.trim(),
+    citn: document.getElementById('fcr-citn').value.trim(),
+    other: document.getElementById('fcr-other').value.trim()
+  };
+  if(firm.verificationStatus === 'verified') firm.verificationStatus = 'pending';
+  await sset('firm:' + firm.id, firm);
+  document.getElementById('fcr-msg').innerHTML = '<div class="msg success">Saved. Verification status updated where applicable.</div>';
+  renderFirmDashboard();
+}
+
+async function firmDashEngagementsHtml(firm){
+  const keys = await slist('engagement:');
+  const allEng = (await Promise.all(keys.map(sget))).filter(Boolean);
+  const matched = allEng.filter(e => (e.selectedFirms||[]).includes(firm.id)).sort((a,b)=>b.createdAt-a.createdAt);
+  const leadKeys = await slist('lead:');
+  const allLeads = (await Promise.all(leadKeys.map(sget))).filter(Boolean);
+  const interested = allLeads.filter(l => l.interestedFirmId === firm.id);
+
+  let html = `<h3 style="font-size:19px;margin:0 0 12px;">Matched engagements <span class="hint">(${matched.length})</span></h3>`;
+  if(!matched.length){
+    html += `<div class="empty">No engagements matched to your firm yet.</div>`;
+  } else {
+    for(const eng of matched){
+      const contactVisible = ['client_accepted','firm_accepted','active','completed'].includes(eng.status);
+      html += `<div class="pro-card">
+        <div class="pro-card-top"><h4>${esc(eng.engagementType)}</h4>${engagementStatusTag(eng.status)}</div>
+        <p class="hint">${esc(eng.industry)} · ${[eng.city, eng.state].filter(Boolean).map(esc).join(', ')}${eng.onSiteRequired ? ' · On-site required' : ' · Remote OK'}</p>
+        <p style="font-size:14px;">${esc(eng.details).slice(0,180)}${eng.details.length>180?'…':''}</p>
+        ${eng.matchReasonNote ? `<div class="scope-note"><strong>Why TaxBridge matched you:</strong> ${esc(eng.matchReasonNote)}</div>` : ''}
+        ${contactVisible ? `<p style="font-size:14px;margin-top:10px;"><strong>Client contact:</strong> ${esc(eng.clientName)} — ${esc(eng.clientEmail)}${eng.clientPhone ? ' · ' + esc(eng.clientPhone) : ''}</p>` : `<p class="hint">Client contact details appear once they accept the introduction.</p>`}
+        ${eng.status === 'client_accepted' ? `<button class="btn btn-brass btn-sm" style="margin-top:10px;" onclick="firmAcceptEngagement('${eng.id}')">Accept this engagement</button>` : ''}
+      </div>`;
+    }
+  }
+
+  html += `<h3 style="font-size:19px;margin:32px 0 12px;">Client interest, not yet matched <span class="hint">(${interested.length})</span></h3>`;
+  html += interested.length ? interested.map(l => `
+    <div class="pro-card">
+      <div class="pro-card-top"><h4>${esc(l.need)}</h4>${statusTag(l.status)}</div>
+      <p class="hint">A client requested a match referencing your firm from your public profile. Our team reviews this before any introduction is made.</p>
+    </div>`).join('') : '<div class="empty">None right now.</div>';
+
+  return html;
+}
+async function firmAcceptEngagement(engId){
+  const eng = await sget('engagement:' + engId);
+  if(!eng) return;
+  eng.status = 'firm_accepted';
+  await sset('engagement:' + engId, eng);
+  renderFirmDashboard();
+}
+
+function firmDashVerificationHtml(firm){
+  return `
+    <div class="card" style="max-width:100%;">
+      <h3 class="form-title">Verification status</h3>
+      <div style="margin:10px 0 18px;">${verifyBadgeHtml(firm.verificationStatus)}</div>
+      ${firm.verificationStatus === 'verified' ? '<p class="hint">Your firm identity and credentials have been reviewed by TaxBridge.</p>' : ''}
+      ${firm.verificationStatus === 'pending' ? '<p class="hint">Our team is reviewing your credentials. This usually takes a day or two.</p>' : ''}
+      ${firm.verificationStatus === 'info_required' ? '<p class="hint" style="color:var(--amber-deep);">TaxBridge needs more information before verifying your firm — check your credentials in the Credentials tab, or wait to hear from our team.</p>' : ''}
+      ${firm.verificationStatus === 'rejected' ? '<p class="hint" style="color:#B0442E;">Your firm was not approved. Contact TaxBridge if you believe this is in error.</p>' : ''}
+      <div style="margin-top:6px;">${renderVerificationLevelsHtml(firm, false)}</div>
+    </div>`;
+}
+
+function firmDashSettingsHtml(firm){
+  return `
+    <div class="card" style="max-width:100%;">
+      <h3 class="form-title">Account settings</h3>
+      <label>Firm email</label>
+      <input value="${esc(firm.ownerEmail)}" disabled>
+      <label>Phone</label>
+      <input id="fset-phone" value="${esc(firm.phone)}">
+      <div style="margin-top:16px;"><button class="btn btn-outline btn-sm" onclick="saveFirmPhone()">Save</button></div>
+      <div id="fset-msg"></div>
+      <p class="hint" style="margin-top:20px;">Password changes and account deletion aren't available in this prototype yet.</p>
+    </div>`;
+}
+async function saveFirmPhone(){
+  const firm = await sget('firm:' + session.firm);
+  if(!firm) return;
+  firm.phone = document.getElementById('fset-phone').value.trim();
+  await sset('firm:' + firm.id, firm);
+  document.getElementById('fset-msg').innerHTML = '<div class="msg success">Saved.</div>';
 }
 
 /* ---------- firms marketplace ---------- */
@@ -2054,9 +2721,11 @@ let firmFilters = { q:'', specialisation:'', industry:'', capacity:'', verifiedO
 async function renderFirmsMarketplace(){
   const area = document.getElementById('firms-marketplace-area');
   area.innerHTML = `
-    <div class="section-label">Find a firm</div>
-    <h2 class="section-title">Browse verified accounting & advisory firms</h2>
-    <p class="hint" style="margin-bottom:24px;">Better matches, not more choices — if you're not sure which firm fits, use <a href="#" onclick="go('client');return false;">Get Matched</a> instead and we'll do the narrowing for you.</p>
+    <div class="section-label">Browse firms</div>
+    <h2 class="section-title">Explore accounting and financial professional firms</h2>
+    <div class="msg success" style="margin-bottom:24px;">
+      <strong>Not sure which firm fits?</strong> <a href="#" onclick="go('client');return false;">Get matched</a> instead — tell TaxBridge what you need and our team will personally identify suitable firms for you. That's the recommended way to use TaxBridge; browsing below is just for exploring on your own.
+    </div>
     <div class="firms-toolbar">
       <div class="firms-search-row">
         <input id="firm-search-q" placeholder="Search by firm name, location, or description" oninput="applyFirmFilters()">
@@ -2190,11 +2859,18 @@ async function renderFirmProfile(){
         </div>
         <div class="firm-section">
           <h3>Specialisations</h3>
-          <div class="firm-tags">${(f.specialisations||[]).map(s => `<span class="firm-tag">${esc(s)}</span>`).join('') || '<span class="hint">None listed yet.</span>'}</div>
+          <div class="firm-tags">${(f.specialisations||[]).map(s => {
+            const isVerified = firmVerifiedSpecialisations(f).includes(s);
+            return `<span class="firm-tag"${isVerified ? ' style="background:var(--peach);"' : ''}>${isVerified ? '✓ ' : ''}${esc(s)}</span>`;
+          }).join('') || '<span class="hint">None listed yet.</span>'}</div>
         </div>
         <div class="firm-section">
           <h3>Industries served</h3>
           <div class="firm-tags">${(f.industries||[]).map(i => `<span class="firm-tag">${esc(i)}</span>`).join('') || '<span class="hint">None listed yet.</span>'}</div>
+        </div>
+        <div class="firm-section">
+          <h3>Verification</h3>
+          ${renderVerificationLevelsHtml(f, false)}
         </div>
         <div class="firm-section">
           <h3>Locations</h3>
@@ -2256,30 +2932,52 @@ async function renderAdmin(){
   const userKeys = await slist('user:');
   const leadKeys = await slist('lead:');
   const firmKeys = await slist('firm:');
+  const engKeys = await slist('engagement:');
   const users = (await Promise.all(userKeys.map(sget))).filter(Boolean);
   const leads = (await Promise.all(leadKeys.map(sget))).filter(Boolean).sort((a,b)=>b.createdAt-a.createdAt);
   const firms = (await Promise.all(firmKeys.map(sget))).filter(Boolean).sort((a,b)=>b.createdAt-a.createdAt);
+  const engagements = (await Promise.all(engKeys.map(sget))).filter(Boolean).sort((a,b)=>b.createdAt-a.createdAt);
   const pros = users.filter(u => u.role === 'pro').sort((a,b)=>b.createdAt-a.createdAt);
   const verifiedPros = pros.filter(p => p.verified);
 
   let html = '';
 
-  html += `<h3 style="font-size:19px;margin:0 0 4px;">Firms <span class="hint">(${firms.length})</span></h3>`;
+  html += `<h3 style="font-size:19px;margin:0 0 4px;">Engagement requests <span class="hint">(${engagements.length})</span></h3>`;
+  html += `<p class="hint" style="margin-bottom:16px;">Manual matching only — search and select firms yourself below. Nothing here is auto-assigned.</p>`;
+  if(!engagements.length){
+    html += `<div class="empty">No engagement requests yet.</div>`;
+  } else {
+    for(const eng of engagements){
+      html += await renderAdminEngagementCard(eng, firms);
+    }
+  }
+
+  html += `<h3 style="font-size:19px;margin:44px 0 4px;">Firms <span class="hint">(${firms.length})</span></h3>`;
   if(!firms.length){
     html += `<div class="empty">No firm applications yet.</div>`;
   } else {
-    html += `<table class="ledger-table"><thead><tr><th>Firm</th><th>Email</th><th>Headquarters</th><th>Specialisations</th><th>Status</th><th></th></tr></thead><tbody>`;
+    html += `<table class="ledger-table"><thead><tr><th>Firm</th><th>Email</th><th>Headquarters</th><th>Specialisations</th><th>Engagements</th><th>Status</th><th></th></tr></thead><tbody>`;
     for(const f of firms){
+      const firmEngagements = engagements.filter(e => (e.selectedFirms||[]).includes(f.id));
+      const activeCount = firmEngagements.filter(e => ['firm_selected','introduction_sent','client_accepted','firm_accepted','active'].includes(e.status)).length;
+      const pastCount = firmEngagements.filter(e => ['completed','closed','declined'].includes(e.status)).length;
       html += `<tr>
         <td>${esc(f.firmName)}</td>
         <td class="mono">${esc(f.ownerEmail)}</td>
         <td>${esc(f.headquarters)||'—'}</td>
         <td>${(f.specialisations||[]).slice(0,3).map(esc).join(', ')}${(f.specialisations||[]).length>3?'…':''}</td>
+        <td>${activeCount} active · ${pastCount} past</td>
         <td>${verifyBadgeHtml(f.verificationStatus)}</td>
         <td>
           ${f.verificationStatus !== 'verified' ? `<button class="subtle-btn" onclick="setFirmVerification('${f.id}','verified')">Verify</button>` : ''}
           ${f.verificationStatus !== 'info_required' ? `<button class="subtle-btn" onclick="setFirmVerification('${f.id}','info_required')">Need info</button>` : ''}
           ${f.verificationStatus !== 'rejected' ? `<button class="subtle-btn" onclick="setFirmVerification('${f.id}','rejected')">Reject</button>` : ''}
+          <button class="subtle-btn" onclick="toggleAdminVerifyPanel('${f.id}')">Verification details</button>
+        </td>
+      </tr>
+      <tr id="admin-verify-row-${f.id}" style="display:none;">
+        <td colspan="7" style="background:var(--cream-deep);">
+          ${renderVerificationLevelsHtml(f, true)}
         </td>
       </tr>`;
     }
@@ -2376,6 +3074,183 @@ async function renderAdmin(){
   }
 
   content.innerHTML = html;
+}
+
+/* ---------- admin: engagement requests (manual matching only) ---------- */
+let adminEngSelections = {}; // engId -> array of firmIds currently checked (not yet saved)
+
+/* Purely informational label to help a human eyeball capacity fit — this never filters,
+   ranks, or excludes any firm. Admin still sees and can pick every firm regardless. */
+function suggestedCapacityForEngagement(eng){
+  const size = eng.businessSize || '';
+  if(size.startsWith('Enterprise')) return CAPACITY_LEVELS[3];
+  if(size.startsWith('Large')) return CAPACITY_LEVELS[2];
+  if(size.startsWith('Medium')) return CAPACITY_LEVELS[1];
+  return CAPACITY_LEVELS[0];
+}
+
+const REASON_SNIPPETS = [
+  {label:'Specialisation match', text:'✓ Specialist in [specialisation]'},
+  {label:'Location fit', text:'✓ Based in [location], matching your location/on-site needs'},
+  {label:'Capacity fit', text:'✓ Has the capacity for an engagement of this size'},
+  {label:'Sensitivity/experience', text:'✓ Experienced handling [sensitivity level] engagements'},
+  {label:'Availability', text:'✓ Available within your requested timeframe'},
+  {label:'Verified', text:'✓ Verified by TaxBridge'}
+];
+function insertReasonSnippet(engId, text){
+  const ta = document.getElementById('afs-reason-' + engId);
+  if(!ta) return;
+  ta.value = ta.value ? (ta.value.replace(/\s+$/,'') + '\n' + text) : text;
+  ta.focus();
+}
+
+async function renderAdminEngagementCard(eng, allFirms){
+  const sensitivity = SENSITIVITY_LEVELS.find(s => s.id === eng.sensitivity) || SENSITIVITY_LEVELS[0];
+  const suggestedCapacity = suggestedCapacityForEngagement(eng);
+  let interestNote = '';
+  if(eng.interestedFirmId){
+    const f = allFirms.find(x => x.id === eng.interestedFirmId);
+    if(f) interestNote = `<p class="hint" style="color:var(--orange-dark);">Client expressed interest in <strong>${esc(f.firmName)}</strong>.</p>`;
+  }
+
+  let selectedFirmsHtml = '';
+  if((eng.selectedFirms||[]).length){
+    selectedFirmsHtml = `<div class="scope-note" style="margin-top:12px;">
+      <strong>Matched to:</strong> ${eng.selectedFirms.map(id => { const f = allFirms.find(x=>x.id===id); return f ? esc(f.firmName) : id; }).join(', ')}
+      ${eng.matchReasonNote ? `<br><strong>Why:</strong> ${esc(eng.matchReasonNote)}` : ''}
+    </div>`;
+  }
+
+  return `<div class="pro-card">
+    <div class="pro-card-top">
+      <h4>${esc(eng.engagementType)} — ${esc(eng.clientName)}${eng.company ? ' (' + esc(eng.company) + ')' : ''}</h4>
+      ${engagementStatusTag(eng.status)}
+    </div>
+    <p class="hint">${esc(eng.industry)} · ${esc(eng.businessSize)} · ${[eng.city, eng.state, eng.country].filter(Boolean).map(esc).join(', ')}${eng.onSiteRequired ? ' · On-site required' : ' · Remote OK'}</p>
+    <p class="hint"><strong>Sensitivity:</strong> ${sensitivity.label} · <strong>Suggested capacity:</strong> ${suggestedCapacity.label} <span class="hint">(based on business size — a hint for you, not a filter)</span></p>
+    <p style="font-size:14px;">${esc(eng.details)}</p>
+    <p class="hint">Deadline: ${eng.deadline || 'not specified'} · Est. value: ${esc(eng.estimatedValue)||'not specified'} · Duration: ${esc(eng.expectedDuration)||'not specified'}</p>
+    ${renderTypeAnswersHtml(eng)}
+    ${interestNote}
+    ${selectedFirmsHtml}
+
+    <div class="grid-actions" style="margin-top:14px;">
+      <button class="subtle-btn" onclick="toggleAdminFirmSearch('${eng.id}')">Search firms to match</button>
+      <label style="margin:0;font-weight:600;font-size:12.5px;display:flex;align-items:center;gap:6px;">Status:
+        <select style="width:auto;padding:6px 10px;font-size:12.5px;" onchange="setEngagementStatus('${eng.id}', this.value)">
+          ${ENGAGEMENT_STATUS_ORDER.map(id => `<option value="${id}" ${id===eng.status?'selected':''}>${ENGAGEMENT_STATUSES[id].label}</option>`).join('')}
+        </select>
+      </label>
+    </div>
+
+    <div id="admin-firm-search-${eng.id}" style="display:none;margin-top:16px;"></div>
+  </div>`;
+}
+
+function toggleAdminFirmSearch(engId){
+  const panel = document.getElementById('admin-firm-search-' + engId);
+  if(!panel) return;
+  const opening = panel.style.display === 'none';
+  panel.style.display = opening ? 'block' : 'none';
+  if(opening){
+    adminEngSelections[engId] = adminEngSelections[engId] || [];
+    panel.innerHTML = `
+      <div class="firms-toolbar" style="margin-bottom:16px;">
+        <div class="firms-search-row"><input id="afs-q-${engId}" placeholder="Search firm name or location" oninput="renderAdminFirmResults('${engId}')"></div>
+        <div class="firms-filter-row">
+          <select id="afs-spec-${engId}" onchange="renderAdminFirmResults('${engId}')">
+            <option value="">All specialisations</option>
+            ${ALL_SPECIALISATIONS.map(s => `<option value="${s}">${s}</option>`).join('')}
+          </select>
+          <select id="afs-cap-${engId}" onchange="renderAdminFirmResults('${engId}')">
+            <option value="">Any capacity</option>
+            ${CAPACITY_LEVELS.map(c => `<option value="${c.id}">${c.label}</option>`).join('')}
+          </select>
+          <select id="afs-avail-${engId}" onchange="renderAdminFirmResults('${engId}')">
+            <option value="">Any availability</option>
+            ${AVAILABILITY_LEVELS.map(a => `<option value="${a.id}">${a.label}</option>`).join('')}
+          </select>
+        </div>
+      </div>
+      <div id="afs-results-${engId}"></div>
+      <label style="margin-top:14px;">Why this firm was selected</label>
+      <p class="hint" style="margin-top:-4px;margin-bottom:8px;">Quick-insert a line, then edit the [bracketed] part — you write the final wording.</p>
+      <div class="grid-actions" style="margin-bottom:8px;">
+        ${REASON_SNIPPETS.map(r => `<button type="button" class="subtle-btn" onclick="insertReasonSnippet('${engId}', ${JSON.stringify(r.text).replace(/"/g,'&quot;')})">+ ${esc(r.label)}</button>`).join('')}
+      </div>
+      <textarea id="afs-reason-${engId}" placeholder="e.g. Requires forensic accounting and asset-tracing expertise. Firm operates in Lagos and has capacity for a high-sensitivity investigation."></textarea>
+      <button class="btn btn-brass btn-sm" style="margin-top:10px;" onclick="saveEngagementMatch('${engId}')">Save match & send introduction</button>
+      <div id="afs-msg-${engId}"></div>`;
+    renderAdminFirmResults(engId);
+  }
+}
+
+async function renderAdminFirmResults(engId){
+  const resultsEl = document.getElementById('afs-results-' + engId);
+  if(!resultsEl) return;
+  const q = (document.getElementById('afs-q-' + engId)?.value || '').trim().toLowerCase();
+  const spec = document.getElementById('afs-spec-' + engId)?.value || '';
+  const cap = document.getElementById('afs-cap-' + engId)?.value || '';
+  const avail = document.getElementById('afs-avail-' + engId)?.value || '';
+
+  const keys = await slist('firm:');
+  let firms = (await Promise.all(keys.map(sget))).filter(Boolean);
+  if(q) firms = firms.filter(f => (f.firmName||'').toLowerCase().includes(q) || (f.headquarters||'').toLowerCase().includes(q));
+  if(spec) firms = firms.filter(f => (f.specialisations||[]).includes(spec));
+  if(cap) firms = firms.filter(f => f.capacity === cap);
+  if(avail) firms = firms.filter(f => f.availability === avail);
+
+  if(!firms.length){ resultsEl.innerHTML = '<div class="empty">No firms match those filters.</div>'; return; }
+
+  const eng = await sget('engagement:' + engId);
+  const suggestedCapacity = eng ? suggestedCapacityForEngagement(eng) : null;
+
+  const selected = adminEngSelections[engId] || [];
+  resultsEl.innerHTML = firms.map(f => {
+    const capacityLabel = (CAPACITY_LEVELS.find(c=>c.id===f.capacity)||{}).label||'Capacity not set';
+    const capacityFitNote = (suggestedCapacity && f.capacity === suggestedCapacity.id) ? ' <span class="hint" style="color:var(--green-deep);">(≈ matches suggested capacity)</span>' : '';
+    return `
+    <div class="pro-card" style="padding:14px 16px;">
+      <label style="display:flex;align-items:flex-start;gap:12px;font-weight:400;margin:0;cursor:pointer;">
+        <input type="checkbox" style="margin-top:3px;" ${selected.includes(f.id)?'checked':''} onchange="toggleFirmSelectionForEngagement('${engId}','${f.id}')">
+        <span>
+          <strong style="font-family:'Plus Jakarta Sans',sans-serif;">${esc(f.firmName)}</strong> ${verifyBadgeHtml(f.verificationStatus)}
+          <br><span class="hint">${esc(f.headquarters)||'Location not set'} · ${(f.specialisations||[]).slice(0,3).map(esc).join(', ')} · ${capacityLabel}${capacityFitNote} · ${(AVAILABILITY_LEVELS.find(a=>a.id===f.availability)||{}).label||'Availability not set'}</span>
+        </span>
+      </label>
+    </div>`;
+  }).join('');
+}
+
+function toggleFirmSelectionForEngagement(engId, firmId){
+  adminEngSelections[engId] = adminEngSelections[engId] || [];
+  const arr = adminEngSelections[engId];
+  const idx = arr.indexOf(firmId);
+  if(idx >= 0) arr.splice(idx,1); else arr.push(firmId);
+}
+
+async function saveEngagementMatch(engId){
+  const selected = adminEngSelections[engId] || [];
+  const msg = document.getElementById('afs-msg-' + engId);
+  if(!selected.length){ msg.innerHTML = '<div class="msg error">Select at least one firm.</div>'; return; }
+  const eng = await sget('engagement:' + engId);
+  if(!eng) return;
+  eng.selectedFirms = selected;
+  eng.matchReasonNote = document.getElementById('afs-reason-' + engId).value.trim();
+  if(ENGAGEMENT_STATUSES[eng.status].stage === 'reviewing'){
+    eng.status = 'introduction_sent';
+  }
+  await sset('engagement:' + engId, eng);
+  delete adminEngSelections[engId];
+  renderAdmin();
+}
+
+async function setEngagementStatus(engId, status){
+  const eng = await sget('engagement:' + engId);
+  if(!eng) return;
+  eng.status = status;
+  await sset('engagement:' + engId, eng);
+  renderAdmin();
 }
 
 async function verifyPro(email){
