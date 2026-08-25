@@ -66,6 +66,30 @@
   .container{max-width:1140px;margin:0 auto;padding:0 28px;}
   @media(prefers-reduced-motion: reduce){ *{animation:none !important; transition:none !important;} }
 
+  /* loading screen */
+  .app-loader{
+    position:fixed;inset:0;z-index:9999;
+    background:var(--cream);
+    display:flex;align-items:center;justify-content:center;
+    transition:opacity .45s ease, visibility .45s ease;
+  }
+  .app-loader.hidden{opacity:0;visibility:hidden;pointer-events:none;}
+  .app-loader-mark{
+    width:64px;height:64px;background:var(--orange);border-radius:18px;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:26px;color:#fff;
+    animation:tbBeat 1.15s ease-in-out infinite;
+    box-shadow:0 10px 28px rgba(0,0,0,.14);
+  }
+  @keyframes tbBeat{
+    0%{transform:scale(1);}
+    18%{transform:scale(1.16);}
+    32%{transform:scale(.97);}
+    46%{transform:scale(1.1);}
+    62%{transform:scale(1);}
+    100%{transform:scale(1);}
+  }
+
   /* generic scroll reveal */
   .reveal{opacity:0;transform:translateY(30px);transition:opacity .7s cubic-bezier(.16,1,.3,1), transform .7s cubic-bezier(.16,1,.3,1);}
   .reveal.in-view{opacity:1;transform:translateY(0);}
@@ -94,7 +118,10 @@
   nav.topnav{
     position:sticky;top:0;z-index:50;
     background:var(--cream);
-    padding:16px 0;
+    padding:16px 20px;
+  }
+  @media(max-width:480px){
+    nav.topnav{padding:14px 14px;}
   }
   .navwrap{
     display:flex;align-items:center;justify-content:space-between;
@@ -298,6 +325,11 @@
   .phone-body{flex:1;padding:22px;display:flex;flex-direction:column;gap:16px;}
   .phone-bubble{max-width:84%;padding:14px 17px;border-radius:18px;font-size:15.5px;line-height:1.42;background:#fff;border:1px solid var(--line);align-self:flex-start;color:var(--ink);font-weight:500;box-shadow:0 2px 6px rgba(0,0,0,.04);}
   .phone-bubble.mine{align-self:flex-end;background:var(--maroon);color:#fff;border:none;}
+  .msg-thread{display:flex;flex-direction:column;gap:12px;margin:10px 0 14px;max-height:340px;overflow-y:auto;padding:6px 2px;}
+  .msg-bubble-wrap{display:flex;flex-direction:column;align-items:flex-start;}
+  .msg-bubble-wrap.mine{align-items:flex-end;}
+  .msg-bubble-wrap .phone-bubble{max-width:78%;box-shadow:none;}
+  .msg-sender{font-size:11px;color:var(--ink-soft);margin:0 4px 3px;font-weight:600;}
   .typing-dots{align-self:flex-start;background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px 18px;display:flex;gap:5px;box-shadow:0 2px 6px rgba(0,0,0,.04);}
   .typing-dots span{width:8px;height:8px;border-radius:50%;background:var(--orange);opacity:.35;animation:bounce 1.2s infinite;}
   .typing-dots span:nth-child(2){animation-delay:.15s;}
@@ -412,7 +444,8 @@
   .pro-card-top{display:flex;justify-content:space-between;align-items:center;}
   .pro-card h4{margin:0;font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:17px;}
 
-  table.ledger-table{width:100%;border-collapse:collapse;margin-top:14px;font-size:14px;}
+  .table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-top:14px;}
+  table.ledger-table{width:100%;min-width:640px;border-collapse:collapse;font-size:14px;}
   table.ledger-table th{
     text-align:left;font-family:'IBM Plex Mono',monospace;font-size:11.5px;text-transform:uppercase;
     letter-spacing:.06em;color:var(--ink-soft);border-bottom:1px solid var(--line-strong);padding:8px 10px;
@@ -579,6 +612,12 @@
   }
   .dash-tabs button:hover{color:var(--ink);}
   .dash-tabs button.active{color:var(--orange-dark);border-bottom-color:var(--orange);}
+  .admin-stats-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:24px;}
+  .admin-stat{background:var(--paper-card);border:1px solid var(--line-strong);border-radius:var(--radius-sm);padding:14px 12px;text-align:center;}
+  .admin-stat-num{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:24px;color:var(--maroon);}
+  .admin-stat-label{font-size:11.5px;color:var(--ink-soft);margin-top:2px;line-height:1.3;}
+  @media(max-width:900px){.admin-stats-grid{grid-template-columns:repeat(3,1fr);}}
+  @media(max-width:520px){.admin-stats-grid{grid-template-columns:repeat(2,1fr);}}
   .session-bar{
     display:flex;justify-content:space-between;align-items:center;
     background:var(--paper-card);border:1px solid var(--line-strong);border-radius:var(--radius-sm);
@@ -596,6 +635,10 @@
 </head>
 <body>
 
+<div id="app-loader" class="app-loader" aria-hidden="true">
+  <div class="app-loader-mark">TB</div>
+</div>
+
 <nav class="topnav">
   <div class="navwrap">
     <div class="brand" onclick="go('home')">
@@ -604,12 +647,12 @@
     </div>
     <div class="navlinks">
       <button class="nav-link" onclick="go('firms')">Find a Firm</button>
-      <button class="nav-link" data-view="home" onclick="scrollToSection('process')">How It Works</button>
+      <button class="nav-link" data-view="home" onclick="scrollToSection('solution')">How It Works</button>
       <button class="nav-link" onclick="go('pro')">For Professionals</button>
-      <button class="nav-link" data-view="home" onclick="scrollToSection('faqs')">Resources</button>
+      <button class="nav-link" data-view="home" onclick="scrollToSection('faqs')">FAQs</button>
       <button class="nav-link" onclick="go('client')">Log in</button>
       <button class="nav-link nav-cta-outline" onclick="go('list-firm')">List My Firm</button>
-      <button class="nav-link nav-cta" onclick="go('client')">Sign up</button>
+      <button class="nav-link nav-cta" onclick="go('client')">Get Matched</button>
       <button class="nav-burger" onclick="openDrawer()" aria-label="Open menu">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
       </button>
@@ -623,12 +666,12 @@
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><line x1="4" y1="4" x2="20" y2="20"/><line x1="20" y1="4" x2="4" y2="20"/></svg>
   </button>
   <button class="drawer-link" onclick="go('firms');closeDrawer()">Find a Firm</button>
-  <button class="drawer-link" onclick="scrollToSection('process');closeDrawer()">How It Works</button>
+  <button class="drawer-link" onclick="scrollToSection('solution');closeDrawer()">How It Works</button>
   <button class="drawer-link" onclick="go('pro');closeDrawer()">For Professionals</button>
-  <button class="drawer-link" onclick="scrollToSection('faqs');closeDrawer()">Resources</button>
+  <button class="drawer-link" onclick="scrollToSection('faqs');closeDrawer()">FAQs</button>
   <button class="drawer-link" onclick="go('client');closeDrawer()">Log in</button>
   <button class="drawer-link" onclick="go('list-firm');closeDrawer()">List My Firm</button>
-  <button class="drawer-cta" onclick="go('client');closeDrawer()">Sign up</button>
+  <button class="drawer-cta" onclick="go('client');closeDrawer()">Get Matched</button>
 </div>
 
 <button class="scroll-top-btn" id="scroll-top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Scroll to top">
@@ -718,13 +761,31 @@
     </div>
   </div>
 
+  <div class="band" id="for-businesses">
+    <div class="container" style="max-width:820px;text-align:center;">
+      <div class="reveal">
+        <span class="eyebrow-pill">For businesses</span>
+      </div>
+      <h2 class="reveal">Focus on your business. Let TaxBridge find the right firm.</h2>
+      <p class="band-sub reveal">Instead of searching a directory or relying only on referrals, TaxBridge gives your business a faster, more accountable way to find the specialist accounting help a matter actually needs.</p>
+      <div class="fb-grid reveal-stagger">
+        <div class="fb-item stagger-child"><strong>Matched to a specialist firm</strong><span>Not a generic listing — a firm chosen for this specific engagement.</span></div>
+        <div class="fb-item stagger-child"><strong>Verified firms only</strong><span>Identity, credentials, and specialisation reviewed by our team.</span></div>
+        <div class="fb-item stagger-child"><strong>Reasoning you can see</strong><span>We explain why a firm was recommended, not just that it was.</span></div>
+        <div class="fb-item stagger-child"><strong>Confidentiality respected</strong><span>Sensitive engagements are matched with that in mind.</span></div>
+        <div class="fb-item stagger-child"><strong>One point of contact</strong><span>Your request and its status stay in one place throughout.</span></div>
+        <div class="fb-item stagger-child"><strong>Re-matched if needed</strong><span>If a firm isn't the right fit, we'll re-match you at no extra cost.</span></div>
+      </div>
+    </div>
+  </div>
+
   <div class="band" id="process">
     <div class="container">
       <div style="text-align:center;" class="reveal">
-        <span class="eyebrow-pill">Our process in 4 steps</span>
+        <span class="eyebrow-pill">A lighter option: individual professionals</span>
       </div>
-      <h2 class="reveal">From start to finish, we've got you covered.</h2>
-      <p class="band-sub reveal">You make the request. TaxBridge handles the rest.</p>
+      <h2 class="reveal">Just need one person, not a firm? That works too.</h2>
+      <p class="band-sub reveal">For smaller, simpler work, TaxBridge also runs a separate track where you're matched directly with an individual professional — contract and payment handled through TaxBridge, start to finish.</p>
 
       <div class="steps-grid reveal">
         <div class="steps-list" id="steps-list">
@@ -764,10 +825,10 @@
   <div class="band band-maroon dark" id="payment-protection">
     <div class="container">
       <div style="text-align:center;" class="reveal">
-        <span class="eyebrow-pill">Payment protection</span>
+        <span class="eyebrow-pill">Payment protection — individual professional track</span>
       </div>
       <h2 class="reveal">Your payment is protected.</h2>
-      <p class="band-sub reveal">You don't pay a professional directly, and nothing releases until the work is actually delivered.</p>
+      <p class="band-sub reveal">On the individual-professional track, you don't pay a professional directly, and nothing releases until the work is actually delivered.</p>
 
       <div class="pf-timeline reveal-stagger">
         <div class="pf-node stagger-child">
@@ -914,31 +975,13 @@
     </div>
   </div>
 
-  <div class="band" id="for-businesses">
-    <div class="container" style="max-width:820px;text-align:center;">
-      <div class="reveal">
-        <span class="eyebrow-pill">For businesses</span>
-      </div>
-      <h2 class="reveal">Focus on your business. Let TaxBridge help with the numbers.</h2>
-      <p class="band-sub reveal">Instead of searching randomly or relying only on referrals, TaxBridge gives your business a faster, more accountable way to find tax and accounting help.</p>
-      <div class="fb-grid reveal-stagger">
-        <div class="fb-item stagger-child"><strong>Find specialized professionals</strong><span>Matched to the specific service you need, not a generic listing.</span></div>
-        <div class="fb-item stagger-child"><strong>Compare professionals</strong><span>See experience and specializations side by side before you choose.</span></div>
-        <div class="fb-item stagger-child"><strong>Transparent engagement</strong><span>A one-page contract and a clear fee before any work begins.</span></div>
-        <div class="fb-item stagger-child"><strong>Secure payment process</strong><span>Payment stays with TaxBridge until the work is delivered.</span></div>
-        <div class="fb-item stagger-child"><strong>Centralized communication</strong><span>Your request, matches, and contract stay in one place.</span></div>
-        <div class="fb-item stagger-child"><strong>Professional support</strong><span>If a match isn't right, we re-match you at no extra cost.</span></div>
-      </div>
-    </div>
-  </div>
-
   <div class="band band-green dark" id="for-professionals">
     <div class="container" style="max-width:820px;text-align:center;">
       <div class="reveal">
-        <span class="eyebrow-pill">For professionals</span>
+        <span class="eyebrow-pill">Joining as an individual professional</span>
       </div>
       <h2 class="reveal">Turn your expertise into new opportunities.</h2>
-      <p class="band-sub reveal">Apply once. Once we've reviewed your credentials, we bring qualified client briefs to you — you're not chasing leads on a public listing.</p>
+      <p class="band-sub reveal">Apply once. Once we've reviewed your credentials, we bring qualified client briefs to you — you're not chasing leads on a public listing. Running a firm rather than working solo? <a href="#" onclick="go('list-firm');return false;" style="color:inherit;text-decoration:underline;">List your firm instead.</a></p>
       <div class="fb-grid reveal-stagger">
         <div class="fb-item dark stagger-child"><strong>Get discovered by businesses</strong><span>Client requests come to you, matched to your specialization.</span></div>
         <div class="fb-item dark stagger-child"><strong>Build a professional profile</strong><span>Your credentials, experience, and reviews in one place.</span></div>
@@ -1000,9 +1043,9 @@
         </div>
         <div style="display:flex;gap:18px;flex-wrap:wrap;">
           <a href="#" onclick="go('firms');return false;">Find a Firm</a>
+          <a href="#" onclick="go('list-firm');return false;">List My Firm</a>
           <a href="#" onclick="go('pro');return false;">For Professionals</a>
-          <a href="#" onclick="scrollToSection('process');return false;">How It Works</a>
-          <a href="#" onclick="scrollToSection('faqs');return false;">Resources</a>
+          <a href="#" onclick="scrollToSection('solution');return false;">How It Works</a>
           <a href="#" onclick="scrollToSection('about');return false;">About</a>
           <a href="#" onclick="scrollToSection('contact');return false;">Contact</a>
           <a href="#" onclick="scrollToSection('faqs');return false;">FAQ</a>
@@ -1176,16 +1219,17 @@ function initSteps(){
 
 /* FAQ */
 const faqData = [
-  {q:"How does TaxBridge work?", a:"You submit what you need and your budget. Our team reviews it and introduces two to three vetted professionals. You choose one, sign a one-page contract, and pay through TaxBridge. Once payment is confirmed, you get their contact details and the work begins."},
-  {q:"How are professionals verified?", a:"TaxBridge's verification process is designed to check each applicant's professional body registration (ICAN, ANAN, or CITN), identity, and relevant experience before they're allowed to accept a client. It's a manual review by our team, not an automated database check."},
-  {q:"How do I choose a professional?", a:"After you submit a request, we send you two to three matched professionals with their experience, specializations, and any client ratings. You pick the one that fits and we set up the contract."},
-  {q:"How does payment protection work?", a:"You pay TaxBridge, not the professional directly. That payment is held until the professional marks the work delivered, at which point it's released to them minus our commission. This isn't a regulated escrow service — it's a payment process designed to reduce the risk of paying upfront with no recourse."},
-  {q:"What happens if I'm unhappy with the work?", a:"Tell us and we'll re-match you with a different professional at no extra cost. We're also building a more structured dispute process as the platform grows."},
-  {q:"What services can I request?", a:"Tax filing (PAYE, VAT, CIT), bookkeeping, audit preparation, tax advisory, and payroll setup are the most common. If your need doesn't fit neatly into one of those, tell us anyway — we'll find the right fit."},
+  {q:"How does TaxBridge work?", a:"Tell us what you're dealing with — the type of work, your industry, location, and how sensitive it is. Our team reviews the request personally and identifies which specialist firm is the right fit, then makes the introduction. There's also a separate, lighter-weight option to work with an individual professional directly for smaller, simpler work."},
+  {q:"What's the difference between getting matched with a firm and finding an individual professional?", a:"Firm matching is for engagements where specialisation, location, and capacity genuinely matter — tax investigations, forensic accounting, audits, asset tracing, restructuring and similar work. The individual professional track is a lighter option for smaller, routine work (like a single filing), and includes an optional contract-and-payment process through TaxBridge. Both are manually reviewed by our team; use whichever fits what you need."},
+  {q:"How are professionals and firms verified?", a:"We check identity, professional body registration (ICAN, ANAN, CITN, or equivalent), and relevant experience — for individual professionals and firms alike. It's a manual review by our team, and for firms we track it at a granular level (identity, credentials, and even specific specialisations) rather than one blanket approval."},
+  {q:"How do I choose an individual professional?", a:"After you submit a request on the individual-professional track, we send you two to three matched professionals with their experience and specialisations. You pick the one that fits and we set up the contract. Firm matching works differently — TaxBridge's team makes the introduction rather than presenting you with a list to choose from."},
+  {q:"How does payment protection work?", a:"This applies to the individual-professional track: you pay TaxBridge, not the professional directly, and that payment is held until the work is marked delivered, then released minus our commission. It's not a regulated escrow service — it's a payment process designed to reduce the risk of paying upfront with no recourse. Firm engagements are currently introduction-only; TaxBridge doesn't yet process payment between you and the firm."},
+  {q:"What happens if I'm unhappy with the work?", a:"Tell us and we'll re-match you at no extra cost, whether that was a firm or an individual professional. We're also building a more structured dispute process as the platform grows."},
+  {q:"What services can I request?", a:"Everything from routine bookkeeping, tax filing (PAYE, VAT, CIT), and payroll setup, through to tax investigations and disputes, forensic accounting, fraud investigation, asset tracing, litigation support, audits, and due diligence. If your need doesn't fit neatly into one of those, tell us anyway — we'll find the right fit."},
   {q:"Can businesses use TaxBridge, not just individuals?", a:"Yes — most requests come from small and growing businesses that need ongoing tax and accounting support, not a one-off filing."},
-  {q:"How do professionals join?", a:"Apply through the professional portal with your registration number, expertise, and experience. Once we've reviewed your credentials, you'll start receiving matched client briefs."},
-  {q:"When do I pay?", a:"Only after you've chosen a matched professional and signed the one-page contract. Nothing is charged before that."},
-  {q:"How does TaxBridge make money?", a:"We take a commission on each engagement, and on renewals or repeat work for a period after the introduction."}
+  {q:"How do professionals or firms join?", a:"Individual professionals apply through the professional portal with their registration number, expertise, and experience. Accounting and advisory firms register through 'List My Firm' instead, with details for the whole practice. Both are manually reviewed before you start receiving matched requests."},
+  {q:"When do I pay?", a:"Only on the individual-professional track, and only after you've chosen a matched professional and signed the one-page contract — nothing is charged before that. Firm engagements don't currently have a payment step through TaxBridge."},
+  {q:"How does TaxBridge make money?", a:"We take a commission on individual-professional engagements, and on renewals or repeat work for a period after the introduction."}
 ];
 function initFaq(){
   const list = document.getElementById('faq-list');
@@ -1268,6 +1312,14 @@ document.addEventListener('DOMContentLoaded', () => {
   initScrollTop();
   if(window.location.hash === '#admin'){ go('admin'); }
 });
+window.addEventListener('DOMContentLoaded', () => {
+  const loader = document.getElementById('app-loader');
+  if(loader) setTimeout(() => loader.classList.add('hidden'), 550);
+});
+window.addEventListener('load', () => {
+  const loader = document.getElementById('app-loader');
+  if(loader) loader.classList.add('hidden');
+});
 </script>
 <script>
 /* ---------- storage helpers ---------- */
@@ -1338,6 +1390,16 @@ function firmVerifiedSpecialisations(firm){
 function renderVerificationLevelsHtml(firm, editable){
   const levels = firmVerificationLevels(firm);
   const verifiedSpecs = firmVerifiedSpecialisations(firm);
+  const credentialLines = [];
+  if(firm.credentials?.ican) credentialLines.push('ICAN: ' + firm.credentials.ican);
+  if(firm.credentials?.anan) credentialLines.push('ANAN: ' + firm.credentials.anan);
+  if(firm.credentials?.citn) credentialLines.push('CITN: ' + firm.credentials.citn);
+  if(firm.credentials?.other) credentialLines.push('Other: ' + firm.credentials.other);
+  const credentialsBlock = editable ? `
+    <div class="taxo-group-title" style="margin-top:0;">Submitted credentials</div>
+    ${credentialLines.length ? `<p class="hint">${credentialLines.map(esc).join(' · ')}</p>` : '<p class="hint">No credential numbers submitted.</p>'}
+    ${firm.credentials?.verificationDocs ? `<p class="hint" style="white-space:pre-wrap;">Documents: ${esc(firm.credentials.verificationDocs)}</p>` : '<p class="hint">No verification documents submitted yet.</p>'}
+  ` : '';
   const levelRows = VERIFICATION_LEVEL_DEFS.map(def => {
     const on = !!levels[def.id];
     const status = `<span class="verify-badge ${on ? 'v-verified' : 'v-pending'}">${on ? '✓ ' + def.label : def.label + ' — not yet'}</span>`;
@@ -1363,6 +1425,7 @@ function renderVerificationLevelsHtml(firm, editable){
   }
 
   return `
+    ${credentialsBlock}
     <div class="taxo-group-title" style="margin-top:0;">Verification levels</div>
     ${levelRows}
     <div class="taxo-group-title">Specialist Verified</div>
@@ -1775,6 +1838,59 @@ function renderTypeAnswersHtml(eng){
   </div>`;
 }
 
+/* ---------- Phase 9: in-platform messaging (per engagement) ----------
+   One shared thread per engagement. Visibility is gated the same way contact
+   details already are elsewhere in the app: admin can always see/post; the
+   client can always see/post (so they can reach TaxBridge even pre-match);
+   the firm only sees/posts once the introduction has been accepted — same
+   stage where their contact details become visible to each other. */
+async function sendEngagementMessage(engId, senderRole, senderName, body){
+  if(!body || !body.trim()) return;
+  const id = 'MSG-' + Date.now() + '-' + Math.floor(Math.random()*100000);
+  await sset('message:' + id, {id, engagementId: engId, senderRole, senderName, body: body.trim(), createdAt: Date.now()});
+}
+async function getEngagementMessages(engId){
+  const keys = await slist('message:');
+  const all = (await Promise.all(keys.map(sget))).filter(Boolean);
+  return all.filter(m => m.engagementId === engId).sort((a,b) => a.createdAt - b.createdAt);
+}
+function messageRoleLabel(role){
+  return {client:'Client', firm:'Firm', admin:'TaxBridge team'}[role] || role;
+}
+async function renderMessageThreadHtml(engId, viewerRole){
+  const msgs = await getEngagementMessages(engId);
+  const bubbles = msgs.length ? msgs.map(m => {
+    const mine = m.senderRole === viewerRole;
+    return `<div class="msg-bubble-wrap ${mine?'mine':''}">
+      <div class="msg-sender">${esc(m.senderName || messageRoleLabel(m.senderRole))}</div>
+      <div class="phone-bubble ${mine?'mine':''}">${esc(m.body)}</div>
+    </div>`;
+  }).join('') : '<p class="hint">No messages yet.</p>';
+  return `<div class="taxo-group-title" style="margin-top:16px;">Messages</div>
+    <div class="msg-thread" id="msg-thread-${engId}-${viewerRole}">${bubbles}</div>
+    <div style="display:flex;gap:8px;">
+      <input id="msg-input-${engId}-${viewerRole}" placeholder="Write a message…" style="flex:1;" onkeydown="if(event.key==='Enter'){sendEngagementMessageFromUI('${engId}','${viewerRole}');}">
+      <button class="btn btn-outline btn-sm" onclick="sendEngagementMessageFromUI('${engId}','${viewerRole}')">Send</button>
+    </div>`;
+}
+async function sendEngagementMessageFromUI(engId, viewerRole){
+  const input = document.getElementById(`msg-input-${engId}-${viewerRole}`);
+  if(!input || !input.value.trim()) return;
+  let senderName = 'TaxBridge team';
+  if(viewerRole === 'client'){
+    const eng = await sget('engagement:' + engId);
+    senderName = eng ? eng.clientName : 'Client';
+  } else if(viewerRole === 'firm'){
+    const firm = await sget('firm:' + session.firm);
+    senderName = firm ? firm.firmName : 'Firm';
+  }
+  await sendEngagementMessage(engId, viewerRole, senderName, input.value);
+  input.value = '';
+  if(viewerRole === 'client') renderClientDashboard();
+  else if(viewerRole === 'firm') renderFirmDashboard();
+  else { await renderAdmin(); toggleAdminMessages(engId); }
+}
+
 async function submitEngagement(){
   const user = await sget('user:' + session.client);
   const details = document.getElementById('eq-details').value.trim();
@@ -1855,6 +1971,8 @@ async function renderEngagementCard(eng){
   if(eng.status === 'rematch'){
     html += `<p class="hint" style="margin-top:10px;">Our team is finding you a different firm.</p>`;
   }
+
+  html += await renderMessageThreadHtml(eng.id, 'client');
 
   html += `</div>`;
   return html;
@@ -2377,6 +2495,8 @@ function renderFirmAuthForm(){
     <input id="fs-citn" placeholder="Leave blank if not applicable">
     <label>Other certifications / regulatory registrations (optional)</label>
     <input id="fs-other-creds" placeholder="e.g. SEC registration, FRC number">
+    <label>Verification documents (optional)</label>
+    <textarea id="fs-verify-docs" placeholder="Links to scanned certificates, registration documents, CAC certificate, etc. (Google Drive, Dropbox, or similar). Our team may request more before verifying your firm."></textarea>
 
     <div class="taxo-group-title">Specialisations</div>
     <p class="hint">Select every area your firm genuinely practices in — this is what drives matching.</p>
@@ -2425,7 +2545,8 @@ async function firmSignup(){
       ican: document.getElementById('fs-ican').value.trim(),
       anan: document.getElementById('fs-anan').value.trim(),
       citn: document.getElementById('fs-citn').value.trim(),
-      other: document.getElementById('fs-other-creds').value.trim()
+      other: document.getElementById('fs-other-creds').value.trim(),
+      verificationDocs: document.getElementById('fs-verify-docs').value.trim()
     },
     specialisations: state.specialisations,
     industries: state.industries,
@@ -2619,6 +2740,8 @@ function firmDashCredentialsHtml(firm){
       <input id="fcr-citn" value="${esc(firm.credentials?.citn)}" placeholder="Leave blank if not applicable">
       <label>Other certifications / regulatory registrations</label>
       <input id="fcr-other" value="${esc(firm.credentials?.other)}">
+      <label>Verification documents</label>
+      <textarea id="fcr-verify-docs" placeholder="Links to scanned certificates, registration documents, CAC certificate, etc.">${esc(firm.credentials?.verificationDocs)}</textarea>
       <div class="disclaimer">Editing credentials moves your firm back to "Verification pending" until our team reviews the change.</div>
       <div style="margin-top:16px;"><button class="btn btn-brass" onclick="saveFirmCredentials()">Save credentials</button></div>
       <div id="fcr-msg"></div>
@@ -2631,7 +2754,8 @@ async function saveFirmCredentials(){
     ican: document.getElementById('fcr-ican').value.trim(),
     anan: document.getElementById('fcr-anan').value.trim(),
     citn: document.getElementById('fcr-citn').value.trim(),
-    other: document.getElementById('fcr-other').value.trim()
+    other: document.getElementById('fcr-other').value.trim(),
+    verificationDocs: document.getElementById('fcr-verify-docs').value.trim()
   };
   if(firm.verificationStatus === 'verified') firm.verificationStatus = 'pending';
   await sset('firm:' + firm.id, firm);
@@ -2660,6 +2784,7 @@ async function firmDashEngagementsHtml(firm){
         ${eng.matchReasonNote ? `<div class="scope-note"><strong>Why TaxBridge matched you:</strong> ${esc(eng.matchReasonNote)}</div>` : ''}
         ${contactVisible ? `<p style="font-size:14px;margin-top:10px;"><strong>Client contact:</strong> ${esc(eng.clientName)} — ${esc(eng.clientEmail)}${eng.clientPhone ? ' · ' + esc(eng.clientPhone) : ''}</p>` : `<p class="hint">Client contact details appear once they accept the introduction.</p>`}
         ${eng.status === 'client_accepted' ? `<button class="btn btn-brass btn-sm" style="margin-top:10px;" onclick="firmAcceptEngagement('${eng.id}')">Accept this engagement</button>` : ''}
+        ${contactVisible ? await renderMessageThreadHtml(eng.id, 'firm') : ''}
       </div>`;
     }
   }
@@ -2716,10 +2841,14 @@ async function saveFirmPhone(){
 }
 
 /* ---------- firms marketplace ---------- */
-let firmFilters = { q:'', specialisation:'', industry:'', capacity:'', verifiedOnly:false };
+let firmFilters = { q:'', specialisation:'', industry:'', capacity:'', verifiedOnly:false, remoteOnly:false };
 
 async function renderFirmsMarketplace(){
   const area = document.getElementById('firms-marketplace-area');
+  const keys = await slist('firm:');
+  const allFirms = (await Promise.all(keys.map(sget))).filter(Boolean);
+  const locations = [...new Set(allFirms.map(f => f.headquarters).filter(Boolean))].sort();
+
   area.innerHTML = `
     <div class="section-label">Browse firms</div>
     <h2 class="section-title">Explore accounting and financial professional firms</h2>
@@ -2743,9 +2872,25 @@ async function renderFirmsMarketplace(){
           <option value="">Any capacity</option>
           ${CAPACITY_LEVELS.map(c => `<option value="${c.id}">${c.label}</option>`).join('')}
         </select>
+        <select id="firm-filter-location" onchange="applyFirmFilters()">
+          <option value="">All locations</option>
+          ${locations.map(l => `<option value="${esc(l)}">${esc(l)}</option>`).join('')}
+        </select>
+        <select id="firm-filter-availability" onchange="applyFirmFilters()">
+          <option value="">Any availability</option>
+          ${AVAILABILITY_LEVELS.map(a => `<option value="${a.id}">${a.label}</option>`).join('')}
+        </select>
+        <select id="firm-filter-experience" onchange="applyFirmFilters()">
+          <option value="0">Any experience</option>
+          <option value="1">1+ years</option>
+          <option value="3">3+ years</option>
+          <option value="5">5+ years</option>
+          <option value="10">10+ years</option>
+        </select>
       </div>
       <div class="firms-chip-row">
         <button class="firms-chip" id="firm-verified-chip" onclick="toggleVerifiedOnly()">Verified only</button>
+        <button class="firms-chip" id="firm-remote-chip" onclick="toggleRemoteOnly()">Remote available</button>
       </div>
     </div>
     <div id="firms-results"></div>`;
@@ -2757,6 +2902,11 @@ function toggleVerifiedOnly(){
   document.getElementById('firm-verified-chip').classList.toggle('on', firmFilters.verifiedOnly);
   applyFirmFilters();
 }
+function toggleRemoteOnly(){
+  firmFilters.remoteOnly = !firmFilters.remoteOnly;
+  document.getElementById('firm-remote-chip').classList.toggle('on', firmFilters.remoteOnly);
+  applyFirmFilters();
+}
 
 async function applyFirmFilters(){
   const resultsEl = document.getElementById('firms-results');
@@ -2766,6 +2916,9 @@ async function applyFirmFilters(){
   const spec = document.getElementById('firm-filter-spec')?.value || '';
   const industry = document.getElementById('firm-filter-industry')?.value || '';
   const capacity = document.getElementById('firm-filter-capacity')?.value || '';
+  const location = document.getElementById('firm-filter-location')?.value || '';
+  const availability = document.getElementById('firm-filter-availability')?.value || '';
+  const minExperience = parseInt(document.getElementById('firm-filter-experience')?.value || '0', 10);
 
   const keys = await slist('firm:');
   let firms = (await Promise.all(keys.map(sget))).filter(Boolean);
@@ -2782,7 +2935,16 @@ async function applyFirmFilters(){
   if(spec) firms = firms.filter(f => (f.specialisations||[]).includes(spec));
   if(industry) firms = firms.filter(f => (f.industries||[]).includes(industry));
   if(capacity) firms = firms.filter(f => f.capacity === capacity);
+  if(location) firms = firms.filter(f => f.headquarters === location);
+  if(availability) firms = firms.filter(f => f.availability === availability);
+  if(minExperience){
+    firms = firms.filter(f => {
+      const yrs = f.yearEstablished ? (new Date().getFullYear() - Number(f.yearEstablished)) : 0;
+      return yrs >= minExperience;
+    });
+  }
   if(firmFilters.verifiedOnly) firms = firms.filter(f => f.verificationStatus === 'verified');
+  if(firmFilters.remoteOnly) firms = firms.filter(f => f.remoteAvailable);
 
   firms.sort((a,b) => (b.verificationStatus === 'verified') - (a.verificationStatus === 'verified'));
 
@@ -2790,12 +2952,20 @@ async function applyFirmFilters(){
     resultsEl.innerHTML = '<div class="empty">No firms match those filters yet. As firms join TaxBridge, they\'ll show up here.</div>';
     return;
   }
+  const engKeys = await slist('engagement:');
+  const allEngagements = (await Promise.all(engKeys.map(sget))).filter(Boolean);
   resultsEl.innerHTML = `<div class="firms-count">${firms.length} firm${firms.length>1?'s':''} found</div>` +
-    firms.map(f => renderFirmCard(f)).join('');
+    firms.map(f => renderFirmCard(f, completedCountFor(f.id, allEngagements))).join('');
 }
 
-function renderFirmCard(f){
+function completedCountFor(firmId, engagements){
+  return engagements.filter(e => (e.selectedFirms||[]).includes(firmId) && e.status === 'completed').length;
+}
+
+function renderFirmCard(f, completedCount){
   const years = f.yearEstablished ? (new Date().getFullYear() - Number(f.yearEstablished)) : null;
+  const capacityLabel = (CAPACITY_LEVELS.find(c => c.id === f.capacity) || {}).label;
+  const availabilityLabel = (AVAILABILITY_LEVELS.find(a => a.id === f.availability) || {}).label;
   return `
     <div class="firm-card">
       <div class="firm-card-top">
@@ -2806,6 +2976,8 @@ function renderFirmCard(f){
             ${verifyBadgeHtml(f.verificationStatus)}
           </div>
           <div class="firm-meta-line">${esc(f.headquarters || 'Location not set')}${years ? ' · ' + years + ' yrs in practice' : ''}${f.remoteAvailable ? ' · Remote available' : ''}</div>
+          ${(capacityLabel || availabilityLabel) ? `<div class="firm-meta-line">${[capacityLabel, availabilityLabel].filter(Boolean).join(' · ')}</div>` : ''}
+          ${completedCount > 0 ? `<div class="firm-meta-line">${completedCount} engagement${completedCount>1?'s':''} completed via TaxBridge</div>` : ''}
         </div>
       </div>
       <div class="firm-tags">${(f.specialisations||[]).slice(0,4).map(s => `<span class="firm-tag">${esc(s)}</span>`).join('')}${(f.specialisations||[]).length > 4 ? `<span class="firm-tag">+${f.specialisations.length-4} more</span>` : ''}</div>
@@ -2839,6 +3011,10 @@ async function renderFirmProfile(){
   if(f.credentials?.anan) credentialBadges.push('ANAN registration on file');
   if(f.credentials?.citn) credentialBadges.push('CITN registration on file');
   if(f.credentials?.other) credentialBadges.push(f.credentials.other);
+
+  const engKeys = await slist('engagement:');
+  const allEngagements = (await Promise.all(engKeys.map(sget))).filter(Boolean);
+  const completedCount = completedCountFor(f.id, allEngagements);
 
   area.innerHTML = `
     <button class="subtle-btn" onclick="go('firms')" style="margin-bottom:20px;">← Back to firms</button>
@@ -2894,6 +3070,10 @@ async function renderFirmProfile(){
           <h4>Availability</h4>
           <p style="font-size:14px;">${esc(availabilityLabel)}</p>
         </div>
+        <div class="firm-sidebar-card">
+          <h4>Track record</h4>
+          <p style="font-size:14px;">${completedCount > 0 ? `${completedCount} engagement${completedCount>1?'s':''} completed via TaxBridge` : 'No completed engagements via TaxBridge yet.'}</p>
+        </div>
         ${f.website ? `<div class="firm-sidebar-card"><h4>Website</h4><p style="font-size:14px;word-break:break-all;">${esc(f.website)}</p></div>` : ''}
         <div class="firm-sidebar-card" style="background:var(--maroon);">
           <h4 style="color:rgba(255,255,255,.7);">Is this the right firm for your problem?</h4>
@@ -2914,7 +3094,7 @@ async function renderFirmProfile(){
    and API routes that check auth server-side — not a client-side string match). */
 let adminAuthed = false;
 function checkAdminPass(){
-  const val = document.getElementById('admin-pass').value;
+  const val = document.getElementById('admin-pass').value.trim();
   if(val === 'taxbridge2026'){
     adminAuthed = true;
     document.getElementById('admin-gate').style.display = 'none';
@@ -2923,6 +3103,20 @@ function checkAdminPass(){
   } else {
     document.getElementById('admin-gate-msg').innerHTML = '<div class="msg error">Incorrect passcode.</div>';
   }
+}
+
+let adminTab = 'engagements';
+function setAdminTab(tab){ adminTab = tab; renderAdmin(); }
+function applyAdminEngFilters(){
+  const stage = document.getElementById('admin-eng-filter-stage')?.value || '';
+  const sensitivity = document.getElementById('admin-eng-filter-sensitivity')?.value || '';
+  const type = document.getElementById('admin-eng-filter-type')?.value || '';
+  document.querySelectorAll('.admin-eng-wrap').forEach(el => {
+    const match = (!stage || el.dataset.stage === stage) &&
+                  (!sensitivity || el.dataset.sensitivity === sensitivity) &&
+                  (!type || el.dataset.type === type);
+    el.style.display = match ? '' : 'none';
+  });
 }
 
 async function renderAdmin(){
@@ -2940,23 +3134,67 @@ async function renderAdmin(){
   const pros = users.filter(u => u.role === 'pro').sort((a,b)=>b.createdAt-a.createdAt);
   const verifiedPros = pros.filter(p => p.verified);
 
-  let html = '';
+  const reviewingCount = engagements.filter(e => (ENGAGEMENT_STATUSES[e.status]||{}).stage === 'reviewing').length;
+  const matchedCount = engagements.filter(e => (ENGAGEMENT_STATUSES[e.status]||{}).stage === 'matched').length;
+  const completedCount = engagements.filter(e => (ENGAGEMENT_STATUSES[e.status]||{}).stage === 'completed').length;
+  const pendingFirmCount = firms.filter(f => f.verificationStatus === 'pending' || f.verificationStatus === 'info_required').length;
+  const verifiedFirmCount = firms.filter(f => f.verificationStatus === 'verified').length;
+  const pendingProCount = pros.length - verifiedPros.length;
+  const activeLeadCount = leads.filter(l => l.status !== 'released').length;
 
+  let html = `
+    <div class="admin-stats-grid">
+      <div class="admin-stat"><div class="admin-stat-num">${reviewingCount}</div><div class="admin-stat-label">Awaiting review</div></div>
+      <div class="admin-stat"><div class="admin-stat-num">${matchedCount}</div><div class="admin-stat-label">Matched / active</div></div>
+      <div class="admin-stat"><div class="admin-stat-num">${completedCount}</div><div class="admin-stat-label">Completed</div></div>
+      <div class="admin-stat"><div class="admin-stat-num">${pendingFirmCount}</div><div class="admin-stat-label">Firms needing review</div></div>
+      <div class="admin-stat"><div class="admin-stat-num">${verifiedFirmCount}</div><div class="admin-stat-label">Verified firms</div></div>
+      <div class="admin-stat"><div class="admin-stat-num">${pendingProCount}</div><div class="admin-stat-label">Pros needing review</div></div>
+    </div>
+    <div class="dash-tabs" style="margin-bottom:22px;">
+      <button class="${adminTab==='engagements'?'active':''}" onclick="setAdminTab('engagements')">Engagement Requests <span class="hint">(${engagements.length})</span></button>
+      <button class="${adminTab==='firms'?'active':''}" onclick="setAdminTab('firms')">Firms <span class="hint">(${firms.length})</span></button>
+      <button class="${adminTab==='pros'?'active':''}" onclick="setAdminTab('pros')">Professionals <span class="hint">(${pros.length})</span></button>
+      <button class="${adminTab==='leads'?'active':''}" onclick="setAdminTab('leads')">Individual Requests <span class="hint">(${activeLeadCount})</span></button>
+    </div>`;
+
+  html += `<div id="admin-tab-engagements" style="display:${adminTab==='engagements'?'block':'none'};">`;
   html += `<h3 style="font-size:19px;margin:0 0 4px;">Engagement requests <span class="hint">(${engagements.length})</span></h3>`;
   html += `<p class="hint" style="margin-bottom:16px;">Manual matching only — search and select firms yourself below. Nothing here is auto-assigned.</p>`;
   if(!engagements.length){
     html += `<div class="empty">No engagement requests yet.</div>`;
   } else {
+    html += `<div class="grid-actions" style="margin-bottom:18px;background:var(--cream-deep);padding:14px;border-radius:12px;">
+      <select id="admin-eng-filter-stage" onchange="applyAdminEngFilters()">
+        <option value="">All stages</option>
+        <option value="reviewing">Awaiting review</option>
+        <option value="matched">Matched / active</option>
+        <option value="completed">Completed</option>
+        <option value="closed">Closed</option>
+      </select>
+      <select id="admin-eng-filter-sensitivity" onchange="applyAdminEngFilters()">
+        <option value="">All sensitivity levels</option>
+        ${SENSITIVITY_LEVELS.map(s => `<option value="${s.id}">${esc(s.label)}</option>`).join('')}
+      </select>
+      <select id="admin-eng-filter-type" onchange="applyAdminEngFilters()">
+        <option value="">All engagement types</option>
+        ${ENGAGEMENT_TYPES.map(t => `<option value="${esc(t)}">${esc(t)}</option>`).join('')}
+      </select>
+    </div>`;
     for(const eng of engagements){
+      const stage = (ENGAGEMENT_STATUSES[eng.status]||{}).stage || '';
+      html += `<div class="admin-eng-wrap" data-stage="${stage}" data-sensitivity="${esc(eng.sensitivity)}" data-type="${esc(eng.engagementType)}">`;
       html += await renderAdminEngagementCard(eng, firms);
+      html += `</div>`;
     }
   }
+  html += `</div>`;
 
-  html += `<h3 style="font-size:19px;margin:44px 0 4px;">Firms <span class="hint">(${firms.length})</span></h3>`;
+  html += `<div id="admin-tab-firms" style="display:${adminTab==='firms'?'block':'none'};">`;
   if(!firms.length){
     html += `<div class="empty">No firm applications yet.</div>`;
   } else {
-    html += `<table class="ledger-table"><thead><tr><th>Firm</th><th>Email</th><th>Headquarters</th><th>Specialisations</th><th>Engagements</th><th>Status</th><th></th></tr></thead><tbody>`;
+    html += `<div class="table-scroll"><table class="ledger-table"><thead><tr><th>Firm</th><th>Email</th><th>Headquarters</th><th>Specialisations</th><th>Engagements</th><th>Status</th><th></th></tr></thead><tbody>`;
     for(const f of firms){
       const firmEngagements = engagements.filter(e => (e.selectedFirms||[]).includes(f.id));
       const activeCount = firmEngagements.filter(e => ['firm_selected','introduction_sent','client_accepted','firm_accepted','active'].includes(e.status)).length;
@@ -2981,14 +3219,16 @@ async function renderAdmin(){
         </td>
       </tr>`;
     }
-    html += `</tbody></table>`;
+    html += `</tbody></table></div>`;
   }
+  html += `</div>`;
 
-  html += `<h3 style="font-size:19px;margin:36px 0 4px;">Professional accounts <span class="hint">(${pros.length})</span></h3>`;
+  html += `<div id="admin-tab-pros" style="display:${adminTab==='pros'?'block':'none'};">`;
+  html += `<h3 style="font-size:19px;margin:0 0 4px;">Professional accounts <span class="hint">(${pros.length})</span></h3>`;
   if(!pros.length){
     html += `<div class="empty">No professional accounts yet.</div>`;
   } else {
-    html += `<table class="ledger-table"><thead><tr><th>Name</th><th>Email</th><th>Body / Reg No.</th><th>Expertise</th><th>Rating</th><th>Status</th><th></th></tr></thead><tbody>`;
+    html += `<div class="table-scroll"><table class="ledger-table"><thead><tr><th>Name</th><th>Email</th><th>Body / Reg No.</th><th>Expertise</th><th>Rating</th><th>Status</th><th></th></tr></thead><tbody>`;
     for(const p of pros){
       const rating = await getProRating(p.email);
       html += `<tr>
@@ -3001,10 +3241,12 @@ async function renderAdmin(){
         <td>${p.verified ? '' : `<button class="subtle-btn" onclick="verifyPro('${p.email}')">Verify</button>`}</td>
       </tr>`;
     }
-    html += `</tbody></table>`;
+    html += `</tbody></table></div>`;
   }
+  html += `</div>`;
 
-  html += `<h3 style="font-size:19px;margin:36px 0 4px;">Client requests <span class="hint">(${leads.length})</span></h3>`;
+  html += `<div id="admin-tab-leads" style="display:${adminTab==='leads'?'block':'none'};">`;
+  html += `<h3 style="font-size:19px;margin:0 0 4px;">Client requests <span class="hint">(${leads.length})</span></h3>`;
   if(!leads.length){
     html += `<div class="empty">No requests yet.</div>`;
   } else {
@@ -3072,6 +3314,7 @@ async function renderAdmin(){
       html += `</div>`;
     }
   }
+  html += `</div>`;
 
   content.innerHTML = html;
 }
@@ -3136,6 +3379,7 @@ async function renderAdminEngagementCard(eng, allFirms){
 
     <div class="grid-actions" style="margin-top:14px;">
       <button class="subtle-btn" onclick="toggleAdminFirmSearch('${eng.id}')">Search firms to match</button>
+      <button class="subtle-btn" onclick="toggleAdminMessages('${eng.id}')">Messages</button>
       <label style="margin:0;font-weight:600;font-size:12.5px;display:flex;align-items:center;gap:6px;">Status:
         <select style="width:auto;padding:6px 10px;font-size:12.5px;" onchange="setEngagementStatus('${eng.id}', this.value)">
           ${ENGAGEMENT_STATUS_ORDER.map(id => `<option value="${id}" ${id===eng.status?'selected':''}>${ENGAGEMENT_STATUSES[id].label}</option>`).join('')}
@@ -3144,7 +3388,16 @@ async function renderAdminEngagementCard(eng, allFirms){
     </div>
 
     <div id="admin-firm-search-${eng.id}" style="display:none;margin-top:16px;"></div>
+    <div id="admin-messages-${eng.id}" style="display:none;margin-top:16px;"></div>
   </div>`;
+}
+
+async function toggleAdminMessages(engId){
+  const panel = document.getElementById('admin-messages-' + engId);
+  if(!panel) return;
+  const opening = panel.style.display === 'none';
+  panel.style.display = opening ? 'block' : 'none';
+  if(opening) panel.innerHTML = await renderMessageThreadHtml(engId, 'admin');
 }
 
 function toggleAdminFirmSearch(engId){
