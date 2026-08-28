@@ -61,6 +61,15 @@
     line-height:1.05;
   }
   .mono{font-family:'IBM Plex Mono',monospace;}
+  .pw-wrap{position:relative;}
+  .pw-wrap input{padding-right:44px;}
+  .pw-toggle{
+    position:absolute;right:0;top:0;height:100%;width:40px;
+    display:flex;align-items:center;justify-content:center;
+    background:none;border:none;color:var(--ink-soft);padding:0;
+  }
+  .pw-toggle:hover{color:var(--ink);}
+  .pw-toggle svg{width:19px;height:19px;}
   a{color:var(--orange-dark);}
   button{font-family:inherit;cursor:pointer;}
   .container{max-width:1140px;margin:0 auto;padding:0 28px;}
@@ -424,6 +433,9 @@
   .card{background:var(--paper-card);border:1px solid var(--line-strong);border-radius:var(--radius);padding:32px;max-width:640px;}
   .card + .card{margin-top:24px;}
   label{display:block;font-size:13.5px;font-weight:700;margin:18px 0 6px;color:var(--ink);}
+  .checkrow{display:flex;align-items:flex-start;gap:10px;margin:18px 0 6px;}
+  .checkrow input[type="checkbox"],.checkrow input[type="radio"]{margin-top:3px;flex-shrink:0;}
+  .checkrow label{flex:1;min-width:0;margin:0;font-size:14px;font-weight:400;color:inherit;}
   label:first-child{margin-top:0;}
   input,select,textarea{
     width:100%;padding:12px 14px;border:1px solid var(--line-strong);border-radius:var(--radius-sm);
@@ -443,6 +455,50 @@
   .pro-card:hover{transform:translateY(-3px);box-shadow:0 12px 24px rgba(0,0,0,.07);}
   .pro-card-top{display:flex;justify-content:space-between;align-items:center;}
   .pro-card h4{margin:0;font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:17px;}
+
+  /* case-file styling for a client's tracked requests: a colored status
+     rail down the left edge (the state of the case, at a glance) and a
+     perforated reference stub (this is a tracked file, not a ticket). */
+  .case-card{
+    position:relative;background:var(--paper-card);border:1px solid var(--line-strong);
+    border-left:4px solid var(--line-strong);border-radius:var(--radius-sm);
+    padding:22px 22px 22px 26px;margin-top:16px;
+  }
+  .case-card.rail-reviewing{border-left-color:var(--amber);}
+  .case-card.rail-active{border-left-color:var(--green);}
+  .case-card.rail-done{border-left-color:var(--maroon);}
+  .case-card.rail-closed{border-left-color:var(--line-strong);}
+  .case-card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap;}
+  .case-card-top h4{margin:0;font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:17px;}
+  .case-ref{
+    font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.06em;color:var(--ink-soft);
+    border-left:1px dashed var(--line-strong);padding-left:10px;white-space:nowrap;
+  }
+
+  .ledger-strip{display:flex;gap:0;margin:22px 0 30px;border-top:1px solid var(--line-strong);border-bottom:1px solid var(--line-strong);}
+  .ledger-strip-item{flex:1;padding:14px 18px;border-right:1px solid var(--line-strong);}
+  .ledger-strip-item:last-child{border-right:none;}
+  .ledger-strip-num{font-family:'IBM Plex Mono',monospace;font-size:26px;font-weight:700;color:var(--ink);line-height:1;}
+  .ledger-strip-label{font-size:11.5px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.05em;margin-top:6px;}
+  @media(max-width:640px){
+    .ledger-strip{flex-wrap:wrap;}
+    .ledger-strip-item{flex:1 1 50%;border-bottom:1px solid var(--line-strong);}
+  }
+
+  .client-hero-grid{display:grid;grid-template-columns:1fr 1.15fr;gap:0;align-items:stretch;max-width:920px;margin:0 auto;border:1px solid var(--line-strong);border-radius:var(--radius);overflow:hidden;}
+  .client-trust-panel{background:var(--maroon-deep);color:#fff;padding:40px 36px;display:flex;flex-direction:column;justify-content:center;}
+  .client-trust-panel .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--green);margin-bottom:14px;}
+  .client-trust-panel h2{font-size:26px;color:#fff;margin-bottom:18px;}
+  .trust-step{display:flex;gap:12px;margin-top:16px;}
+  .trust-step-num{font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:var(--green);flex-shrink:0;padding-top:2px;}
+  .trust-step-text{font-size:13.5px;color:rgba(255,255,255,.82);line-height:1.5;}
+  .client-form-panel{background:var(--paper-card);padding:40px 36px;}
+  .client-form-panel .card{border:none;padding:0;max-width:none;}
+  @media(max-width:760px){
+    .client-hero-grid{grid-template-columns:1fr;}
+    .client-trust-panel{padding:30px 26px;}
+    .client-form-panel{padding:30px 26px;}
+  }
 
   .table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-top:14px;}
   table.ledger-table{width:100%;min-width:640px;border-collapse:collapse;font-size:14px;}
@@ -1103,14 +1159,19 @@
       <div class="section-label">Team dashboard</div>
       <h2 class="section-title" id="admin-title">Team access</h2>
       <div class="card">
-        <label>Team passcode</label>
-        <input id="admin-pass" type="password" placeholder="Enter passcode" onkeydown="if(event.key==='Enter')checkAdminPass()">
-        <div style="margin-top:18px;"><button class="btn btn-primary" onclick="checkAdminPass()">Enter</button></div>
+        <label>Email</label>
+        <input id="admin-email" type="email" placeholder="you@taxbridge.ng" onkeydown="if(event.key==='Enter')adminLogin()">
+        <label>Password</label>
+        <div class="pw-wrap"><input id="admin-pass" type="password" placeholder="Enter password" onkeydown="if(event.key==='Enter')adminLogin()"><button type="button" class="pw-toggle" onclick="togglePasswordVisibility('admin-pass',this)" tabindex="-1" aria-label="Show password"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg></button></div>
+        <div style="margin-top:18px;"><button class="btn btn-primary" onclick="adminLogin()">Sign in</button></div>
         <div id="admin-gate-msg"></div>
       </div>
     </div>
     <div id="admin-panel" style="display:none;">
-      <div class="section-label">Team dashboard</div>
+      <div class="session-bar">
+        <div class="section-label" style="margin:0;">Team dashboard</div>
+        <button class="subtle-btn" onclick="adminLogout()">Log out</button>
+      </div>
       <h2 class="section-title" id="admin-title-2">Leads, applications & engagements</h2>
       <div id="admin-content"></div>
     </div>
@@ -1304,6 +1365,7 @@ function scrollToSection(id){
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  loadSessionFromStorage();
   initRotatingWord();
   initPhoneMock();
   initSteps();
@@ -1336,7 +1398,26 @@ async function slist(prefix){
   catch(e){ return []; }
 }
 function refCode(prefix){ return prefix + '-' + Math.floor(1000 + Math.random()*9000); }
+function shortRef(id, prefix){ return prefix + '-' + (id||'').replace(/-/g,'').slice(-6).toUpperCase(); }
+function railClass(stage){
+  if(stage === 'reviewing') return 'rail-reviewing';
+  if(stage === 'matched' || stage === 'engaged' || stage === 'paid' || stage === 'delivered' || stage === 'pending') return stage === 'pending' ? 'rail-reviewing' : 'rail-active';
+  if(stage === 'completed' || stage === 'released') return 'rail-done';
+  return 'rail-closed';
+}
 function esc(s){ return (s||'').toString().replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function togglePasswordVisibility(inputId, btn){
+  const input = document.getElementById(inputId);
+  if(!input) return;
+  const showing = input.type === 'text';
+  input.type = showing ? 'password' : 'text';
+  btn.innerHTML = showing
+    ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>'
+    : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17.94 17.94A10.94 10.94 0 0112 19c-7 0-11-7-11-7a21.6 21.6 0 015.06-6.06M9.9 4.24A10.4 10.4 0 0112 4c7 0 11 7 11 7a21.7 21.7 0 01-3.11 4.19M14.12 14.12a3 3 0 11-4.24-4.24"/><path d="M1 1l22 22"/></svg>';
+}
+function pwField(id, placeholder, onEnter){
+  return `<div class="pw-wrap"><input id="${id}" type="password" placeholder="${esc(placeholder)}"${onEnter?` onkeydown="if(event.key==='Enter')${onEnter}()"`:''}><button type="button" class="pw-toggle" onclick="togglePasswordVisibility('${id}',this)" tabindex="-1" aria-label="Show password"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg></button></div>`;
+}
 function normEmail(s){ return (s||'').trim().toLowerCase(); }
 
 /* ---------- firm taxonomy (Phase 1) — expandable without changing architecture:
@@ -1439,24 +1520,18 @@ function toggleAdminVerifyPanel(firmId){
   row.style.display = row.style.display === 'none' ? 'table-row' : 'none';
 }
 async function setFirmVerificationLevel(firmId, levelId, value){
-  const firm = await sget('firm:' + firmId);
-  if(!firm) return;
-  firm.verificationLevels = firmVerificationLevels(firm);
-  firm.verificationLevels[levelId] = value;
-  await sset('firm:' + firmId, firm);
-  await renderAdmin();
-  toggleAdminVerifyPanel(firmId);
+  try{
+    await api.admin.firms.setVerificationLevel(adminSession.token, firmId, levelId, value);
+    await renderAdmin();
+    toggleAdminVerifyPanel(firmId);
+  } catch(err){ alert(err.message); }
 }
 async function toggleFirmVerifiedSpecialisation(firmId, spec){
-  const firm = await sget('firm:' + firmId);
-  if(!firm) return;
-  const list = firmVerifiedSpecialisations(firm);
-  const idx = list.indexOf(spec);
-  if(idx >= 0) list.splice(idx,1); else list.push(spec);
-  firm.verifiedSpecialisations = list;
-  await sset('firm:' + firmId, firm);
-  await renderAdmin();
-  toggleAdminVerifyPanel(firmId);
+  try{
+    await api.admin.firms.toggleVerifiedSpecialisation(adminSession.token, firmId, spec);
+    await renderAdmin();
+    toggleAdminVerifyPanel(firmId);
+  } catch(err){ alert(err.message); }
 }
 
 /* ---------- engagement requests (Phase 2) — manual matching only.
@@ -1568,19 +1643,130 @@ function engagementStatusTag(status){
   return `<span class="tag ${clsMap[s.stage]||'status-pending'}">${s.label}</span>`;
 }
 
-/* password hashing — SHA-256 via SubtleCrypto. Demo-grade only: no per-user salt beyond
-   the email itself, no server-side rate limiting, no password reset flow. Good enough to
-   avoid storing plaintext passwords in this prototype, not a substitute for real auth. */
-async function hashPassword(email, password){
-  const enc = new TextEncoder();
-  const data = enc.encode(normEmail(email) + '::' + password);
-  const digest = await crypto.subtle.digest('SHA-256', data);
-  return Array.from(new Uint8Array(digest)).map(b => b.toString(16).padStart(2,'0')).join('');
+/* ---------- API client (Phase B4) ----------
+   Talks to the real TaxBridge backend. Point this at your deployed API —
+   during local development the default below assumes the backend is
+   running on localhost:4000 (see taxbridge-backend/README.md). */
+const API_BASE = window.TAXBRIDGE_API_BASE || 'http://localhost:4000/api';
+
+class ApiError extends Error {}
+
+async function apiFetch(path, { method = 'GET', body, token } = {}){
+  const headers = { 'Content-Type': 'application/json' };
+  if(token) headers.Authorization = 'Bearer ' + token;
+  let res, data;
+  try{
+    res = await fetch(API_BASE + path, {
+      method, headers,
+      body: body !== undefined ? JSON.stringify(body) : undefined
+    });
+  } catch(networkErr){
+    throw new ApiError('Could not reach the server. Check your connection and try again.');
+  }
+  try{ data = await res.json(); } catch(e){ data = {}; }
+  if(!res.ok){
+    throw new ApiError(data.error || `Request failed (${res.status}).`);
+  }
+  return data;
 }
 
-/* ---------- session (in-memory only — refreshing the page logs you out, since a real
-   persistent session needs a server to issue and verify tokens) ---------- */
-let session = { client: null, pro: null }; // holds email of logged-in user per role
+const api = {
+  auth: {
+    clientSignup: (body) => apiFetch('/auth/client/signup', {method:'POST', body}),
+    clientLogin: (body) => apiFetch('/auth/client/login', {method:'POST', body}),
+    proSignup: (body) => apiFetch('/auth/professional/signup', {method:'POST', body}),
+    proLogin: (body) => apiFetch('/auth/professional/login', {method:'POST', body}),
+    firmSignup: (body) => apiFetch('/auth/firm/signup', {method:'POST', body}),
+    firmLogin: (body) => apiFetch('/auth/firm/login', {method:'POST', body}),
+    adminLogin: (body) => apiFetch('/auth/admin/login', {method:'POST', body})
+  },
+  firms: {
+    list: (query) => apiFetch('/firms' + (query ? '?' + query : '')),
+    get: (id) => apiFetch('/firms/' + encodeURIComponent(id)),
+    updateMe: (token, body) => apiFetch('/firms/me', {method:'PATCH', token, body})
+  },
+  engagements: {
+    create: (token, body) => apiFetch('/engagements', {method:'POST', token, body}),
+    mine: (token) => apiFetch('/engagements/mine', {token}),
+    matchedToMe: (token) => apiFetch('/engagements/matched-to-me', {token}),
+    get: (token, id) => apiFetch('/engagements/' + encodeURIComponent(id), {token}),
+    accept: (token, id) => apiFetch(`/engagements/${encodeURIComponent(id)}/accept`, {method:'POST', token}),
+    firmAccept: (token, id) => apiFetch(`/engagements/${encodeURIComponent(id)}/firm-accept`, {method:'POST', token})
+  },
+  leads: {
+    create: (token, body) => apiFetch('/leads', { method: 'POST', token, body }),
+    mine: (token) => apiFetch('/leads/mine', { token }),
+    matches: (token, id) => apiFetch(`/leads/${id}/matches`, { token }),
+    get: (token, id) => apiFetch(`/leads/${id}`, { token }),
+    choose: (token, id, professionalId) => apiFetch(`/leads/${id}/choose`, { method: 'POST', token, body: { professionalId } }),
+    pay: (token, id) => apiFetch(`/leads/${id}/pay`, { method: 'POST', token }),
+    rate: (token, id, rating, review) => apiFetch(`/leads/${id}/rating`, { method: 'POST', token, body: { rating, review } }),
+    matchedToMe: (token) => apiFetch('/leads/matched-to-me', { token }),
+    deliver: (token, id) => apiFetch(`/leads/${id}/deliver`, { method: 'POST', token }),
+    interestedInMe: (token) => apiFetch('/leads/interested-in-me', { token }),
+  },
+  admin: {
+    stats: (token) => apiFetch('/admin/stats', { token }),
+    professionals: {
+      list: (token) => apiFetch('/admin/professionals', { token }),
+      verify: (token, id, verified) => apiFetch(`/admin/professionals/${id}/verify`, { method: 'PATCH', token, body: { verified } }),
+    },
+    firms: {
+      list: (token) => apiFetch('/admin/firms', { token }),
+      setVerificationStatus: (token, id, status) => apiFetch(`/admin/firms/${id}/verification-status`, { method: 'PATCH', token, body: { status } }),
+      setVerificationLevel: (token, id, level, value) => apiFetch(`/admin/firms/${id}/verification-levels`, { method: 'PATCH', token, body: { level, value } }),
+      toggleVerifiedSpecialisation: (token, id, specialisation) => apiFetch(`/admin/firms/${id}/verified-specialisations`, { method: 'PATCH', token, body: { specialisation } }),
+    },
+    engagements: {
+      list: (token) => apiFetch('/admin/engagements', { token }),
+      setStatus: (token, id, status) => apiFetch(`/admin/engagements/${id}/status`, { method: 'PATCH', token, body: { status } }),
+      match: (token, id, firmIds, reason) => apiFetch(`/admin/engagements/${id}/match`, { method: 'PATCH', token, body: { firmIds, reason } }),
+    },
+    leads: {
+      list: (token) => apiFetch('/admin/leads', { token }),
+      toggleMatch: (token, id, professionalId) => apiFetch(`/admin/leads/${id}/matches`, { method: 'PATCH', token, body: { professionalId } }),
+      confirmMatch: (token, id) => apiFetch(`/admin/leads/${id}/confirm-match`, { method: 'POST', token }),
+      setFee: (token, id, feeAmount, scopeNote) => apiFetch(`/admin/leads/${id}/fee`, { method: 'PATCH', token, body: { feeAmount, scopeNote } }),
+      releasePayment: (token, id) => apiFetch(`/admin/leads/${id}/release-payment`, { method: 'POST', token }),
+    },
+  },
+  messages: {
+    list: (token, engId) => apiFetch(`/engagements/${encodeURIComponent(engId)}/messages`, {token}),
+    send: (token, engId, body) => apiFetch(`/engagements/${encodeURIComponent(engId)}/messages`, {method:'POST', token, body:{body}})
+  }
+};
+
+/** Returns the auth token for whichever role is currently viewing a shared thread/action. */
+function tokenForRole(role){
+  if(role === 'client') return session.client?.token;
+  if(role === 'firm') return session.firm?.token;
+  if(role === 'admin') return adminSession?.token;
+  return null;
+}
+
+/* ---------- session persistence ----------
+   Real tokens now, so sessions survive a page refresh via localStorage —
+   unlike the old prototype, which was in-memory only. */
+const SESSION_STORAGE_KEY = 'taxbridge_session_v1';
+
+function saveSessionToStorage(){
+  try{
+    localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify({ session, adminSession }));
+  } catch(e){ /* localStorage unavailable — session just won't survive a refresh */ }
+}
+function loadSessionFromStorage(){
+  try{
+    const raw = localStorage.getItem(SESSION_STORAGE_KEY);
+    if(!raw) return;
+    const parsed = JSON.parse(raw);
+    if(parsed.session) session = parsed.session;
+    if(parsed.adminSession) adminSession = parsed.adminSession;
+  } catch(e){ /* ignore a corrupted/old session blob */ }
+}
+
+/* ---------- session ---------- */
+let session = { client: null, pro: null, firm: null }; // each holds { token, user } or null
+let adminSession = null; // { token, admin } or null
 
 /* ---------- nav ---------- */
 function go(view){
@@ -1590,7 +1776,10 @@ function go(view){
   window.scrollTo({top:0, behavior:'instant'});
   if(view === 'client') renderClientPortal();
   if(view === 'pro') renderProPortal();
-  if(view === 'admin' && adminAuthed) renderAdmin();
+  if(view === 'admin'){
+    if(adminSession){ showAdminPanel(); renderAdmin(); }
+    else { hideAdminPanel(); }
+  }
   if(view === 'firms') renderFirmsMarketplace();
   if(view === 'firm-profile') renderFirmProfile();
   if(view === 'list-firm') renderFirmPortal();
@@ -1621,15 +1810,23 @@ function renderClientPortal(){
   if(!session.client){
     dashArea.innerHTML = '';
     authArea.innerHTML = `
-      <div class="auth-screen">
-        <div class="section-label">Client portal</div>
-        <h2 class="section-title">${clientAuthTab === 'login' ? 'Log in' : 'Create your account'}</h2>
-        <div class="card">
-          <div class="auth-tabs">
-            <button class="${clientAuthTab==='login'?'active':''}" onclick="setClientAuthTab('login')">Log in</button>
-            <button class="${clientAuthTab==='signup'?'active':''}" onclick="setClientAuthTab('signup')">Sign up</button>
+      <div class="client-hero-grid">
+        <div class="client-trust-panel">
+          <div class="eyebrow">Client portal</div>
+          <h2>Every request is read by a person before it's matched.</h2>
+          <div class="trust-step"><span class="trust-step-num">01</span><span class="trust-step-text">You describe what's going on — the more specific, the better we can match.</span></div>
+          <div class="trust-step"><span class="trust-step-num">02</span><span class="trust-step-text">Our team reviews it and identifies a specialist firm, by hand — no scoring algorithm.</span></div>
+          <div class="trust-step"><span class="trust-step-num">03</span><span class="trust-step-text">You accept the introduction and coordinate directly. Your case stays trackable here throughout.</span></div>
+        </div>
+        <div class="client-form-panel">
+          <h2 class="section-title" style="font-size:22px;margin-bottom:4px;">${clientAuthTab === 'login' ? 'Log in' : 'Create your account'}</h2>
+          <div class="card">
+            <div class="auth-tabs">
+              <button class="${clientAuthTab==='login'?'active':''}" onclick="setClientAuthTab('login')">Log in</button>
+              <button class="${clientAuthTab==='signup'?'active':''}" onclick="setClientAuthTab('signup')">Sign up</button>
+            </div>
+            <div id="client-auth-form"></div>
           </div>
-          <div id="client-auth-form"></div>
         </div>
       </div>`;
     renderClientAuthForm();
@@ -1648,7 +1845,7 @@ function renderClientAuthForm(){
       <label>Email</label>
       <input id="cl-email" type="email" placeholder="you@example.com">
       <label>Password</label>
-      <input id="cl-pass" type="password" placeholder="Your password">
+      ${pwField('cl-pass','Your password','clientLogin')}
       <div style="margin-top:20px;"><button class="btn btn-brass btn-full" onclick="clientLogin()">Log in</button></div>
       <div id="cl-msg"></div>`;
   } else {
@@ -1660,7 +1857,7 @@ function renderClientAuthForm(){
       <label>Phone (optional)</label>
       <input id="cs-phone" placeholder="For matches to reach you if needed">
       <label>Password</label>
-      <input id="cs-pass" type="password" placeholder="At least 8 characters">
+      ${pwField('cs-pass','At least 8 characters')}
       <div style="margin-top:20px;"><button class="btn btn-brass btn-full" onclick="clientSignup()">Create account</button></div>
       <div id="cl-msg"></div>`;
   }
@@ -1674,40 +1871,64 @@ async function clientSignup(){
   const msg = document.getElementById('cl-msg');
   if(!name || !email || !pass){ msg.innerHTML = '<div class="msg error">Name, email, and password are required.</div>'; return; }
   if(pass.length < 8){ msg.innerHTML = '<div class="msg error">Password should be at least 8 characters.</div>'; return; }
-  const existing = await sget('user:' + email);
-  if(existing){ msg.innerHTML = '<div class="msg error">An account already exists for that email. Try logging in instead.</div>'; return; }
-  const passHash = await hashPassword(email, pass);
-  const user = { email, name, phone, role:'client', passHash, createdAt: Date.now() };
-  const ok = await sset('user:' + email, user);
-  if(!ok){ msg.innerHTML = '<div class="msg error">Something went wrong. Try again.</div>'; return; }
-  session.client = email;
-  renderClientPortal();
+  try{
+    const { token, user } = await api.auth.clientSignup({ name, email, phone, password: pass });
+    session.client = { token, user };
+    saveSessionToStorage();
+    renderClientPortal();
+  } catch(err){
+    msg.innerHTML = `<div class="msg error">${esc(err.message)}</div>`;
+  }
 }
 
 async function clientLogin(){
   const email = normEmail(document.getElementById('cl-email').value);
   const pass = document.getElementById('cl-pass').value;
   const msg = document.getElementById('cl-msg');
-  const user = await sget('user:' + email);
-  if(!user || user.role !== 'client'){ msg.innerHTML = '<div class="msg error">No client account found for that email.</div>'; return; }
-  const passHash = await hashPassword(email, pass);
-  if(passHash !== user.passHash){ msg.innerHTML = '<div class="msg error">Incorrect password.</div>'; return; }
-  session.client = email;
-  renderClientPortal();
+  try{
+    const { token, user } = await api.auth.clientLogin({ email, password: pass });
+    session.client = { token, user };
+    saveSessionToStorage();
+    renderClientPortal();
+  } catch(err){
+    msg.innerHTML = `<div class="msg error">${esc(err.message)}</div>`;
+  }
 }
 
-function clientLogout(){ session.client = null; renderClientPortal(); }
+function clientLogout(){ session.client = null; saveSessionToStorage(); renderClientPortal(); }
 
 async function renderClientDashboard(){
   const area = document.getElementById('client-dash-area');
-  const user = await sget('user:' + session.client);
-  if(!user){ session.client = null; renderClientPortal(); return; }
+  if(!session.client){ renderClientPortal(); return; }
+  const user = session.client.user;
 
   let interestNote = '';
   if(pendingFirmInterest){
-    const f = await sget('firm:' + pendingFirmInterest);
-    if(f) interestNote = `<div class="msg success" style="margin-bottom:16px;">You're requesting a match with <strong>${esc(f.firmName)}</strong> in mind. Our team still reviews the engagement before any introduction — submit your request below and we'll factor this in.</div>`;
+    try{
+      const { firm: f } = await api.firms.get(pendingFirmInterest);
+      if(f) interestNote = `<div class="msg success" style="margin-bottom:16px;">You're requesting a match with <strong>${esc(f.firmName)}</strong> in mind. Our team still reviews the engagement before any introduction — submit your request below and we'll factor this in.</div>`;
+    } catch(err){ /* firm may no longer exist — silently skip the note */ }
   }
+
+  let myEngagements = [];
+  let engFetchError = '';
+  try{
+    const data = await api.engagements.mine(session.client.token);
+    myEngagements = data.engagements;
+  } catch(err){ engFetchError = err.message; }
+
+  let myLeads = [];
+  try{
+    const data = await api.leads.mine(session.client.token);
+    myLeads = data.leads;
+  } catch(err){ /* ledger strip just omits these counts */ }
+
+  const openCount = myEngagements.filter(e => (ENGAGEMENT_STATUSES[e.status]||{}).stage === 'reviewing').length
+    + myLeads.filter(l => l.status === 'pending').length;
+  const activeCount = myEngagements.filter(e => (ENGAGEMENT_STATUSES[e.status]||{}).stage === 'matched').length
+    + myLeads.filter(l => ['matched','engaged','paid','delivered'].includes(l.status)).length;
+  const doneCount = myEngagements.filter(e => (ENGAGEMENT_STATUSES[e.status]||{}).stage === 'completed').length
+    + myLeads.filter(l => l.status === 'released').length;
 
   let html = `
     <div class="session-bar">
@@ -1716,14 +1937,16 @@ async function renderClientDashboard(){
     </div>
     <div class="section-label">Client portal</div>
     <h2 class="section-title">Get matched to a specialist firm</h2>
-    <p class="hint" style="margin-bottom:20px;">Tell us what you're dealing with — our team reviews every request personally and identifies the right firm. No algorithm, no match percentage; a person makes this call.</p>
+    <p class="hint" style="margin-bottom:8px;">Tell us what you're dealing with — our team reviews every request personally and identifies the right firm. No algorithm, no match percentage; a person makes this call.</p>
+    <div class="ledger-strip">
+      <div class="ledger-strip-item"><div class="ledger-strip-num">${openCount}</div><div class="ledger-strip-label">Awaiting review</div></div>
+      <div class="ledger-strip-item"><div class="ledger-strip-num">${activeCount}</div><div class="ledger-strip-label">Matched / active</div></div>
+      <div class="ledger-strip-item"><div class="ledger-strip-num">${doneCount}</div><div class="ledger-strip-label">Completed</div></div>
+    </div>
     ${interestNote}
     ${renderEngagementForm(user)}`;
 
-  const engKeys = await slist('engagement:');
-  const allEngagements = (await Promise.all(engKeys.map(sget))).filter(Boolean);
-  const myEngagements = allEngagements.filter(e => e.ownerEmail === session.client).sort((a,b)=>b.createdAt-a.createdAt);
-
+  if(engFetchError) html += `<div class="msg error">${esc(engFetchError)}</div>`;
   if(!myEngagements.length){
     html += `<div class="empty">No engagement requests yet — submit one above.</div>`;
   } else {
@@ -1734,15 +1957,15 @@ async function renderClientDashboard(){
 
   html += `
     <div style="margin-top:52px;padding-top:32px;border-top:1px solid var(--line-strong);">
-      <div class="section-label">Legacy flow</div>
+      <div class="section-label">Another option</div>
       <h3 style="font-size:20px;font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;">Individual professional requests</h3>
-      <p class="hint" style="margin-bottom:20px;">TaxBridge's original individual-professional matching flow — still functional, kept separate from firm matching above.</p>
+      <p class="hint" style="margin-bottom:20px;">Prefer to work with an individual accountant rather than a firm? Submit a request here instead — same personal review, smaller-scale engagements.</p>
       <div id="legacy-lead-area"></div>
     </div>`;
 
   area.innerHTML = html;
   renderDynamicEngagementQuestions();
-  renderLegacyLeadSection(user);
+  renderLegacyLeadSection(user, myLeads);
 }
 
 function renderEngagementForm(user){
@@ -1788,10 +2011,10 @@ function renderEngagementForm(user){
       <div class="taxo-group-title">Sensitivity</div>
       <p class="hint">This is an internal note to help our team pick an appropriate firm — it's never shown publicly.</p>
       ${SENSITIVITY_LEVELS.map((s,i) => `
-        <label style="display:flex;align-items:flex-start;gap:10px;font-weight:400;margin-top:${i===0?'10':'12'}px;">
-          <input type="radio" name="eq-sensitivity" value="${s.id}" ${i===0?'checked':''} style="margin-top:3px;">
-          <span><strong style="font-weight:700;">${s.label}</strong> — <span class="hint">${s.desc}</span></span>
-        </label>`).join('')}
+        <div class="checkrow" style="margin-top:${i===0?'10':'12'}px;">
+          <input type="radio" name="eq-sensitivity" value="${s.id}" ${i===0?'checked':''} id="eq-sens-${s.id}">
+          <label for="eq-sens-${s.id}" style="margin:0;"><strong style="font-weight:700;">${s.label}</strong> — <span class="hint">${s.desc}</span></label>
+        </div>`).join('')}
 
       <div style="margin-top:22px;"><button class="btn btn-brass btn-full" onclick="submitEngagement()">Submit request</button></div>
       <div id="eq-msg"></div>
@@ -1844,21 +2067,19 @@ function renderTypeAnswersHtml(eng){
    client can always see/post (so they can reach TaxBridge even pre-match);
    the firm only sees/posts once the introduction has been accepted — same
    stage where their contact details become visible to each other. */
-async function sendEngagementMessage(engId, senderRole, senderName, body){
-  if(!body || !body.trim()) return;
-  const id = 'MSG-' + Date.now() + '-' + Math.floor(Math.random()*100000);
-  await sset('message:' + id, {id, engagementId: engId, senderRole, senderName, body: body.trim(), createdAt: Date.now()});
-}
-async function getEngagementMessages(engId){
-  const keys = await slist('message:');
-  const all = (await Promise.all(keys.map(sget))).filter(Boolean);
-  return all.filter(m => m.engagementId === engId).sort((a,b) => a.createdAt - b.createdAt);
-}
 function messageRoleLabel(role){
   return {client:'Client', firm:'Firm', admin:'TaxBridge team'}[role] || role;
 }
 async function renderMessageThreadHtml(engId, viewerRole){
-  const msgs = await getEngagementMessages(engId);
+  const token = tokenForRole(viewerRole);
+  if(!token) return '';
+  let msgs = [];
+  try{
+    const data = await api.messages.list(token, engId);
+    msgs = data.messages;
+  } catch(err){
+    return `<div class="taxo-group-title" style="margin-top:16px;">Messages</div><p class="hint">${esc(err.message)}</p>`;
+  }
   const bubbles = msgs.length ? msgs.map(m => {
     const mine = m.senderRole === viewerRole;
     return `<div class="msg-bubble-wrap ${mine?'mine':''}">
@@ -1876,15 +2097,14 @@ async function renderMessageThreadHtml(engId, viewerRole){
 async function sendEngagementMessageFromUI(engId, viewerRole){
   const input = document.getElementById(`msg-input-${engId}-${viewerRole}`);
   if(!input || !input.value.trim()) return;
-  let senderName = 'TaxBridge team';
-  if(viewerRole === 'client'){
-    const eng = await sget('engagement:' + engId);
-    senderName = eng ? eng.clientName : 'Client';
-  } else if(viewerRole === 'firm'){
-    const firm = await sget('firm:' + session.firm);
-    senderName = firm ? firm.firmName : 'Firm';
+  const token = tokenForRole(viewerRole);
+  if(!token) return;
+  try{
+    await api.messages.send(token, engId, input.value);
+  } catch(err){
+    alert(err.message); // a toast would be nicer, but this thread has no dedicated error slot
+    return;
   }
-  await sendEngagementMessage(engId, viewerRole, senderName, input.value);
   input.value = '';
   if(viewerRole === 'client') renderClientDashboard();
   else if(viewerRole === 'firm') renderFirmDashboard();
@@ -1892,47 +2112,45 @@ async function sendEngagementMessageFromUI(engId, viewerRole){
 }
 
 async function submitEngagement(){
-  const user = await sget('user:' + session.client);
   const details = document.getElementById('eq-details').value.trim();
   const msg = document.getElementById('eq-msg');
   if(!details){ msg.innerHTML = '<div class="msg error">Describe the problem before submitting.</div>'; return; }
   const sensitivityInput = document.querySelector('input[name="eq-sensitivity"]:checked');
-  const id = refCode('ENG');
   const engagementType = document.getElementById('eq-type').value;
-  const engagement = {
-    id, ownerEmail: session.client,
-    clientName: user.name, clientEmail: user.email, clientPhone: user.phone || '',
-    company: document.getElementById('eq-company').value.trim(),
-    industry: document.getElementById('eq-industry').value,
-    businessSize: document.getElementById('eq-size').value,
-    engagementType,
-    typeAnswers: collectDynamicEngagementAnswers(engagementType),
-    details,
-    deadline: document.getElementById('eq-deadline').value,
-    estimatedValue: document.getElementById('eq-value').value.trim(),
-    expectedDuration: document.getElementById('eq-duration').value.trim(),
-    country: document.getElementById('eq-country').value.trim(),
-    state: document.getElementById('eq-state').value.trim(),
-    city: document.getElementById('eq-city').value.trim(),
-    onSiteRequired: document.getElementById('eq-onsite').checked,
-    sensitivity: sensitivityInput ? sensitivityInput.value : 'standard',
-    status: 'new',
-    selectedFirms: [],
-    matchReasonNote: '',
-    interestedFirmId: pendingFirmInterest || null,
-    createdAt: Date.now()
-  };
-  await sset('engagement:' + id, engagement);
-  pendingFirmInterest = null;
-  renderClientDashboard();
+  try{
+    await api.engagements.create(session.client.token, {
+      company: document.getElementById('eq-company').value.trim(),
+      industry: document.getElementById('eq-industry').value,
+      businessSize: document.getElementById('eq-size').value,
+      engagementType,
+      typeAnswers: collectDynamicEngagementAnswers(engagementType),
+      details,
+      deadline: document.getElementById('eq-deadline').value || null,
+      estimatedValue: document.getElementById('eq-value').value.trim(),
+      expectedDuration: document.getElementById('eq-duration').value.trim(),
+      country: document.getElementById('eq-country').value.trim(),
+      state: document.getElementById('eq-state').value.trim(),
+      city: document.getElementById('eq-city').value.trim(),
+      onSiteRequired: document.getElementById('eq-onsite').checked,
+      sensitivity: sensitivityInput ? sensitivityInput.value : 'standard',
+      interestedFirmId: pendingFirmInterest || null
+    });
+    pendingFirmInterest = null;
+    renderClientDashboard();
+  } catch(err){
+    msg.innerHTML = `<div class="msg error">${esc(err.message)}</div>`;
+  }
 }
 
 async function renderEngagementCard(eng){
   const statusInfo = ENGAGEMENT_STATUSES[eng.status] || ENGAGEMENT_STATUSES.new;
-  let html = `<div class="pro-card">
-    <div class="pro-card-top">
+  let html = `<div class="case-card ${railClass(statusInfo.stage)}">
+    <div class="case-card-top">
       <h4>${esc(eng.engagementType)}</h4>
-      ${engagementStatusTag(eng.status)}
+      <div style="display:flex;align-items:center;gap:10px;">
+        ${engagementStatusTag(eng.status)}
+        <span class="case-ref">${shortRef(eng.id,'ENG')}</span>
+      </div>
     </div>
     <p class="hint">${esc(eng.industry)}${eng.company ? ' · ' + esc(eng.company) : ''} · submitted ${new Date(eng.createdAt).toLocaleDateString()}</p>
     <p style="font-size:14px;">${esc(eng.details)}</p>
@@ -1942,11 +2160,11 @@ async function renderEngagementCard(eng){
     html += `<div class="msg success" style="margin-top:12px;">We're reviewing your request. Our team is identifying the most suitable specialist firm based on your requirements, location, complexity, and sensitivity.</div>`;
   }
 
-  if(statusInfo.stage === 'matched' && (eng.selectedFirms||[]).length){
+  if(statusInfo.stage === 'matched' && (eng.selectedFirmIds||[]).length){
     html += `<div class="msg success" style="margin-top:12px;">We've found a specialist for your request.</div>`;
-    for(const firmId of eng.selectedFirms){
-      const f = await sget('firm:' + firmId);
-      if(!f) continue;
+    for(const firmId of eng.selectedFirmIds){
+      let f;
+      try{ const data = await api.firms.get(firmId); f = data.firm; } catch(e){ continue; }
       html += `<div class="pro-card">
         <div class="pro-card-top">
           <h4>${esc(f.firmName)}</h4>
@@ -1979,21 +2197,29 @@ async function renderEngagementCard(eng){
 }
 
 async function acceptIntroduction(engId){
-  const eng = await sget('engagement:' + engId);
-  if(!eng) return;
-  eng.status = 'client_accepted';
-  await sset('engagement:' + engId, eng);
-  renderClientDashboard();
+  try{
+    await api.engagements.accept(session.client.token, engId);
+    renderClientDashboard();
+  } catch(err){
+    alert(err.message);
+  }
 }
 
-/* ---------- legacy individual-professional request flow (unchanged, kept for backward compatibility) ---------- */
-async function renderLegacyLeadSection(user){
+/* ---------- legacy individual-professional request flow ---------- */
+async function renderLegacyLeadSection(user, preloadedLeads){
   const area = document.getElementById('legacy-lead-area');
   if(!area) return;
 
-  const keys = await slist('lead:');
-  const allLeads = (await Promise.all(keys.map(sget))).filter(Boolean);
-  const myLeads = allLeads.filter(l => l.ownerEmail === session.client).sort((a,b)=>b.createdAt-a.createdAt);
+  let myLeads = preloadedLeads;
+  if(!myLeads){
+    try{
+      const data = await api.leads.mine(session.client.token);
+      myLeads = data.leads;
+    } catch(err){
+      area.innerHTML = `<div class="msg error">${esc(err.message)}</div>`;
+      return;
+    }
+  }
 
   let html = `
     <div class="card" style="max-width:100%;margin-bottom:28px;">
@@ -2035,72 +2261,63 @@ async function renderLegacyLeadSection(user){
 }
 
 async function submitNewRequest(){
-  const user = await sget('user:' + session.client);
   const details = document.getElementById('nr-details').value.trim();
   const msg = document.getElementById('nr-msg');
   if(!details){ msg.innerHTML = '<div class="msg error">Add a few details about what you need.</div>'; return; }
-  const id = refCode('TXB');
-  const lead = {
-    id, ownerEmail: session.client,
-    name: user.name, contact: user.phone || user.email,
-    company: document.getElementById('nr-company').value.trim(),
-    need: document.getElementById('nr-need').value,
-    budget: document.getElementById('nr-budget').value,
-    details,
-    status: 'pending',
-    matches: [], chosenPro: null, feeAmount: null, scopeNote: null,
-    rating: null, review: '',
-    interestedFirmId: pendingFirmInterest || null,
-    createdAt: Date.now()
-  };
-  await sset('lead:' + id, lead);
-  pendingFirmInterest = null;
-  renderClientDashboard();
+  try{
+    await api.leads.create(session.client.token, {
+      company: document.getElementById('nr-company').value.trim(),
+      need: document.getElementById('nr-need').value,
+      budget: document.getElementById('nr-budget').value,
+      details,
+      interestedFirmId: pendingFirmInterest || null
+    });
+    pendingFirmInterest = null;
+    renderClientDashboard();
+  } catch(err){
+    msg.innerHTML = `<div class="msg error">${esc(err.message)}</div>`;
+  }
 }
 
-/* average rating + review count for a professional, computed from real completed engagements */
-async function getProRating(proEmail){
-  const keys = await slist('lead:');
-  const leads = (await Promise.all(keys.map(sget))).filter(Boolean);
-  const rated = leads.filter(l => l.chosenPro === proEmail && typeof l.rating === 'number');
-  if(!rated.length) return null;
-  const avg = rated.reduce((sum, l) => sum + l.rating, 0) / rated.length;
-  return { avg, count: rated.length };
-}
 function starString(avg){
   const rounded = Math.round(avg);
   return '★'.repeat(rounded) + '☆'.repeat(5 - rounded);
 }
 
 async function renderClientLeadCard(lead, user){
-  let html = `<div class="pro-card">
-    <div class="pro-card-top">
+  let html = `<div class="case-card ${railClass(lead.status)}">
+    <div class="case-card-top">
       <h4>${esc(lead.need)}</h4>
-      ${statusTag(lead.status)}
+      <div style="display:flex;align-items:center;gap:10px;">
+        ${statusTag(lead.status)}
+        <span class="case-ref">${shortRef(lead.id,'REQ')}</span>
+      </div>
     </div>
-    <p class="hint">${esc(lead.budget)}${lead.company ? ' · ' + esc(lead.company) : ''} · submitted ${new Date(lead.createdAt).toLocaleDateString()}</p>
+    <p class="hint">${esc(lead.budget||'')}${lead.company ? ' · ' + esc(lead.company) : ''} · submitted ${new Date(lead.createdAt).toLocaleDateString()}</p>
     <p style="font-size:14px;">${esc(lead.details)}</p>`;
 
   if(lead.status === 'pending'){
     html += `<p class="hint">Our team is reviewing this and will match you with two to three vetted professionals soon.</p>`;
   }
 
-  if(lead.status === 'matched' && lead.matches.length){
+  if(lead.status === 'matched'){
     html += `<p class="hint" style="margin-top:8px;">Choose one of your matched professionals. You'll get their contact details once payment is confirmed.</p>`;
-    for(const proEmail of lead.matches){
-      const pro = await sget('user:' + proEmail);
-      if(!pro) continue;
-      const rating = await getProRating(proEmail);
-      html += `<div class="pro-card">
-        <div class="pro-card-top">
-          <h4>${esc(pro.name.split(' ')[0])} ${esc((pro.name.split(' ')[1]||'')[0]||'')}.</h4>
-          <span class="stamp">${esc(pro.body)} verified</span>
-        </div>
-        <p class="hint">${esc(pro.expertise)} · ${esc(pro.years)} yrs experience</p>
-        ${rating ? `<p class="rating-line">${starString(rating.avg)} <span class="hint">${rating.avg.toFixed(1)} · ${rating.count} review${rating.count>1?'s':''}</span></p>` : `<p class="hint">No reviews yet</p>`}
-        <p style="font-size:14px;margin-top:8px;">${esc(pro.bio)}</p>
-        <div class="grid-actions"><button class="btn btn-brass btn-sm" onclick="chooseMatch('${lead.id}','${proEmail}')">Choose this professional</button></div>
-      </div>`;
+    try{
+      const { professionals } = await api.leads.matches(session.client.token, lead.id);
+      for(const pro of professionals){
+        html += `<div class="pro-card">
+          <div class="pro-card-top">
+            <h4>${esc(pro.name.split(' ')[0])} ${esc((pro.name.split(' ')[1]||'')[0]||'')}.</h4>
+            <span class="stamp">${esc(pro.professionalBody)} verified</span>
+          </div>
+          <p class="hint">${esc(pro.expertise)} · ${esc(pro.yearsExperience||'')} yrs experience</p>
+          ${pro.rating ? `<p class="rating-line">${starString(pro.rating.avg)} <span class="hint">${pro.rating.avg.toFixed(1)} · ${pro.rating.count} review${pro.rating.count>1?'s':''}</span></p>` : `<p class="hint">No reviews yet</p>`}
+          <p style="font-size:14px;margin-top:8px;">${esc(pro.bio||'')}</p>
+          <div class="grid-actions"><button class="btn btn-brass btn-sm" onclick="chooseMatch('${lead.id}','${pro.id}')">Choose this professional</button></div>
+        </div>`;
+      }
+    } catch(err){
+      html += `<div class="msg error">${esc(err.message)}</div>`;
     }
   }
 
@@ -2116,15 +2333,17 @@ async function renderClientLeadCard(lead, user){
   }
 
   if(['paid','delivered','released'].includes(lead.status)){
-    const pro = await sget('user:' + lead.chosenPro);
-    if(pro){
-      html += `<div class="pro-card" style="margin-top:14px;">
-        <h4 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:16px;">Your professional's contact details</h4>
-        <p style="font-size:14px;margin-top:8px;"><strong>${esc(pro.name)}</strong><br>${esc(pro.contact)}</p>
-        <p class="hint">Payment is confirmed, so you're free to coordinate directly. Your contract and payment record stay on TaxBridge either way.</p>
-        ${lead.scopeNote ? `<div class="scope-note"><strong>What's included:</strong> ${esc(lead.scopeNote)}</div>` : ''}
-      </div>`;
-    }
+    try{
+      const { chosenProDetails } = await api.leads.get(session.client.token, lead.id);
+      if(chosenProDetails){
+        html += `<div class="pro-card" style="margin-top:14px;">
+          <h4 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:16px;">Your professional's contact details</h4>
+          <p style="font-size:14px;margin-top:8px;"><strong>${esc(chosenProDetails.name)}</strong><br>${esc(chosenProDetails.contact)}</p>
+          <p class="hint">Payment is confirmed, so you're free to coordinate directly. Your contract and payment record stay on TaxBridge either way.</p>
+          ${lead.scopeNote ? `<div class="scope-note"><strong>What's included:</strong> ${esc(lead.scopeNote)}</div>` : ''}
+        </div>`;
+      }
+    } catch(err){ /* non-fatal — card just won't show contact details */ }
   }
 
   if(lead.status === 'released'){
@@ -2167,31 +2386,30 @@ async function submitRating(leadId){
   const n = starPicks[leadId];
   const msg = document.getElementById('rating-msg-' + leadId);
   if(!n){ msg.innerHTML = '<div class="msg error">Pick a star rating first.</div>'; return; }
-  const lead = await sget('lead:' + leadId);
-  if(!lead) return;
-  lead.rating = n;
-  lead.review = document.getElementById('review-text-' + leadId).value.trim();
-  await sset('lead:' + leadId, lead);
-  renderClientDashboard();
+  try{
+    await api.leads.rate(session.client.token, leadId, n, document.getElementById('review-text-' + leadId).value.trim());
+    renderClientDashboard();
+  } catch(err){
+    msg.innerHTML = `<div class="msg error">${esc(err.message)}</div>`;
+  }
 }
 
-async function chooseMatch(leadId, proEmail){
-  const lead = await sget('lead:' + leadId);
-  if(!lead) return;
-  lead.chosenPro = proEmail;
-  lead.status = 'engaged';
-  lead.feeAmount = lead.feeAmount || 200000;
-  await sset('lead:' + leadId, lead);
-  renderClientDashboard();
+async function chooseMatch(leadId, professionalId){
+  try{
+    await api.leads.choose(session.client.token, leadId, professionalId);
+    renderClientDashboard();
+  } catch(err){
+    alert(err.message);
+  }
 }
 
 async function paySim(leadId){
-  const lead = await sget('lead:' + leadId);
-  if(!lead) return;
-  lead.status = 'paid';
-  lead.paidAt = Date.now();
-  await sset('lead:' + leadId, lead);
-  renderClientDashboard();
+  try{
+    await api.leads.pay(session.client.token, leadId);
+    renderClientDashboard();
+  } catch(err){
+    alert(err.message);
+  }
 }
 
 /* =========================================================
@@ -2233,7 +2451,7 @@ function renderProAuthForm(){
       <label>Email</label>
       <input id="pl-email" type="email" placeholder="you@example.com">
       <label>Password</label>
-      <input id="pl-pass" type="password" placeholder="Your password">
+      ${pwField('pl-pass','Your password','proLogin')}
       <div style="margin-top:20px;"><button class="btn btn-brass btn-full" onclick="proLogin()">Log in</button></div>
       <div id="pl-msg"></div>`;
   } else {
@@ -2245,7 +2463,7 @@ function renderProAuthForm(){
       <label>Phone</label>
       <input id="ps-phone" placeholder="How clients reach you once engaged">
       <label>Password</label>
-      <input id="ps-pass" type="password" placeholder="At least 8 characters">
+      ${pwField('ps-pass','At least 8 characters')}
       <label>Professional body</label>
       <select id="ps-body"><option>ICAN</option><option>ANAN</option><option>CITN</option><option>Other</option></select>
       <label>Registration / membership number</label>
@@ -2272,44 +2490,44 @@ async function proSignup(){
   const msg = document.getElementById('pl-msg');
   if(!name || !email || !pass || !regno){ msg.innerHTML = '<div class="msg error">Name, email, password, and registration number are required.</div>'; return; }
   if(pass.length < 8){ msg.innerHTML = '<div class="msg error">Password should be at least 8 characters.</div>'; return; }
-  const existing = await sget('user:' + email);
-  if(existing){ msg.innerHTML = '<div class="msg error">An account already exists for that email. Try logging in instead.</div>'; return; }
-  const passHash = await hashPassword(email, pass);
-  const pro = {
-    email, name, phone, contact: phone || email, role:'pro', passHash,
-    body: document.getElementById('ps-body').value,
-    regno,
-    years: document.getElementById('ps-years').value.trim(),
-    expertise: document.getElementById('ps-expertise').value.trim(),
-    rate: document.getElementById('ps-rate').value.trim(),
-    bio: document.getElementById('ps-bio').value.trim(),
-    verified: false,
-    createdAt: Date.now()
-  };
-  const ok = await sset('user:' + email, pro);
-  if(!ok){ msg.innerHTML = '<div class="msg error">Something went wrong. Try again.</div>'; return; }
-  session.pro = email;
-  renderProPortal();
+  try{
+    const { token, user } = await api.auth.proSignup({
+      name, email, phone, password: pass,
+      professionalBody: document.getElementById('ps-body').value,
+      registrationNumber: regno,
+      yearsExperience: document.getElementById('ps-years').value.trim(),
+      expertise: document.getElementById('ps-expertise').value.trim(),
+      rate: document.getElementById('ps-rate').value.trim(),
+      bio: document.getElementById('ps-bio').value.trim()
+    });
+    session.pro = { token, user };
+    saveSessionToStorage();
+    renderProPortal();
+  } catch(err){
+    msg.innerHTML = `<div class="msg error">${esc(err.message)}</div>`;
+  }
 }
 
 async function proLogin(){
   const email = normEmail(document.getElementById('pl-email').value);
   const pass = document.getElementById('pl-pass').value;
   const msg = document.getElementById('pl-msg');
-  const user = await sget('user:' + email);
-  if(!user || user.role !== 'pro'){ msg.innerHTML = '<div class="msg error">No professional account found for that email.</div>'; return; }
-  const passHash = await hashPassword(email, pass);
-  if(passHash !== user.passHash){ msg.innerHTML = '<div class="msg error">Incorrect password.</div>'; return; }
-  session.pro = email;
-  renderProPortal();
+  try{
+    const { token, user } = await api.auth.proLogin({ email, password: pass });
+    session.pro = { token, user };
+    saveSessionToStorage();
+    renderProPortal();
+  } catch(err){
+    msg.innerHTML = `<div class="msg error">${esc(err.message)}</div>`;
+  }
 }
 
-function proLogout(){ session.pro = null; renderProPortal(); }
+function proLogout(){ session.pro = null; saveSessionToStorage(); renderProPortal(); }
 
 async function renderProDashboard(){
   const area = document.getElementById('pro-dash-area');
-  const pro = await sget('user:' + session.pro);
-  if(!pro){ session.pro = null; renderProPortal(); return; }
+  if(!session.pro){ renderProPortal(); return; }
+  const pro = session.pro.user;
 
   let html = `
     <div class="session-bar">
@@ -2321,20 +2539,30 @@ async function renderProDashboard(){
       <h2 class="section-title">Your profile</h2>
       ${pro.verified ? '<span class="stamp">Verified</span>' : '<span class="stamp pending">Pending verification</span>'}
     </div>
-    <p class="hint">${esc(pro.body)} · ${esc(pro.regno)} · ${esc(pro.expertise)}</p>`;
+    <p class="hint">${esc(pro.professionalBody)} · ${esc(pro.registrationNumber)} · ${esc(pro.expertise)}</p>`;
 
   if(!pro.verified){
-    html += `<p class="hint" style="margin-top:8px;">Our team is checking your ${esc(pro.body)} record. This usually takes a day or two.</p>`;
+    html += `<p class="hint" style="margin-top:8px;">Our team is checking your ${esc(pro.professionalBody)} record. This usually takes a day or two.</p>`;
     area.innerHTML = html;
     return;
   }
 
-  const proRating = await getProRating(session.pro);
-  html += `<p class="rating-line" style="margin-top:8px;">${proRating ? starString(proRating.avg) + ` <span class="hint">${proRating.avg.toFixed(1)} · ${proRating.count} review${proRating.count>1?'s':''}</span>` : '<span class="hint" style="font-size:13px;letter-spacing:normal;">No reviews yet</span>'}</p>`;
-
-  const keys = await slist('lead:');
-  const allLeads = (await Promise.all(keys.map(sget))).filter(Boolean);
-  const engagements = allLeads.filter(l => l.chosenPro === session.pro).sort((a,b)=>b.createdAt-a.createdAt);
+  const engagements = [];
+  try{
+    const { leads } = await api.leads.matchedToMe(session.pro.token);
+    engagements.push(...leads.filter(l => l.chosenPro === pro.id).sort((a,b)=> new Date(b.createdAt) - new Date(a.createdAt)));
+    const rated = leads.filter(l => l.chosenPro === pro.id && typeof l.rating === 'number');
+    if(rated.length){
+      const avg = rated.reduce((sum, l) => sum + l.rating, 0) / rated.length;
+      html += `<p class="rating-line" style="margin-top:8px;">${starString(avg)} <span class="hint">${avg.toFixed(1)} · ${rated.length} review${rated.length>1?'s':''}</span></p>`;
+    } else {
+      html += `<p class="rating-line" style="margin-top:8px;"><span class="hint" style="font-size:13px;letter-spacing:normal;">No reviews yet</span></p>`;
+    }
+  } catch(err){
+    html += `<div class="msg error">${esc(err.message)}</div>`;
+    area.innerHTML = html;
+    return;
+  }
 
   html += `<h3 style="font-size:19px;margin:32px 0 4px;">Your engagements <span class="hint">(${engagements.length})</span></h3>`;
   if(!engagements.length){
@@ -2367,11 +2595,12 @@ async function renderProDashboard(){
 }
 
 async function markDelivered(leadId){
-  const lead = await sget('lead:' + leadId);
-  if(!lead) return;
-  lead.status = 'delivered';
-  await sset('lead:' + leadId, lead);
-  renderProDashboard();
+  try{
+    await api.leads.deliver(session.pro.token, leadId);
+    renderProDashboard();
+  } catch(err){
+    alert(err.message);
+  }
 }
 
 /* =========================================================
@@ -2380,7 +2609,6 @@ async function markDelivered(leadId){
    ("pro"), so the existing individual-professional flow keeps
    working untouched.
    ========================================================= */
-session.firm = session.firm || null;
 
 let firmAuthTab = 'login';
 let selectedFirmId = null;   // set by "View Firm" before navigating to the profile view
@@ -2448,7 +2676,7 @@ function renderFirmAuthForm(){
       <label>Firm email</label>
       <input id="fl-email" type="email" placeholder="you@yourfirm.com">
       <label>Password</label>
-      <input id="fl-pass" type="password" placeholder="Your password">
+      ${pwField('fl-pass','Your password','firmLogin')}
       <div style="margin-top:20px;"><button class="btn btn-brass btn-full" onclick="firmLogin()">Log in</button></div>
       <div id="fl-msg"></div>`;
     return;
@@ -2465,7 +2693,7 @@ function renderFirmAuthForm(){
     <label>Phone</label>
     <input id="fs-phone" placeholder="Contact number for accepted engagements">
     <label>Password</label>
-    <input id="fs-pass" type="password" placeholder="At least 8 characters">
+    ${pwField('fs-pass','At least 8 characters')}
     <label>Website (optional)</label>
     <input id="fs-website" placeholder="https://yourfirm.com">
     <label>Year established</label>
@@ -2523,59 +2751,56 @@ async function firmSignup(){
   const msg = document.getElementById('fl-msg');
   if(!name || !email || !pass){ msg.innerHTML = '<div class="msg error">Firm name, email, and password are required.</div>'; return; }
   if(pass.length < 8){ msg.innerHTML = '<div class="msg error">Password should be at least 8 characters.</div>'; return; }
-  const existing = await sget('firm:' + email);
-  if(existing){ msg.innerHTML = '<div class="msg error">A firm account already exists for that email. Try logging in instead.</div>'; return; }
-  const passHash = await hashPassword(email, pass);
   const state = taxoState['fs'] || {specialisations:[], industries:[]};
   const splitList = (v) => v.split(',').map(s => s.trim()).filter(Boolean);
-  const firm = {
-    id: email, ownerEmail: email, passHash,
-    firmName: name,
-    phone: document.getElementById('fs-phone').value.trim(),
-    logoInitials: name.split(' ').filter(Boolean).slice(0,2).map(w => w[0].toUpperCase()).join('') || 'TB',
-    website: document.getElementById('fs-website').value.trim(),
-    yearEstablished: document.getElementById('fs-year').value.trim(),
-    headquarters: document.getElementById('fs-hq').value.trim(),
-    citiesServed: splitList(document.getElementById('fs-cities').value),
-    statesServed: splitList(document.getElementById('fs-states').value),
-    countriesServed: splitList(document.getElementById('fs-countries').value),
-    remoteAvailable: document.getElementById('fs-remote').checked,
-    description: document.getElementById('fs-desc').value.trim(),
-    credentials: {
-      ican: document.getElementById('fs-ican').value.trim(),
-      anan: document.getElementById('fs-anan').value.trim(),
-      citn: document.getElementById('fs-citn').value.trim(),
-      other: document.getElementById('fs-other-creds').value.trim(),
-      verificationDocs: document.getElementById('fs-verify-docs').value.trim()
-    },
-    specialisations: state.specialisations,
-    industries: state.industries,
-    capacity: document.getElementById('fs-capacity').value,
-    availability: document.getElementById('fs-availability').value,
-    verificationStatus: 'pending',
-    verificationLevels: {identity:false, credentials:false, firm:false},
-    verifiedSpecialisations: [],
-    adminNotes: '',
-    createdAt: Date.now()
-  };
-  const ok = await sset('firm:' + email, firm);
-  if(!ok){ msg.innerHTML = '<div class="msg error">Something went wrong. Try again.</div>'; return; }
-  session.firm = email;
-  renderFirmPortal();
+  try{
+    const { token, firm } = await api.auth.firmSignup({
+      firmName: name,
+      email, password: pass,
+      phone: document.getElementById('fs-phone').value.trim(),
+      logoInitials: name.split(' ').filter(Boolean).slice(0,2).map(w => w[0].toUpperCase()).join('') || 'TB',
+      website: document.getElementById('fs-website').value.trim(),
+      yearEstablished: document.getElementById('fs-year').value.trim(),
+      headquarters: document.getElementById('fs-hq').value.trim(),
+      citiesServed: splitList(document.getElementById('fs-cities').value),
+      statesServed: splitList(document.getElementById('fs-states').value),
+      countriesServed: splitList(document.getElementById('fs-countries').value),
+      remoteAvailable: document.getElementById('fs-remote').checked,
+      description: document.getElementById('fs-desc').value.trim(),
+      credentials: {
+        ican: document.getElementById('fs-ican').value.trim(),
+        anan: document.getElementById('fs-anan').value.trim(),
+        citn: document.getElementById('fs-citn').value.trim(),
+        other: document.getElementById('fs-other-creds').value.trim(),
+        verificationDocs: document.getElementById('fs-verify-docs').value.trim()
+      },
+      specialisations: state.specialisations,
+      industries: state.industries,
+      capacity: document.getElementById('fs-capacity').value,
+      availability: document.getElementById('fs-availability').value
+    });
+    session.firm = { token, user: firm };
+    saveSessionToStorage();
+    renderFirmPortal();
+  } catch(err){
+    msg.innerHTML = `<div class="msg error">${esc(err.message)}</div>`;
+  }
 }
 
 async function firmLogin(){
   const email = normEmail(document.getElementById('fl-email').value);
   const pass = document.getElementById('fl-pass').value;
   const msg = document.getElementById('fl-msg');
-  const firm = await sget('firm:' + email);
-  if(!firm){ msg.innerHTML = '<div class="msg error">No firm account found for that email.</div>'; return; }
-  const passHash = await hashPassword(email, pass);
-  if(passHash !== firm.passHash){ msg.innerHTML = '<div class="msg error">Incorrect password.</div>'; return; }
-  session.firm = email;
-  renderFirmPortal();
+  try{
+    const { token, firm } = await api.auth.firmLogin({ email, password: pass });
+    session.firm = { token, user: firm };
+    saveSessionToStorage();
+    renderFirmPortal();
+  } catch(err){
+    msg.innerHTML = `<div class="msg error">${esc(err.message)}</div>`;
+  }
 }
-function firmLogout(){ session.firm = null; renderFirmPortal(); }
+function firmLogout(){ session.firm = null; saveSessionToStorage(); renderFirmPortal(); }
 
 function verifyBadgeHtml(status){
   const v = VERIFICATION_STATUSES[status] || VERIFICATION_STATUSES.pending;
@@ -2587,8 +2812,8 @@ function setFirmDashTab(tab){ firmDashTab = tab; renderFirmDashboard(); }
 
 async function renderFirmDashboard(){
   const area = document.getElementById('firm-dash-area');
-  const firm = await sget('firm:' + session.firm);
-  if(!firm){ session.firm = null; renderFirmPortal(); return; }
+  if(!session.firm){ renderFirmPortal(); return; }
+  const firm = session.firm.user;
 
   const tabs = [
     {id:'overview', label:'Overview'},
@@ -2602,7 +2827,7 @@ async function renderFirmDashboard(){
 
   area.innerHTML = `
     <div class="session-bar">
-      <div class="who">Signed in as <strong>${esc(firm.firmName)}</strong> · ${esc(firm.ownerEmail)}</div>
+      <div class="who">Signed in as <strong>${esc(firm.firmName)}</strong> · ${esc(firm.email)}</div>
       <button class="subtle-btn" onclick="firmLogout()">Log out</button>
     </div>
     <div class="section-label">Firm dashboard</div>
@@ -2624,9 +2849,13 @@ async function renderFirmDashboard(){
 }
 
 async function firmDashOverviewHtml(firm){
-  const engKeys = await slist('engagement:');
-  const allEng = (await Promise.all(engKeys.map(sget))).filter(Boolean);
-  const matchedToMe = allEng.filter(e => (e.selectedFirms||[]).includes(firm.id));
+  let matchedToMe = [];
+  try{
+    const data = await api.engagements.matchedToMe(session.firm.token);
+    matchedToMe = data.engagements;
+  } catch(err){
+    matchedToMe = [];
+  }
   const active = matchedToMe.filter(e => ['firm_selected','introduction_sent','client_accepted','firm_accepted','active'].includes(e.status));
   const completed = matchedToMe.filter(e => e.status === 'completed');
   const awaitingFirmAccept = matchedToMe.filter(e => e.status === 'client_accepted');
@@ -2686,23 +2915,29 @@ function firmDashProfileHtml(firm){
 function renderFirmEditChips(firm){ renderFirmOnboardingChips('fe'); }
 
 async function saveFirmProfile(){
-  const firm = await sget('firm:' + session.firm);
-  if(!firm) return;
+  const msgEl = document.getElementById('fe-msg');
   const splitList = (v) => v.split(',').map(s => s.trim()).filter(Boolean);
   const state = taxoState['fe'] || {specialisations:[], industries:[]};
-  firm.firmName = document.getElementById('fe-name').value.trim();
-  firm.website = document.getElementById('fe-website').value.trim();
-  firm.yearEstablished = document.getElementById('fe-year').value.trim();
-  firm.headquarters = document.getElementById('fe-hq').value.trim();
-  firm.citiesServed = splitList(document.getElementById('fe-cities').value);
-  firm.statesServed = splitList(document.getElementById('fe-states').value);
-  firm.countriesServed = splitList(document.getElementById('fe-countries').value);
-  firm.remoteAvailable = document.getElementById('fe-remote').checked;
-  firm.description = document.getElementById('fe-desc').value.trim();
-  firm.specialisations = state.specialisations;
-  firm.industries = state.industries;
-  await sset('firm:' + firm.id, firm);
-  document.getElementById('fe-msg').innerHTML = '<div class="msg success">Saved.</div>';
+  try{
+    const { firm } = await api.firms.updateMe(session.firm.token, {
+      firmName: document.getElementById('fe-name').value.trim(),
+      website: document.getElementById('fe-website').value.trim(),
+      yearEstablished: document.getElementById('fe-year').value.trim(),
+      headquarters: document.getElementById('fe-hq').value.trim(),
+      citiesServed: splitList(document.getElementById('fe-cities').value),
+      statesServed: splitList(document.getElementById('fe-states').value),
+      countriesServed: splitList(document.getElementById('fe-countries').value),
+      remoteAvailable: document.getElementById('fe-remote').checked,
+      description: document.getElementById('fe-desc').value.trim(),
+      specialisations: state.specialisations,
+      industries: state.industries
+    });
+    session.firm.user = firm;
+    saveSessionToStorage();
+    msgEl.innerHTML = '<div class="msg success">Saved.</div>';
+  } catch(err){
+    msgEl.innerHTML = `<div class="msg error">${esc(err.message)}</div>`;
+  }
 }
 
 function firmDashCapacityHtml(firm){
@@ -2719,12 +2954,18 @@ function firmDashCapacityHtml(firm){
     </div>`;
 }
 async function saveFirmCapacity(){
-  const firm = await sget('firm:' + session.firm);
-  if(!firm) return;
-  firm.capacity = document.getElementById('fc-capacity').value;
-  firm.availability = document.getElementById('fc-availability').value;
-  await sset('firm:' + firm.id, firm);
-  document.getElementById('fc-msg').innerHTML = '<div class="msg success">Saved.</div>';
+  const msgEl = document.getElementById('fc-msg');
+  try{
+    const { firm } = await api.firms.updateMe(session.firm.token, {
+      capacity: document.getElementById('fc-capacity').value,
+      availability: document.getElementById('fc-availability').value
+    });
+    session.firm.user = firm;
+    saveSessionToStorage();
+    msgEl.innerHTML = '<div class="msg success">Saved.</div>';
+  } catch(err){
+    msgEl.innerHTML = `<div class="msg error">${esc(err.message)}</div>`;
+  }
 }
 
 function firmDashCredentialsHtml(firm){
@@ -2748,43 +2989,55 @@ function firmDashCredentialsHtml(firm){
     </div>`;
 }
 async function saveFirmCredentials(){
-  const firm = await sget('firm:' + session.firm);
-  if(!firm) return;
-  firm.credentials = {
-    ican: document.getElementById('fcr-ican').value.trim(),
-    anan: document.getElementById('fcr-anan').value.trim(),
-    citn: document.getElementById('fcr-citn').value.trim(),
-    other: document.getElementById('fcr-other').value.trim(),
-    verificationDocs: document.getElementById('fcr-verify-docs').value.trim()
-  };
-  if(firm.verificationStatus === 'verified') firm.verificationStatus = 'pending';
-  await sset('firm:' + firm.id, firm);
-  document.getElementById('fcr-msg').innerHTML = '<div class="msg success">Saved. Verification status updated where applicable.</div>';
-  renderFirmDashboard();
+  const msgEl = document.getElementById('fcr-msg');
+  try{
+    const { firm } = await api.firms.updateMe(session.firm.token, {
+      credentials: {
+        ican: document.getElementById('fcr-ican').value.trim(),
+        anan: document.getElementById('fcr-anan').value.trim(),
+        citn: document.getElementById('fcr-citn').value.trim(),
+        other: document.getElementById('fcr-other').value.trim(),
+        verificationDocs: document.getElementById('fcr-verify-docs').value.trim()
+      }
+    });
+    session.firm.user = firm;
+    saveSessionToStorage();
+    msgEl.innerHTML = '<div class="msg success">Saved. Verification status updated where applicable.</div>';
+    renderFirmDashboard();
+  } catch(err){
+    msgEl.innerHTML = `<div class="msg error">${esc(err.message)}</div>`;
+  }
 }
 
 async function firmDashEngagementsHtml(firm){
-  const keys = await slist('engagement:');
-  const allEng = (await Promise.all(keys.map(sget))).filter(Boolean);
-  const matched = allEng.filter(e => (e.selectedFirms||[]).includes(firm.id)).sort((a,b)=>b.createdAt-a.createdAt);
-  const leadKeys = await slist('lead:');
-  const allLeads = (await Promise.all(leadKeys.map(sget))).filter(Boolean);
-  const interested = allLeads.filter(l => l.interestedFirmId === firm.id);
+  let matched = [];
+  try{
+    const data = await api.engagements.matchedToMe(session.firm.token);
+    matched = data.engagements;
+  } catch(err){
+    matched = [];
+  }
+  let interested = [];
+  try{
+    const data = await api.leads.interestedInMe(session.firm.token);
+    interested = data.leads;
+  } catch(err){
+    interested = [];
+  }
 
   let html = `<h3 style="font-size:19px;margin:0 0 12px;">Matched engagements <span class="hint">(${matched.length})</span></h3>`;
   if(!matched.length){
     html += `<div class="empty">No engagements matched to your firm yet.</div>`;
   } else {
     for(const eng of matched){
-      const contactVisible = ['client_accepted','firm_accepted','active','completed'].includes(eng.status);
       html += `<div class="pro-card">
         <div class="pro-card-top"><h4>${esc(eng.engagementType)}</h4>${engagementStatusTag(eng.status)}</div>
         <p class="hint">${esc(eng.industry)} · ${[eng.city, eng.state].filter(Boolean).map(esc).join(', ')}${eng.onSiteRequired ? ' · On-site required' : ' · Remote OK'}</p>
         <p style="font-size:14px;">${esc(eng.details).slice(0,180)}${eng.details.length>180?'…':''}</p>
         ${eng.matchReasonNote ? `<div class="scope-note"><strong>Why TaxBridge matched you:</strong> ${esc(eng.matchReasonNote)}</div>` : ''}
-        ${contactVisible ? `<p style="font-size:14px;margin-top:10px;"><strong>Client contact:</strong> ${esc(eng.clientName)} — ${esc(eng.clientEmail)}${eng.clientPhone ? ' · ' + esc(eng.clientPhone) : ''}</p>` : `<p class="hint">Client contact details appear once they accept the introduction.</p>`}
+        ${eng.contactVisible ? `<p style="font-size:14px;margin-top:10px;"><strong>Client contact:</strong> ${esc(eng.clientName)} — ${esc(eng.clientEmail)}${eng.clientPhone ? ' · ' + esc(eng.clientPhone) : ''}</p>` : `<p class="hint">Client contact details appear once they accept the introduction.</p>`}
         ${eng.status === 'client_accepted' ? `<button class="btn btn-brass btn-sm" style="margin-top:10px;" onclick="firmAcceptEngagement('${eng.id}')">Accept this engagement</button>` : ''}
-        ${contactVisible ? await renderMessageThreadHtml(eng.id, 'firm') : ''}
+        ${eng.contactVisible ? await renderMessageThreadHtml(eng.id, 'firm') : ''}
       </div>`;
     }
   }
@@ -2799,11 +3052,12 @@ async function firmDashEngagementsHtml(firm){
   return html;
 }
 async function firmAcceptEngagement(engId){
-  const eng = await sget('engagement:' + engId);
-  if(!eng) return;
-  eng.status = 'firm_accepted';
-  await sset('engagement:' + engId, eng);
-  renderFirmDashboard();
+  try{
+    await api.engagements.firmAccept(session.firm.token, engId);
+    renderFirmDashboard();
+  } catch(err){
+    alert(err.message);
+  }
 }
 
 function firmDashVerificationHtml(firm){
@@ -2824,7 +3078,7 @@ function firmDashSettingsHtml(firm){
     <div class="card" style="max-width:100%;">
       <h3 class="form-title">Account settings</h3>
       <label>Firm email</label>
-      <input value="${esc(firm.ownerEmail)}" disabled>
+      <input value="${esc(firm.email)}" disabled>
       <label>Phone</label>
       <input id="fset-phone" value="${esc(firm.phone)}">
       <div style="margin-top:16px;"><button class="btn btn-outline btn-sm" onclick="saveFirmPhone()">Save</button></div>
@@ -2833,11 +3087,17 @@ function firmDashSettingsHtml(firm){
     </div>`;
 }
 async function saveFirmPhone(){
-  const firm = await sget('firm:' + session.firm);
-  if(!firm) return;
-  firm.phone = document.getElementById('fset-phone').value.trim();
-  await sset('firm:' + firm.id, firm);
-  document.getElementById('fset-msg').innerHTML = '<div class="msg success">Saved.</div>';
+  const msgEl = document.getElementById('fset-msg');
+  try{
+    const { firm } = await api.firms.updateMe(session.firm.token, {
+      phone: document.getElementById('fset-phone').value.trim()
+    });
+    session.firm.user = firm;
+    saveSessionToStorage();
+    msgEl.innerHTML = '<div class="msg success">Saved.</div>';
+  } catch(err){
+    msgEl.innerHTML = `<div class="msg error">${esc(err.message)}</div>`;
+  }
 }
 
 /* ---------- firms marketplace ---------- */
@@ -2845,8 +3105,11 @@ let firmFilters = { q:'', specialisation:'', industry:'', capacity:'', verifiedO
 
 async function renderFirmsMarketplace(){
   const area = document.getElementById('firms-marketplace-area');
-  const keys = await slist('firm:');
-  const allFirms = (await Promise.all(keys.map(sget))).filter(Boolean);
+  let allFirms = [];
+  try{
+    const data = await api.firms.list();
+    allFirms = data.firms;
+  } catch(err){ /* filter dropdown just won't have locations pre-populated — non-fatal */ }
   const locations = [...new Set(allFirms.map(f => f.headquarters).filter(Boolean))].sort();
 
   area.innerHTML = `
@@ -2912,54 +3175,40 @@ async function applyFirmFilters(){
   const resultsEl = document.getElementById('firms-results');
   resultsEl.innerHTML = '<div class="loading">Loading firms…</div>';
 
-  const q = (document.getElementById('firm-search-q')?.value || '').trim().toLowerCase();
+  const q = (document.getElementById('firm-search-q')?.value || '').trim();
   const spec = document.getElementById('firm-filter-spec')?.value || '';
   const industry = document.getElementById('firm-filter-industry')?.value || '';
   const capacity = document.getElementById('firm-filter-capacity')?.value || '';
   const location = document.getElementById('firm-filter-location')?.value || '';
   const availability = document.getElementById('firm-filter-availability')?.value || '';
-  const minExperience = parseInt(document.getElementById('firm-filter-experience')?.value || '0', 10);
+  const minExperience = document.getElementById('firm-filter-experience')?.value || '';
 
-  const keys = await slist('firm:');
-  let firms = (await Promise.all(keys.map(sget))).filter(Boolean);
-  firms = firms.filter(f => f.verificationStatus !== 'rejected');
+  const params = new URLSearchParams();
+  if(q) params.set('q', q);
+  if(spec) params.set('specialisation', spec);
+  if(industry) params.set('industry', industry);
+  if(capacity) params.set('capacity', capacity);
+  if(location) params.set('location', location);
+  if(availability) params.set('availability', availability);
+  if(minExperience && minExperience !== '0') params.set('minExperience', minExperience);
+  if(firmFilters.verifiedOnly) params.set('verifiedOnly', 'true');
+  if(firmFilters.remoteOnly) params.set('remoteOnly', 'true');
 
-  if(q){
-    firms = firms.filter(f =>
-      (f.firmName||'').toLowerCase().includes(q) ||
-      (f.headquarters||'').toLowerCase().includes(q) ||
-      (f.description||'').toLowerCase().includes(q) ||
-      (f.citiesServed||[]).some(c => c.toLowerCase().includes(q))
-    );
+  let firms;
+  try{
+    const data = await api.firms.list(params.toString());
+    firms = data.firms;
+  } catch(err){
+    resultsEl.innerHTML = `<div class="empty">${esc(err.message)}</div>`;
+    return;
   }
-  if(spec) firms = firms.filter(f => (f.specialisations||[]).includes(spec));
-  if(industry) firms = firms.filter(f => (f.industries||[]).includes(industry));
-  if(capacity) firms = firms.filter(f => f.capacity === capacity);
-  if(location) firms = firms.filter(f => f.headquarters === location);
-  if(availability) firms = firms.filter(f => f.availability === availability);
-  if(minExperience){
-    firms = firms.filter(f => {
-      const yrs = f.yearEstablished ? (new Date().getFullYear() - Number(f.yearEstablished)) : 0;
-      return yrs >= minExperience;
-    });
-  }
-  if(firmFilters.verifiedOnly) firms = firms.filter(f => f.verificationStatus === 'verified');
-  if(firmFilters.remoteOnly) firms = firms.filter(f => f.remoteAvailable);
-
-  firms.sort((a,b) => (b.verificationStatus === 'verified') - (a.verificationStatus === 'verified'));
 
   if(!firms.length){
     resultsEl.innerHTML = '<div class="empty">No firms match those filters yet. As firms join TaxBridge, they\'ll show up here.</div>';
     return;
   }
-  const engKeys = await slist('engagement:');
-  const allEngagements = (await Promise.all(engKeys.map(sget))).filter(Boolean);
   resultsEl.innerHTML = `<div class="firms-count">${firms.length} firm${firms.length>1?'s':''} found</div>` +
-    firms.map(f => renderFirmCard(f, completedCountFor(f.id, allEngagements))).join('');
-}
-
-function completedCountFor(firmId, engagements){
-  return engagements.filter(e => (e.selectedFirms||[]).includes(firmId) && e.status === 'completed').length;
+    firms.map(f => renderFirmCard(f, f.completedCount)).join('');
 }
 
 function renderFirmCard(f, completedCount){
@@ -2999,8 +3248,14 @@ async function renderFirmProfile(){
   const area = document.getElementById('firm-profile-area');
   if(!selectedFirmId){ area.innerHTML = '<div class="empty">No firm selected. <a href="#" onclick="go(\'firms\');return false;">Browse firms</a></div>'; return; }
   area.innerHTML = '<div class="loading">Loading firm profile…</div>';
-  const f = await sget('firm:' + selectedFirmId);
-  if(!f){ area.innerHTML = '<div class="empty">This firm profile could not be found.</div>'; return; }
+  let f;
+  try{
+    const data = await api.firms.get(selectedFirmId);
+    f = data.firm;
+  } catch(err){
+    area.innerHTML = `<div class="empty">${esc(err.message)}</div>`;
+    return;
+  }
 
   const years = f.yearEstablished ? (new Date().getFullYear() - Number(f.yearEstablished)) : null;
   const capacityLabel = (CAPACITY_LEVELS.find(c => c.id === f.capacity) || {}).label || 'Not specified';
@@ -3012,9 +3267,7 @@ async function renderFirmProfile(){
   if(f.credentials?.citn) credentialBadges.push('CITN registration on file');
   if(f.credentials?.other) credentialBadges.push(f.credentials.other);
 
-  const engKeys = await slist('engagement:');
-  const allEngagements = (await Promise.all(engKeys.map(sget))).filter(Boolean);
-  const completedCount = completedCountFor(f.id, allEngagements);
+  const completedCount = f.completedCount;
 
   area.innerHTML = `
     <button class="subtle-btn" onclick="go('firms')" style="margin-bottom:20px;">← Back to firms</button>
@@ -3085,24 +3338,35 @@ async function renderFirmProfile(){
 }
 
 
-/* SECURITY WARNING — READ BEFORE DEPLOYING:
-   This passcode check runs entirely in the browser. The string below is visible
-   to anyone who views page source or opens devtools — hiding the hint text on
-   the page does NOT make this secure. This is a placeholder for demo/prototype
-   purposes only. Before any real admin data lives here, this must be replaced
-   with real server-side authentication (a backend session, a proper login,
-   and API routes that check auth server-side — not a client-side string match). */
-let adminAuthed = false;
-function checkAdminPass(){
-  const val = document.getElementById('admin-pass').value.trim();
-  if(val === 'taxbridge2026'){
-    adminAuthed = true;
-    document.getElementById('admin-gate').style.display = 'none';
-    document.getElementById('admin-panel').style.display = 'block';
+/* Real server-side admin auth (Phase B4) — replaces the old hardcoded
+   client-side passcode. The backend has no public admin signup route;
+   accounts are provisioned via the seed script (see taxbridge-backend/README.md). */
+function showAdminPanel(){
+  document.getElementById('admin-gate').style.display = 'none';
+  document.getElementById('admin-panel').style.display = 'block';
+}
+function hideAdminPanel(){
+  document.getElementById('admin-gate').style.display = '';
+  document.getElementById('admin-panel').style.display = 'none';
+}
+async function adminLogin(){
+  const email = normEmail(document.getElementById('admin-email').value);
+  const pass = document.getElementById('admin-pass').value;
+  const msgEl = document.getElementById('admin-gate-msg');
+  try{
+    const { token, admin } = await api.auth.adminLogin({ email, password: pass });
+    adminSession = { token, admin };
+    saveSessionToStorage();
+    showAdminPanel();
     renderAdmin();
-  } else {
-    document.getElementById('admin-gate-msg').innerHTML = '<div class="msg error">Incorrect passcode.</div>';
+  } catch(err){
+    msgEl.innerHTML = `<div class="msg error">${esc(err.message)}</div>`;
   }
+}
+function adminLogout(){
+  adminSession = null;
+  saveSessionToStorage();
+  hideAdminPanel();
 }
 
 let adminTab = 'engagements';
@@ -3119,27 +3383,37 @@ function applyAdminEngFilters(){
   });
 }
 
+/* Cache of the last-fetched admin data, so subordinate renderers (firm search,
+   match modal) don't need a fresh network round-trip on every keystroke. */
+let adminCache = { engagements: [], firms: [], pros: [], leads: [] };
+
 async function renderAdmin(){
   const content = document.getElementById('admin-content');
   content.innerHTML = '<div class="loading">Loading dashboard…</div>';
 
-  const userKeys = await slist('user:');
-  const leadKeys = await slist('lead:');
-  const firmKeys = await slist('firm:');
-  const engKeys = await slist('engagement:');
-  const users = (await Promise.all(userKeys.map(sget))).filter(Boolean);
-  const leads = (await Promise.all(leadKeys.map(sget))).filter(Boolean).sort((a,b)=>b.createdAt-a.createdAt);
-  const firms = (await Promise.all(firmKeys.map(sget))).filter(Boolean).sort((a,b)=>b.createdAt-a.createdAt);
-  const engagements = (await Promise.all(engKeys.map(sget))).filter(Boolean).sort((a,b)=>b.createdAt-a.createdAt);
-  const pros = users.filter(u => u.role === 'pro').sort((a,b)=>b.createdAt-a.createdAt);
+  let stats, engagements, firms, pros, leads;
+  try{
+    const token = adminSession.token;
+    [stats, engagements, firms, pros, leads] = await Promise.all([
+      api.admin.stats(token).then(d => d),
+      api.admin.engagements.list(token).then(d => d.engagements),
+      api.admin.firms.list(token).then(d => d.firms),
+      api.admin.professionals.list(token).then(d => d.professionals),
+      api.admin.leads.list(token).then(d => d.leads)
+    ]);
+  } catch(err){
+    content.innerHTML = `<div class="msg error">${esc(err.message)}</div>`;
+    return;
+  }
+  adminCache = { engagements, firms, pros, leads };
   const verifiedPros = pros.filter(p => p.verified);
 
-  const reviewingCount = engagements.filter(e => (ENGAGEMENT_STATUSES[e.status]||{}).stage === 'reviewing').length;
-  const matchedCount = engagements.filter(e => (ENGAGEMENT_STATUSES[e.status]||{}).stage === 'matched').length;
-  const completedCount = engagements.filter(e => (ENGAGEMENT_STATUSES[e.status]||{}).stage === 'completed').length;
-  const pendingFirmCount = firms.filter(f => f.verificationStatus === 'pending' || f.verificationStatus === 'info_required').length;
-  const verifiedFirmCount = firms.filter(f => f.verificationStatus === 'verified').length;
-  const pendingProCount = pros.length - verifiedPros.length;
+  const reviewingCount = stats.awaitingReview;
+  const matchedCount = stats.matchedActive;
+  const completedCount = stats.completed;
+  const pendingFirmCount = stats.firmsNeedingReview;
+  const verifiedFirmCount = stats.verifiedFirms;
+  const pendingProCount = stats.prosNeedingReview;
   const activeLeadCount = leads.filter(l => l.status !== 'released').length;
 
   let html = `
@@ -3196,12 +3470,12 @@ async function renderAdmin(){
   } else {
     html += `<div class="table-scroll"><table class="ledger-table"><thead><tr><th>Firm</th><th>Email</th><th>Headquarters</th><th>Specialisations</th><th>Engagements</th><th>Status</th><th></th></tr></thead><tbody>`;
     for(const f of firms){
-      const firmEngagements = engagements.filter(e => (e.selectedFirms||[]).includes(f.id));
+      const firmEngagements = engagements.filter(e => (e.selectedFirmIds||[]).includes(f.id));
       const activeCount = firmEngagements.filter(e => ['firm_selected','introduction_sent','client_accepted','firm_accepted','active'].includes(e.status)).length;
       const pastCount = firmEngagements.filter(e => ['completed','closed','declined'].includes(e.status)).length;
       html += `<tr>
         <td>${esc(f.firmName)}</td>
-        <td class="mono">${esc(f.ownerEmail)}</td>
+        <td class="mono">${esc(f.email)}</td>
         <td>${esc(f.headquarters)||'—'}</td>
         <td>${(f.specialisations||[]).slice(0,3).map(esc).join(', ')}${(f.specialisations||[]).length>3?'…':''}</td>
         <td>${activeCount} active · ${pastCount} past</td>
@@ -3230,15 +3504,16 @@ async function renderAdmin(){
   } else {
     html += `<div class="table-scroll"><table class="ledger-table"><thead><tr><th>Name</th><th>Email</th><th>Body / Reg No.</th><th>Expertise</th><th>Rating</th><th>Status</th><th></th></tr></thead><tbody>`;
     for(const p of pros){
-      const rating = await getProRating(p.email);
+      const rated = leads.filter(l => l.chosenPro === p.id && typeof l.rating === 'number');
+      const rating = rated.length ? { avg: rated.reduce((s,l)=>s+l.rating,0)/rated.length, count: rated.length } : null;
       html += `<tr>
         <td>${esc(p.name)}</td>
         <td class="mono">${esc(p.email)}</td>
-        <td>${esc(p.body)} · ${esc(p.regno)}</td>
+        <td>${esc(p.professionalBody)} · ${esc(p.registrationNumber)}</td>
         <td>${esc(p.expertise)}</td>
         <td>${rating ? `${rating.avg.toFixed(1)}★ (${rating.count})` : '—'}</td>
         <td>${p.verified ? '<span class="stamp">Verified</span>' : '<span class="stamp pending">Pending</span>'}</td>
-        <td>${p.verified ? '' : `<button class="subtle-btn" onclick="verifyPro('${p.email}')">Verify</button>`}</td>
+        <td>${p.verified ? '' : `<button class="subtle-btn" onclick="verifyPro('${p.id}')">Verify</button>`}</td>
       </tr>`;
     }
     html += `</tbody></table></div>`;
@@ -3253,7 +3528,7 @@ async function renderAdmin(){
     for(const lead of leads){
       let firmInterestNote = '';
       if(lead.interestedFirmId){
-        const firmOfInterest = await sget('firm:' + lead.interestedFirmId);
+        const firmOfInterest = firms.find(f => f.id === lead.interestedFirmId);
         if(firmOfInterest) firmInterestNote = `<p class="hint" style="color:var(--orange-dark);">Client requested a match with <strong>${esc(firmOfInterest.firmName)}</strong> in mind.</p>`;
       }
       html += `<div class="pro-card">
@@ -3261,7 +3536,7 @@ async function renderAdmin(){
           <h4>${esc(lead.need)} — ${esc(lead.name)}</h4>
           ${statusTag(lead.status)}
         </div>
-        <p class="hint">${esc(lead.budget)} · ${esc(lead.ownerEmail)}</p>
+        <p class="hint">${esc(lead.budget||'')} · ${esc(lead.contact)}</p>
         ${firmInterestNote}
         <p style="font-size:14px;">${esc(lead.details)}</p>`;
 
@@ -3271,14 +3546,15 @@ async function renderAdmin(){
         } else {
           html += `<div class="hint" style="margin-bottom:6px;">Select 2–3 professionals to match:</div><div class="grid-actions">`;
           for(const p of verifiedPros){
-            const selected = (lead.matches||[]).includes(p.email);
-            html += `<button class="subtle-btn ${selected?'on':''}" onclick="toggleMatch('${lead.id}','${p.email}')">${selected?'✓ ':''}${esc(p.name)}</button>`;
+            const selected = (lead.matches||[]).includes(p.id);
+            html += `<button class="subtle-btn ${selected?'on':''}" onclick="toggleMatch('${lead.id}','${p.id}')">${selected?'✓ ':''}${esc(p.name)}</button>`;
           }
           html += `</div><button class="btn btn-outline btn-sm" style="margin-top:12px;" onclick="confirmMatch('${lead.id}')">Confirm match &amp; notify client</button>`;
         }
       }
 
       if(lead.status === 'engaged'){
+        const chosenProName = (pros.find(p => p.id === lead.chosenPro) || {}).name || lead.chosenPro;
         html += `<label style="margin-top:12px;">Engagement fee (₦)</label>
         <div style="display:flex;gap:8px;max-width:280px;">
           <input id="fee-${lead.id}" type="number" value="${lead.feeAmount||200000}">
@@ -3286,7 +3562,7 @@ async function renderAdmin(){
         <label style="margin-top:12px;">What's included (optional — shown to the client)</label>
         <textarea id="scope-${lead.id}" placeholder="e.g. VAT filing for Q1–Q2, one advisory call, filed receipts included">${esc(lead.scopeNote||'')}</textarea>
         <button class="btn btn-outline btn-sm" style="margin-top:10px;" onclick="setFee('${lead.id}')">Save</button>
-        <p class="hint" style="margin-top:8px;">Matched with ${esc(lead.chosenPro)} — awaiting client payment.</p>`;
+        <p class="hint" style="margin-top:8px;">Matched with ${esc(chosenProName)} — awaiting client payment.</p>`;
       }
 
       if(lead.status === 'paid'){
@@ -3294,12 +3570,13 @@ async function renderAdmin(){
       }
 
       if(lead.status === 'delivered'){
+        const chosenProName = (pros.find(p => p.id === lead.chosenPro) || {}).name || lead.chosenPro;
         const commission = Math.round((lead.feeAmount||0)*0.15);
         const payout = Math.round((lead.feeAmount||0)*0.85);
         html += `<div class="fee-breakdown">
           <div class="fee-row"><span>Collected from client</span><span>₦${Number(lead.feeAmount||0).toLocaleString()}</span></div>
           <div class="fee-row"><span>TaxBridge commission</span><span>₦${commission.toLocaleString()}</span></div>
-          <div class="fee-row total"><span>Release to ${esc(lead.chosenPro)}</span><span>₦${payout.toLocaleString()}</span></div>
+          <div class="fee-row total"><span>Release to ${esc(chosenProName)}</span><span>₦${payout.toLocaleString()}</span></div>
         </div>
         <button class="btn btn-brass btn-sm" style="margin-top:12px;" onclick="releasePayment('${lead.id}')">Release payment to professional</button>`;
       }
@@ -3357,9 +3634,9 @@ async function renderAdminEngagementCard(eng, allFirms){
   }
 
   let selectedFirmsHtml = '';
-  if((eng.selectedFirms||[]).length){
+  if((eng.selectedFirmIds||[]).length){
     selectedFirmsHtml = `<div class="scope-note" style="margin-top:12px;">
-      <strong>Matched to:</strong> ${eng.selectedFirms.map(id => { const f = allFirms.find(x=>x.id===id); return f ? esc(f.firmName) : id; }).join(', ')}
+      <strong>Matched to:</strong> ${eng.selectedFirmIds.map(id => { const f = allFirms.find(x=>x.id===id); return f ? esc(f.firmName) : id; }).join(', ')}
       ${eng.matchReasonNote ? `<br><strong>Why:</strong> ${esc(eng.matchReasonNote)}` : ''}
     </div>`;
   }
@@ -3372,7 +3649,7 @@ async function renderAdminEngagementCard(eng, allFirms){
     <p class="hint">${esc(eng.industry)} · ${esc(eng.businessSize)} · ${[eng.city, eng.state, eng.country].filter(Boolean).map(esc).join(', ')}${eng.onSiteRequired ? ' · On-site required' : ' · Remote OK'}</p>
     <p class="hint"><strong>Sensitivity:</strong> ${sensitivity.label} · <strong>Suggested capacity:</strong> ${suggestedCapacity.label} <span class="hint">(based on business size — a hint for you, not a filter)</span></p>
     <p style="font-size:14px;">${esc(eng.details)}</p>
-    <p class="hint">Deadline: ${eng.deadline || 'not specified'} · Est. value: ${esc(eng.estimatedValue)||'not specified'} · Duration: ${esc(eng.expectedDuration)||'not specified'}</p>
+    <p class="hint">Deadline: ${eng.deadline ? new Date(eng.deadline).toLocaleDateString() : 'not specified'} · Est. value: ${esc(eng.estimatedValue)||'not specified'} · Duration: ${esc(eng.expectedDuration)||'not specified'}</p>
     ${renderTypeAnswersHtml(eng)}
     ${interestNote}
     ${selectedFirmsHtml}
@@ -3446,8 +3723,7 @@ async function renderAdminFirmResults(engId){
   const cap = document.getElementById('afs-cap-' + engId)?.value || '';
   const avail = document.getElementById('afs-avail-' + engId)?.value || '';
 
-  const keys = await slist('firm:');
-  let firms = (await Promise.all(keys.map(sget))).filter(Boolean);
+  let firms = adminCache.firms.slice();
   if(q) firms = firms.filter(f => (f.firmName||'').toLowerCase().includes(q) || (f.headquarters||'').toLowerCase().includes(q));
   if(spec) firms = firms.filter(f => (f.specialisations||[]).includes(spec));
   if(cap) firms = firms.filter(f => f.capacity === cap);
@@ -3455,7 +3731,7 @@ async function renderAdminFirmResults(engId){
 
   if(!firms.length){ resultsEl.innerHTML = '<div class="empty">No firms match those filters.</div>'; return; }
 
-  const eng = await sget('engagement:' + engId);
+  const eng = adminCache.engagements.find(e => e.id === engId);
   const suggestedCapacity = eng ? suggestedCapacityForEngagement(eng) : null;
 
   const selected = adminEngSelections[engId] || [];
@@ -3486,78 +3762,79 @@ async function saveEngagementMatch(engId){
   const selected = adminEngSelections[engId] || [];
   const msg = document.getElementById('afs-msg-' + engId);
   if(!selected.length){ msg.innerHTML = '<div class="msg error">Select at least one firm.</div>'; return; }
-  const eng = await sget('engagement:' + engId);
-  if(!eng) return;
-  eng.selectedFirms = selected;
-  eng.matchReasonNote = document.getElementById('afs-reason-' + engId).value.trim();
-  if(ENGAGEMENT_STATUSES[eng.status].stage === 'reviewing'){
-    eng.status = 'introduction_sent';
+  const reason = document.getElementById('afs-reason-' + engId).value.trim();
+  try{
+    await api.admin.engagements.match(adminSession.token, engId, selected, reason);
+    delete adminEngSelections[engId];
+    renderAdmin();
+  } catch(err){
+    msg.innerHTML = `<div class="msg error">${esc(err.message)}</div>`;
   }
-  await sset('engagement:' + engId, eng);
-  delete adminEngSelections[engId];
-  renderAdmin();
 }
 
 async function setEngagementStatus(engId, status){
-  const eng = await sget('engagement:' + engId);
-  if(!eng) return;
-  eng.status = status;
-  await sset('engagement:' + engId, eng);
-  renderAdmin();
+  try{
+    await api.admin.engagements.setStatus(adminSession.token, engId, status);
+    renderAdmin();
+  } catch(err){
+    alert(err.message);
+  }
 }
 
-async function verifyPro(email){
-  const pro = await sget('user:' + email);
-  if(!pro) return;
-  pro.verified = true;
-  await sset('user:' + email, pro);
-  renderAdmin();
+async function verifyPro(id){
+  try{
+    await api.admin.professionals.verify(adminSession.token, id, true);
+    renderAdmin();
+  } catch(err){
+    alert(err.message);
+  }
 }
 
 async function setFirmVerification(firmId, status){
-  const firm = await sget('firm:' + firmId);
-  if(!firm) return;
-  firm.verificationStatus = status;
-  await sset('firm:' + firmId, firm);
-  renderAdmin();
+  try{
+    await api.admin.firms.setVerificationStatus(adminSession.token, firmId, status);
+    renderAdmin();
+  } catch(err){
+    alert(err.message);
+  }
 }
 
-async function toggleMatch(leadId, proEmail){
-  const lead = await sget('lead:' + leadId);
-  if(!lead) return;
-  lead.matches = lead.matches || [];
-  const idx = lead.matches.indexOf(proEmail);
-  if(idx >= 0) lead.matches.splice(idx,1);
-  else if(lead.matches.length < 3) lead.matches.push(proEmail);
-  await sset('lead:' + leadId, lead);
-  renderAdmin();
+async function toggleMatch(leadId, professionalId){
+  try{
+    await api.admin.leads.toggleMatch(adminSession.token, leadId, professionalId);
+    renderAdmin();
+  } catch(err){
+    alert(err.message);
+  }
 }
 
 async function confirmMatch(leadId){
-  const lead = await sget('lead:' + leadId);
-  if(!lead || !(lead.matches||[]).length) return;
-  lead.status = 'matched';
-  await sset('lead:' + leadId, lead);
-  renderAdmin();
+  try{
+    await api.admin.leads.confirmMatch(adminSession.token, leadId);
+    renderAdmin();
+  } catch(err){
+    alert(err.message);
+  }
 }
 
 async function setFee(leadId){
   const val = Number(document.getElementById('fee-' + leadId).value) || 0;
   const scopeEl = document.getElementById('scope-' + leadId);
-  const lead = await sget('lead:' + leadId);
-  if(!lead) return;
-  lead.feeAmount = val;
-  lead.scopeNote = scopeEl ? scopeEl.value.trim() : lead.scopeNote;
-  await sset('lead:' + leadId, lead);
-  renderAdmin();
+  try{
+    await api.admin.leads.setFee(adminSession.token, leadId, val, scopeEl ? scopeEl.value.trim() : undefined);
+    renderAdmin();
+  } catch(err){
+    alert(err.message);
+  }
 }
 
 async function releasePayment(leadId){
-  const lead = await sget('lead:' + leadId);
-  if(!lead) return;
-  lead.status = 'released';
-  await sset('lead:' + leadId, lead);
-  renderAdmin();
+  try{
+    await api.admin.leads.releasePayment(adminSession.token, leadId);
+    renderAdmin();
+  } catch(err){
+    alert(err.message);
+  }
 }
 </script>
 </body>

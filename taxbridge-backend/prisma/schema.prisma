@@ -1,0 +1,269 @@
+// TaxBridge.ng — Prisma schema
+// Mirrors the data model built in the frontend prototype 1:1 so migrating
+// off window.storage is mechanical rather than a redesign. Postgres (Neon).
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ---------- enums ----------
+
+enum UserRole {
+  CLIENT
+  PROFESSIONAL
+}
+
+enum FirmCapacity {
+  SMALL
+  MEDIUM
+  LARGE
+  ENTERPRISE
+}
+
+enum FirmAvailability {
+  ACCEPTING
+  LIMITED
+  FULLY_BOOKED
+}
+
+enum FirmVerificationStatus {
+  PENDING
+  VERIFIED
+  INFO_REQUIRED
+  REJECTED
+}
+
+enum EngagementSensitivity {
+  STANDARD
+  CONFIDENTIAL
+  HIGH
+  HIGHLY_SENSITIVE
+}
+
+enum EngagementStatus {
+  NEW
+  UNDER_REVIEW
+  MATCHING
+  FIRM_SELECTED
+  INTRODUCTION_SENT
+  CLIENT_ACCEPTED
+  FIRM_ACCEPTED
+  ACTIVE
+  COMPLETED
+  DECLINED
+  CLOSED
+  REMATCH
+}
+
+enum MessageSenderRole {
+  CLIENT
+  FIRM
+  ADMIN
+}
+
+enum LeadStatus {
+  PENDING
+  MATCHED
+  ENGAGED
+  PAID
+  DELIVERED
+  RELEASED
+}
+
+// ---------- models ----------
+
+/// Individual users — both clients and individual professionals (legacy track).
+/// role distinguishes the two; professional-only fields are nullable for clients.
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  passwordHash String
+  role         UserRole
+  name         String
+  phone        String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // professional-only fields (legacy individual-professional track)
+  professionalBody   String?
+  registrationNumber String?
+  yearsExperience    String?
+  expertise          String?
+  rate               String?
+  bio                String?
+  verified           Boolean @default(false)
+
+  engagements Engagement[]
+  leads       Lead[]
+  messages    Message[]
+
+  @@map("users")
+}
+
+/// Accounting/tax/advisory firms — separate auth track from individual users.
+model Firm {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  passwordHash String
+  firmName     String
+  phone        String?
+  logoInitials String?
+  website      String?
+  yearEstablished String?
+
+  headquarters    String?
+  citiesServed    String[] @default([])
+  statesServed    String[] @default([])
+  countriesServed String[] @default([])
+  remoteAvailable Boolean  @default(false)
+
+  description String? @db.Text
+
+  // professional credentials
+  credentialIcan    String?
+  credentialAnan    String?
+  credentialCitn    String?
+  credentialOther   String?
+  verificationDocs  String? @db.Text
+
+  // taxonomy — kept as string arrays so new categories can be added without a migration
+  specialisations String[] @default([])
+  industries      String[] @default([])
+
+  capacity     FirmCapacity     @default(SMALL)
+  availability FirmAvailability @default(ACCEPTING)
+
+  verificationStatus     FirmVerificationStatus @default(PENDING)
+  verifyIdentity         Boolean                @default(false)
+  verifyCredentials      Boolean                @default(false)
+  verifyFirm             Boolean                @default(false)
+  verifiedSpecialisations String[]              @default([])
+  adminNotes             String?                @db.Text
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  messages Message[]
+
+  @@map("firms")
+}
+
+/// Firm-matching engagement requests — the core marketplace flow.
+/// Manual matching only: selectedFirmIds and matchReasonNote are set by an
+/// admin, never by an automated scoring engine.
+model Engagement {
+  id      String @id @default(uuid())
+  refCode String @unique
+
+  client      User   @relation(fields: [clientId], references: [id])
+  clientId    String
+  clientName  String
+  clientEmail String
+  clientPhone String?
+
+  company      String?
+  industry     String
+  businessSize String
+
+  engagementType String
+  /// Array of { id, label, value } — dynamic per-type follow-up answers.
+  typeAnswers    Json?
+
+  details String @db.Text
+
+  deadline         DateTime?
+  estimatedValue   String?
+  expectedDuration String?
+
+  country        String?
+  state          String?
+  city           String?
+  onSiteRequired Boolean @default(false)
+
+  sensitivity EngagementSensitivity @default(STANDARD)
+  status      EngagementStatus      @default(NEW)
+
+  /// Firms an admin has manually selected for this engagement.
+  selectedFirmIds String[] @default([])
+  matchReasonNote String?  @db.Text
+
+  /// Set when a client requests a match "with this firm in mind" from a firm profile.
+  interestedFirmId String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  messages Message[]
+
+  @@map("engagements")
+}
+
+/// Shared per-engagement message thread. Visibility (who may read/post) is
+/// enforced in the API layer, not by this table — see src/routes/messages.js.
+model Message {
+  id           String            @id @default(uuid())
+  engagement   Engagement        @relation(fields: [engagementId], references: [id], onDelete: Cascade)
+  engagementId String
+  senderRole   MessageSenderRole
+  senderName   String
+  body         String            @db.Text
+  createdAt    DateTime          @default(now())
+
+  // optional relations back to the actual sender account, when applicable
+  senderUser   User? @relation(fields: [senderUserId], references: [id])
+  senderUserId String?
+  senderFirm   Firm? @relation(fields: [senderFirmId], references: [id])
+  senderFirmId String?
+
+  @@map("messages")
+}
+
+/// Legacy individual-professional track — request, match, contract, payment.
+model Lead {
+  id      String @id @default(uuid())
+  refCode String @unique
+
+  client   User   @relation(fields: [clientId], references: [id])
+  clientId String
+  name     String
+  contact  String
+  company  String?
+
+  need    String
+  budget  String?
+  details String @db.Text
+
+  status LeadStatus @default(PENDING)
+
+  /// Array of matched professional snapshots offered to the client.
+  matches    Json?
+  chosenPro  String?
+  feeAmount  String?
+  scopeNote  String? @db.Text
+
+  rating Int?
+  review String? @db.Text
+
+  interestedFirmId String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("leads")
+}
+
+/// Real admin accounts — replaces the hardcoded client-side passcode.
+model Admin {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  passwordHash String
+  name         String?
+  createdAt    DateTime @default(now())
+
+  @@map("admins")
+}
