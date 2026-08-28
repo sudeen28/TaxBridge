@@ -11,6 +11,14 @@ const router = express.Router();
 
 const DEFAULT_FEE_AMOUNT = 200000; // ₦ — matches the frontend's default when a client chooses a pro before admin has set a fee
 
+// Statuses where deleting is safe: nothing has been matched/paid/delivered
+// yet (PENDING), or the whole thing has already concluded (RELEASED).
+// Anything in between (MATCHED/ENGAGED/PAID/DELIVERED) has a professional
+// actively involved, so deletion is blocked there — same reasoning as
+// engagements: don't let a client pull a record out from under someone
+// else mid-flow.
+const DELETABLE_LEAD_STATUSES = ['PENDING', 'RELEASED'];
+
 async function loadLeadOr404(id) {
   const lead = await prisma.lead.findUnique({ where: { id } });
   if (!lead) throw new AppError(404, 'Request not found.');
@@ -212,6 +220,29 @@ router.post(
       data: { rating, review: req.body.review ? String(req.body.review).trim() : null },
     });
     res.json({ lead: presentLead(updated) });
+  })
+);
+
+/**
+ * DELETE /api/leads/:id — client permanently removes a request from their
+ * own history. Only allowed while PENDING (nothing has happened yet, so
+ * there's nothing else to disturb) or RELEASED (the engagement is fully
+ * concluded). Blocked in between — MATCHED/ENGAGED/PAID/DELIVERED all mean
+ * a professional is actively involved or payment is in flight, so deleting
+ * the record then would pull it out from under them.
+ */
+router.delete(
+  '/:id',
+  requireAuth,
+  requireRole('client'),
+  asyncHandler(async (req, res) => {
+    const lead = await loadLeadOr404(req.params.id);
+    if (lead.clientId !== req.auth.id) throw new AppError(403, 'You do not have access to this request.');
+    if (!DELETABLE_LEAD_STATUSES.includes(lead.status)) {
+      throw new AppError(400, 'This request is in progress and can no longer be deleted.');
+    }
+    await prisma.lead.delete({ where: { id: lead.id } });
+    res.json({ success: true });
   })
 );
 

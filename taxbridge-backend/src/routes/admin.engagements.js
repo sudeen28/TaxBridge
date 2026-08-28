@@ -1,0 +1,98 @@
+const express = require('express');
+const prisma = require('../db');
+const { asyncHandler } = require('../utils/asyncHandler');
+const { AppError } = require('../utils/AppError');
+const { presentEngagement } = require('../utils/serialize');
+const { requireAuth, requireRole } = require('../middleware/auth');
+const {
+  engagementStatus: statusMap,
+  STATUS_STAGE,
+  toDbOrThrow,
+} = require('../utils/enumMaps');
+
+const router = express.Router();
+
+router.use(requireAuth, requireRole('admin'));
+
+// GET /api/admin/engagements?stage=&sensitivity=&type=
+// Mirrors the frontend admin dashboard's filter dropdowns (Phase 8).
+router.get(
+  '/',
+  asyncHandler(async (req, res) => {
+    const { stage, sensitivity, type } = req.query;
+
+    let engagements = await prisma.engagement.findMany({ orderBy: { createdAt: 'desc' } });
+    let shaped = engagements.map(presentEngagement);
+
+    if (stage) {
+      shaped = shaped.filter((e) => STATUS_STAGE[e.status] === stage);
+    }
+    if (sensitivity) {
+      shaped = shaped.filter((e) => e.sensitivity === sensitivity);
+    }
+    if (type) {
+      shaped = shaped.filter((e) => e.engagementType === type);
+    }
+
+    res.json({ engagements: shaped });
+  })
+);
+
+// PATCH /api/admin/engagements/:id/status — body: { status }
+router.patch(
+  '/:id/status',
+  asyncHandler(async (req, res) => {
+    if (!req.body.status) throw new AppError(400, 'status is required.');
+    const statusDb = toDbOrThrow(statusMap, req.body.status, 'status');
+
+    const eng = await prisma.engagement.findUnique({ where: { id: req.params.id } });
+    if (!eng) throw new AppError(404, 'Engagement not found.');
+
+    const updated = await prisma.engagement.update({
+      where: { id: eng.id },
+      data: { status: statusDb },
+    });
+    res.json({ engagement: presentEngagement(updated) });
+  })
+);
+
+// PATCH /api/admin/engagements/:id/match — body: { firmIds: [...], reason: "..." }
+// Mirrors the frontend's saveEngagementMatch: sets the manually-selected
+// firms and reasoning, and auto-advances status out of "reviewing" — but
+// never past that, and never based on any scoring. A human always chose
+// firmIds and wrote reason.
+router.patch(
+  '/:id/match',
+  asyncHandler(async (req, res) => {
+    const firmIds = Array.isArray(req.body.firmIds) ? req.body.firmIds : null;
+    if (!firmIds || !firmIds.length) {
+      throw new AppError(400, 'Select at least one firm.');
+    }
+
+    const eng = await prisma.engagement.findUnique({ where: { id: req.params.id } });
+    if (!eng) throw new AppError(404, 'Engagement not found.');
+
+    // Validate every firm id actually exists, so a typo doesn't silently
+    // save a dangling reference.
+    const firmCount = await prisma.firm.count({ where: { id: { in: firmIds } } });
+    if (firmCount !== firmIds.length) {
+      throw new AppError(400, 'One or more selected firms could not be found.');
+    }
+
+    const currentStatus = statusMap.fromDb[eng.status];
+    const nextStatus =
+      STATUS_STAGE[currentStatus] === 'reviewing' ? 'INTRODUCTION_SENT' : eng.status;
+
+    const updated = await prisma.engagement.update({
+      where: { id: eng.id },
+      data: {
+        selectedFirmIds: firmIds,
+        matchReasonNote: req.body.reason ? String(req.body.reason).trim() : null,
+        status: nextStatus,
+      },
+    });
+    res.json({ engagement: presentEngagement(updated) });
+  })
+);
+
+module.exports = router;

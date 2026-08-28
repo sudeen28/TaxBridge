@@ -116,12 +116,7 @@
   .hero h1{animation:heroIn .8s cubic-bezier(.16,1,.3,1) both;}
   .hero .lede{animation:heroIn .8s cubic-bezier(.16,1,.3,1) .15s both;}
   .hero-ctas{animation:heroIn .8s cubic-bezier(.16,1,.3,1) .28s both;}
-  .photo-strip .ph{opacity:0;animation:heroIn .7s cubic-bezier(.16,1,.3,1) forwards;}
-  .photo-strip .ph:nth-child(1){animation-delay:.4s;}
-  .photo-strip .ph:nth-child(2){animation-delay:.46s;}
-  .photo-strip .ph:nth-child(3){animation-delay:.52s;}
-  .photo-strip .ph:nth-child(4){animation-delay:.58s;}
-  .photo-strip .ph:nth-child(5){animation-delay:.64s;}
+  .tape-field{opacity:0;animation:heroIn .7s cubic-bezier(.16,1,.3,1) .4s forwards;}
 
   /* NAV */
   nav.topnav{
@@ -219,7 +214,7 @@
   @keyframes fadein{from{opacity:0;}to{opacity:1;}}
 
   /* HERO */
-  .hero{padding:96px 0 56px;text-align:center;}
+  .hero{padding:32px 0 56px;text-align:center;}
   .hero h1{font-size:64px;max-width:880px;margin:0 auto;line-height:1.15;}
   .hero h1 .hero-line{display:block;}
   .hero h1 .rot-wrap{
@@ -258,17 +253,47 @@
   .btn:disabled{opacity:.45;cursor:not-allowed;}
   .btn-full{width:100%;justify-content:center;}
 
-  /* hero photo strip */
-  .photo-strip{display:flex;gap:16px;margin-top:52px;overflow:hidden;padding:0 4px;}
-  .photo-strip .ph{
-    flex:1;min-width:0;aspect-ratio:3/4;border-radius:28px 28px 0 0;
-    background:linear-gradient(160deg,var(--peach),var(--amber));
-    display:flex;align-items:flex-end;justify-content:center;padding-bottom:14px;
-    font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;color:var(--maroon-deep);font-size:13px;
-    transition:transform .4s cubic-bezier(.16,1,.3,1);
+  /* hero tape composition — overlapping diagonal service ribbons, replaces the old photo-strip cards */
+  .tape-field{
+    position:relative;width:100%;height:340px;margin-top:52px;
+    overflow:hidden;isolation:isolate;
   }
-  .photo-strip .ph:hover{transform:translateY(-14px) scale(1.02);}
-  @media(max-width:720px){.photo-strip{display:none;}}
+  .tape{
+    position:absolute;left:-25%;width:150%;top:var(--tape-top);height:52px;
+    z-index:var(--tape-z);
+    background:linear-gradient(100deg,var(--amber),var(--amber-deep));
+    border-radius:9px;
+    box-shadow:0 16px 32px rgba(7,20,38,.2), 0 3px 8px rgba(7,20,38,.13);
+    transform:rotate(var(--tape-rotate));
+    opacity:var(--tape-opacity,1);
+    display:flex;align-items:center;overflow:hidden;
+  }
+  .tape-track{
+    display:flex;align-items:center;white-space:nowrap;width:max-content;
+    animation:tapeScrollLeft var(--tape-duration) linear infinite;
+  }
+  .tape[data-dir="right"] .tape-track{animation-name:tapeScrollRight;}
+  .tape-group{
+    display:inline-flex;align-items:center;gap:14px;padding:0 16px;
+    font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:15px;
+    letter-spacing:.07em;color:var(--ink);text-transform:uppercase;
+  }
+  .tape-dot{opacity:.55;font-weight:700;}
+  @keyframes tapeScrollLeft{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+  @keyframes tapeScrollRight{from{transform:translateX(-50%);}to{transform:translateX(0);}}
+  @media(max-width:720px){
+    .tape-field{height:190px;margin-top:34px;}
+    .tape{height:32px;border-radius:7px;}
+    .tape-group{font-size:11px;gap:8px;padding:0 10px;letter-spacing:.05em;}
+  }
+  @media(max-width:420px){
+    .tape-field{height:150px;}
+    .tape{height:26px;}
+    .tape-group{font-size:9.5px;gap:6px;padding:0 8px;}
+  }
+  @media(prefers-reduced-motion:reduce){
+    .tape-track{animation:none !important;transform:translateX(0) !important;}
+  }
 
   /* FULL BLEED COLOR SECTIONS */
   .band{padding:88px 0;}
@@ -434,13 +459,14 @@
   .card + .card{margin-top:24px;}
   label{display:block;font-size:13.5px;font-weight:700;margin:18px 0 6px;color:var(--ink);}
   .checkrow{display:flex;align-items:flex-start;gap:10px;margin:18px 0 6px;}
-  .checkrow input[type="checkbox"],.checkrow input[type="radio"]{margin-top:3px;flex-shrink:0;}
+  .checkrow input[type="checkbox"],.checkrow input[type="radio"]{margin-top:3px;}
   .checkrow label{flex:1;min-width:0;margin:0;font-size:14px;font-weight:400;color:inherit;}
   label:first-child{margin-top:0;}
   input,select,textarea{
     width:100%;padding:12px 14px;border:1px solid var(--line-strong);border-radius:var(--radius-sm);
     font-family:inherit;font-size:14.5px;background:var(--cream);color:var(--ink);
   }
+  input[type="checkbox"],input[type="radio"]{width:16px;height:16px;padding:0;border:1px solid var(--line-strong);background:var(--cream);flex:0 0 auto;}
   input:focus,select:focus,textarea:focus{outline:2px solid var(--orange);outline-offset:1px;border-color:var(--orange);}
   textarea{min-height:90px;resize:vertical;}
   .hint{font-size:12.5px;color:var(--ink-soft);margin-top:4px;}
@@ -450,6 +476,24 @@
   .msg{padding:12px 16px;border-radius:var(--radius-sm);font-size:14px;margin-top:16px;}
   .msg.success{background:#E4F0E7;color:var(--green);border:1px solid var(--green);}
   .msg.error{background:#FBE4DD;color:#B0442E;border:1px solid #B0442E;}
+
+  /* auth card (client login/signup) — icon error banner, required-field
+     asterisks, centered title, divider, and light social-login buttons */
+  .auth-card-title{font-size:23px;font-weight:800;text-align:center;font-family:'Plus Jakarta Sans',sans-serif;margin-bottom:18px;}
+  .req-star{color:#B0442E;margin-left:2px;}
+  .msg.auth-error{display:flex;align-items:center;gap:12px;margin-top:0;margin-bottom:18px;}
+  .auth-error-icon{
+    flex:0 0 auto;width:20px;height:20px;background:#B0442E;color:#fff;border-radius:5px;
+    display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;
+    transform:rotate(45deg);
+  }
+  .auth-error-icon span{transform:rotate(-45deg);}
+  .auth-divider{display:flex;align-items:center;gap:14px;margin:22px 0;color:var(--ink-soft);font-size:12px;letter-spacing:.06em;text-transform:uppercase;}
+  .auth-divider::before,.auth-divider::after{content:'';flex:1;height:1px;background:var(--line-strong);}
+  .btn-social{background:#fff;color:var(--ink);border:1px solid var(--line-strong);justify-content:center;gap:10px;font-size:14.5px;padding:14px 20px;}
+  .btn-social:hover{background:#F7F7F7;box-shadow:0 6px 16px rgba(7,20,38,.08);}
+  .btn-social svg{width:18px;height:18px;flex:0 0 auto;}
+  .btn-social + .btn-social{margin-top:10px;}
 
   .pro-card{border:1px solid var(--line-strong);background:var(--paper-card);padding:20px;border-radius:var(--radius-sm);margin-top:14px;transition:transform .25s ease, box-shadow .25s ease;}
   .pro-card:hover{transform:translateY(-3px);box-shadow:0 12px 24px rgba(0,0,0,.07);}
@@ -486,6 +530,17 @@
   }
 
   .client-hero-grid{display:grid;grid-template-columns:1fr 1.15fr;gap:0;align-items:stretch;max-width:920px;margin:0 auto;border:1px solid var(--line-strong);border-radius:var(--radius);overflow:hidden;}
+
+  /* generic modal, used for the submission-confirmation dialog */
+  .modal-overlay{position:fixed;inset:0;background:rgba(26,20,16,.55);z-index:200;display:flex;align-items:center;justify-content:center;padding:20px;}
+  .modal-box{background:var(--paper-card);border-radius:var(--radius);max-width:420px;width:100%;padding:32px;text-align:center;}
+  .modal-icon{width:52px;height:52px;border-radius:50%;background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;font-size:26px;}
+  .modal-box h3{font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;margin-bottom:8px;}
+  .modal-box p{font-size:14px;color:var(--ink-soft);margin-bottom:22px;}
+
+  .btn-spinner{display:inline-block;width:15px;height:15px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:btn-spin .7s linear infinite;vertical-align:-2px;margin-right:8px;}
+  @keyframes btn-spin{to{transform:rotate(360deg);}}
+  button:disabled{opacity:.65;cursor:not-allowed;}
   .client-trust-panel{background:var(--maroon-deep);color:#fff;padding:40px 36px;display:flex;flex-direction:column;justify-content:center;}
   .client-trust-panel .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--green);margin-bottom:14px;}
   .client-trust-panel h2{font-size:26px;color:#fff;margin-bottom:18px;}
@@ -755,13 +810,7 @@
       <span class="trust-dot">·</span>
       <span class="trust-item">✓ Specialist-first, not generalist</span>
     </div>
-    <div class="photo-strip">
-      <div class="ph">Bookkeeping</div>
-      <div class="ph">Tax disputes</div>
-      <div class="ph">Forensic accounting</div>
-      <div class="ph">Audit</div>
-      <div class="ph">Restructuring</div>
-    </div>
+    <div class="tape-field" id="tape-field" aria-hidden="true"></div>
   </div>
 
   <div class="band band-maroon dark" id="problem-band">
@@ -1214,6 +1263,32 @@ function initRotatingWord(){
   tick();
 }
 
+/* hero tape composition — several diagonal ribbon strips, each with a
+   continuously scrolling marquee of services, crossing/overlapping via
+   varied rotation, position, speed, direction and z-index. Content is
+   generated once (not on every animation frame) and the motion itself is
+   pure CSS transform/keyframes, so this never touches layout after init. */
+const TAPE_SERVICES = ['BOOKKEEPING', 'TAX DISPUTES', 'FORENSIC ACCOUNTING', 'AUDIT', 'RESTRUCTURING', 'TAX ADVISORY', 'FINANCIAL REPORTING', 'COMPLIANCE', 'PAYROLL'];
+const TAPE_CONFIG = [
+  { rotate: -11, top: 4,  duration: 27, dir: 'left',  z: 2, opacity: .92 },
+  { rotate: 9,   top: 24, duration: 19, dir: 'right', z: 4, opacity: 1   },
+  { rotate: -15, top: 46, duration: 33, dir: 'left',  z: 1, opacity: .88 },
+  { rotate: 13,  top: 66, duration: 16, dir: 'right', z: 3, opacity: 1   },
+  { rotate: -7,  top: 85, duration: 24, dir: 'left',  z: 5, opacity: .95 }
+];
+function initTapeField(){
+  const field = document.getElementById('tape-field');
+  if(!field) return;
+  const groupHtml = TAPE_SERVICES.map(s => `${s} <span class="tape-dot">•</span>`).join(' ');
+  field.innerHTML = TAPE_CONFIG.map(t => `
+    <div class="tape" data-dir="${t.dir}" style="--tape-rotate:${t.rotate}deg;--tape-top:${t.top}%;--tape-duration:${t.duration}s;--tape-z:${t.z};--tape-opacity:${t.opacity};">
+      <div class="tape-track">
+        <span class="tape-group">${groupHtml}</span>
+        <span class="tape-group">${groupHtml}</span>
+      </div>
+    </div>`).join('');
+}
+
 /* phone mockup typing/reply loop */
 function initPhoneMock(){
   const body = document.getElementById('phone-body');
@@ -1367,6 +1442,7 @@ function scrollToSection(id){
 document.addEventListener('DOMContentLoaded', () => {
   loadSessionFromStorage();
   initRotatingWord();
+  initTapeField();
   initPhoneMock();
   initSteps();
   initFaq();
@@ -1374,13 +1450,20 @@ document.addEventListener('DOMContentLoaded', () => {
   initScrollTop();
   if(window.location.hash === '#admin'){ go('admin'); }
 });
-window.addEventListener('DOMContentLoaded', () => {
-  const loader = document.getElementById('app-loader');
-  if(loader) setTimeout(() => loader.classList.add('hidden'), 550);
-});
-window.addEventListener('load', () => {
+const LOADER_MIN_MS = 2000;
+const loaderStartedAt = Date.now();
+function hideAppLoader(){
   const loader = document.getElementById('app-loader');
   if(loader) loader.classList.add('hidden');
+}
+window.addEventListener('DOMContentLoaded', () => {
+  setTimeout(hideAppLoader, LOADER_MIN_MS);
+});
+window.addEventListener('load', () => {
+  // backstop: guarantees the loader can't get stuck open, but still
+  // respects the minimum display time above rather than cutting it short
+  const remaining = Math.max(0, LOADER_MIN_MS - (Date.now() - loaderStartedAt));
+  setTimeout(hideAppLoader, remaining);
 });
 </script>
 <script>
@@ -1406,6 +1489,27 @@ function railClass(stage){
   return 'rail-closed';
 }
 function esc(s){ return (s||'').toString().replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function showModal(innerHtml){
+  closeModal();
+  const overlay = document.createElement('div');
+  overlay.className = 'modal-overlay';
+  overlay.id = 'active-modal';
+  overlay.onclick = (e) => { if(e.target === overlay) closeModal(); };
+  overlay.innerHTML = `<div class="modal-box">${innerHtml}</div>`;
+  document.body.appendChild(overlay);
+}
+function closeModal(){
+  const existing = document.getElementById('active-modal');
+  if(existing) existing.remove();
+}
+function showSuccessModal(title, body){
+  showModal(`
+    <div class="modal-icon">✓</div>
+    <h3>${esc(title)}</h3>
+    <p>${esc(body)}</p>
+    <button class="btn btn-brass btn-full" onclick="closeModal()">Done</button>
+  `);
+}
 function togglePasswordVisibility(inputId, btn){
   const input = document.getElementById(inputId);
   if(!input) return;
@@ -1687,6 +1791,9 @@ const api = {
   },
   engagements: {
     create: (token, body) => apiFetch('/engagements', {method:'POST', token, body}),
+    update: (token, id, body) => apiFetch('/engagements/' + encodeURIComponent(id), {method:'PATCH', token, body}),
+    withdraw: (token, id) => apiFetch(`/engagements/${encodeURIComponent(id)}/withdraw`, {method:'POST', token}),
+    delete: (token, id) => apiFetch('/engagements/' + encodeURIComponent(id), {method:'DELETE', token}),
     mine: (token) => apiFetch('/engagements/mine', {token}),
     matchedToMe: (token) => apiFetch('/engagements/matched-to-me', {token}),
     get: (token, id) => apiFetch('/engagements/' + encodeURIComponent(id), {token}),
@@ -1704,6 +1811,7 @@ const api = {
     matchedToMe: (token) => apiFetch('/leads/matched-to-me', { token }),
     deliver: (token, id) => apiFetch(`/leads/${id}/deliver`, { method: 'POST', token }),
     interestedInMe: (token) => apiFetch('/leads/interested-in-me', { token }),
+    delete: (token, id) => apiFetch(`/leads/${id}`, { method: 'DELETE', token }),
   },
   admin: {
     stats: (token) => apiFetch('/admin/stats', { token }),
@@ -1819,7 +1927,6 @@ function renderClientPortal(){
           <div class="trust-step"><span class="trust-step-num">03</span><span class="trust-step-text">You accept the introduction and coordinate directly. Your case stays trackable here throughout.</span></div>
         </div>
         <div class="client-form-panel">
-          <h2 class="section-title" style="font-size:22px;margin-bottom:4px;">${clientAuthTab === 'login' ? 'Log in' : 'Create your account'}</h2>
           <div class="card">
             <div class="auth-tabs">
               <button class="${clientAuthTab==='login'?'active':''}" onclick="setClientAuthTab('login')">Log in</button>
@@ -1840,27 +1947,50 @@ function setClientAuthTab(tab){ clientAuthTab = tab; renderClientPortal(); }
 
 function renderClientAuthForm(){
   const el = document.getElementById('client-auth-form');
+  const socialButtons = `
+    <div class="auth-divider"><span>Or</span></div>
+    <button type="button" class="btn btn-social btn-full" onclick="socialSignInPlaceholder('Google')">
+      <svg viewBox="0 0 24 24"><path fill="#4285F4" d="M23.52 12.27c0-.85-.08-1.67-.22-2.45H12v4.64h6.47a5.53 5.53 0 0 1-2.4 3.63v3h3.88c2.27-2.09 3.57-5.17 3.57-8.82z"/><path fill="#34A853" d="M12 24c3.24 0 5.96-1.07 7.95-2.91l-3.88-3c-1.08.72-2.45 1.15-4.07 1.15-3.13 0-5.78-2.11-6.73-4.96H1.26v3.12A12 12 0 0 0 12 24z"/><path fill="#FBBC05" d="M5.27 14.28A7.2 7.2 0 0 1 4.89 12c0-.79.14-1.56.38-2.28V6.6H1.26A12 12 0 0 0 0 12c0 1.94.46 3.77 1.26 5.4l4.01-3.12z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.44-3.44C17.95 1.19 15.24 0 12 0 7.31 0 3.26 2.69 1.26 6.6l4.01 3.12C6.22 6.86 8.87 4.75 12 4.75z"/></svg>
+      Sign in with Google
+    </button>
+    <button type="button" class="btn btn-social btn-full" onclick="socialSignInPlaceholder('Apple')">
+      <svg viewBox="0 0 24 24" fill="#000"><path d="M16.36 1.43c0 1.14-.42 2.2-1.24 3.06-.87.92-2.09 1.62-3.28 1.53-.14-1.16.41-2.32 1.16-3.09.83-.87 2.29-1.55 3.36-1.5zm3.68 16.9c-.5 1.15-.73 1.66-1.37 2.68-.9 1.42-2.16 3.19-3.73 3.2-1.4.02-1.76-.9-3.66-.89-1.9.01-2.29.9-3.69.89-1.57-.02-2.76-1.61-3.66-3.03-2.52-3.95-2.78-8.59-1.23-11.06.9-1.42 2.36-2.42 3.98-2.42 1.6 0 2.6.87 3.93.87 1.28 0 2.06-.87 3.94-.87 1.36 0 2.87.71 3.86 1.99-3.39 1.85-2.84 6.65.63 8.64z"/></svg>
+      Sign in with Apple
+    </button>`;
+
   if(clientAuthTab === 'login'){
     el.innerHTML = `
-      <label>Email</label>
+      <h2 class="auth-card-title">Log In</h2>
+      <div id="cl-msg"></div>
+      <label>Email address<span class="req-star">*</span></label>
       <input id="cl-email" type="email" placeholder="you@example.com">
-      <label>Password</label>
+      <label>Password<span class="req-star">*</span></label>
       ${pwField('cl-pass','Your password','clientLogin')}
-      <div style="margin-top:20px;"><button class="btn btn-brass btn-full" onclick="clientLogin()">Log in</button></div>
-      <div id="cl-msg"></div>`;
+      <div style="margin-top:20px;"><button class="btn btn-primary btn-full" onclick="clientLogin()">Log In</button></div>
+      ${socialButtons}`;
   } else {
     el.innerHTML = `
-      <label>Full name</label>
+      <h2 class="auth-card-title">Create your account</h2>
+      <div id="cl-msg"></div>
+      <label>Full name<span class="req-star">*</span></label>
       <input id="cs-name" placeholder="e.g. Amina Bello">
-      <label>Email</label>
+      <label>Email address<span class="req-star">*</span></label>
       <input id="cs-email" type="email" placeholder="you@example.com">
       <label>Phone (optional)</label>
       <input id="cs-phone" placeholder="For matches to reach you if needed">
-      <label>Password</label>
+      <label>Password<span class="req-star">*</span></label>
       ${pwField('cs-pass','At least 8 characters')}
-      <div style="margin-top:20px;"><button class="btn btn-brass btn-full" onclick="clientSignup()">Create account</button></div>
-      <div id="cl-msg"></div>`;
+      <div style="margin-top:20px;"><button class="btn btn-primary btn-full" onclick="clientSignup()">Create account</button></div>
+      ${socialButtons}`;
   }
+}
+
+function socialSignInPlaceholder(provider){
+  alert(provider + ' sign-in is coming soon — for now, use email and password.');
+}
+
+function authErrorMsg(text){
+  return `<div class="msg error auth-error"><span class="auth-error-icon"><span>&times;</span></span> ${esc(text)}</div>`;
 }
 
 async function clientSignup(){
@@ -1869,15 +1999,15 @@ async function clientSignup(){
   const phone = document.getElementById('cs-phone').value.trim();
   const pass = document.getElementById('cs-pass').value;
   const msg = document.getElementById('cl-msg');
-  if(!name || !email || !pass){ msg.innerHTML = '<div class="msg error">Name, email, and password are required.</div>'; return; }
-  if(pass.length < 8){ msg.innerHTML = '<div class="msg error">Password should be at least 8 characters.</div>'; return; }
+  if(!name || !email || !pass){ msg.innerHTML = authErrorMsg('Name, email, and password are required.'); return; }
+  if(pass.length < 8){ msg.innerHTML = authErrorMsg('Password should be at least 8 characters.'); return; }
   try{
     const { token, user } = await api.auth.clientSignup({ name, email, phone, password: pass });
     session.client = { token, user };
     saveSessionToStorage();
     renderClientPortal();
   } catch(err){
-    msg.innerHTML = `<div class="msg error">${esc(err.message)}</div>`;
+    msg.innerHTML = authErrorMsg(err.message);
   }
 }
 
@@ -1891,7 +2021,7 @@ async function clientLogin(){
     saveSessionToStorage();
     renderClientPortal();
   } catch(err){
-    msg.innerHTML = `<div class="msg error">${esc(err.message)}</div>`;
+    msg.innerHTML = authErrorMsg(err.message);
   }
 }
 
@@ -1916,6 +2046,9 @@ async function renderClientDashboard(){
     const data = await api.engagements.mine(session.client.token);
     myEngagements = data.engagements;
   } catch(err){ engFetchError = err.message; }
+
+  const editingEng = editingEngagementId ? myEngagements.find(e => e.id === editingEngagementId) : null;
+  if(editingEngagementId && !editingEng) editingEngagementId = null; // stale id — fell out of the list somehow
 
   let myLeads = [];
   try{
@@ -1944,7 +2077,7 @@ async function renderClientDashboard(){
       <div class="ledger-strip-item"><div class="ledger-strip-num">${doneCount}</div><div class="ledger-strip-label">Completed</div></div>
     </div>
     ${interestNote}
-    ${renderEngagementForm(user)}`;
+    ${renderEngagementForm(user, editingEng)}`;
 
   if(engFetchError) html += `<div class="msg error">${esc(engFetchError)}</div>`;
   if(!myEngagements.length){
@@ -1964,47 +2097,51 @@ async function renderClientDashboard(){
     </div>`;
 
   area.innerHTML = html;
-  renderDynamicEngagementQuestions();
+  renderDynamicEngagementQuestions(editingEng ? editingEng.typeAnswers : null);
   renderLegacyLeadSection(user, myLeads);
 }
 
-function renderEngagementForm(user){
+let editingEngagementId = null;
+
+function renderEngagementForm(user, existingEng){
+  const e = existingEng || {};
+  const isEdit = !!existingEng;
   return `
-    <div class="card" style="max-width:100%;margin-bottom:28px;">
-      <h3 class="form-title">New engagement request</h3>
-      <p class="form-sub">The more detail you give us, the better our team can identify the right firm.</p>
+    <div class="card" style="max-width:100%;margin-bottom:28px;" id="engagement-form-card">
+      <h3 class="form-title">${isEdit ? 'Edit engagement request' : 'New engagement request'}</h3>
+      <p class="form-sub">${isEdit ? "You can only edit this while it's still awaiting review." : 'The more detail you give us, the better our team can identify the right firm.'}</p>
 
       <div class="taxo-group-title" style="margin-top:0;">Basic information</div>
       <label>Company name (optional)</label>
-      <input id="eq-company" placeholder="e.g. Bello Textiles Ltd">
+      <input id="eq-company" placeholder="e.g. Bello Textiles Ltd" value="${esc(e.company||'')}">
       <label>Industry</label>
-      <select id="eq-industry">${INDUSTRY_TAXONOMY.map(i => `<option>${i}</option>`).join('')}<option>Other</option></select>
+      <select id="eq-industry">${INDUSTRY_TAXONOMY.map(i => `<option ${e.industry===i?'selected':''}>${i}</option>`).join('')}<option ${e.industry==='Other'?'selected':''}>Other</option></select>
       <label>Business size</label>
-      <select id="eq-size">${BUSINESS_SIZES.map(b => `<option>${b}</option>`).join('')}</select>
+      <select id="eq-size">${BUSINESS_SIZES.map(b => `<option ${e.businessSize===b?'selected':''}>${b}</option>`).join('')}</select>
 
       <div class="taxo-group-title">Engagement</div>
       <label>What do you need help with?</label>
-      <select id="eq-type" onchange="renderDynamicEngagementQuestions()">${ENGAGEMENT_TYPES.map(t => `<option>${t}</option>`).join('')}</select>
+      <select id="eq-type" onchange="renderDynamicEngagementQuestions()">${ENGAGEMENT_TYPES.map(t => `<option ${e.engagementType===t?'selected':''}>${t}</option>`).join('')}</select>
       <label>Describe the problem in your own words</label>
-      <textarea id="eq-details" placeholder="What's happening, what you need, and anything that helps us understand it."></textarea>
+      <textarea id="eq-details" placeholder="What's happening, what you need, and anything that helps us understand it.">${esc(e.details||'')}</textarea>
       <label>Deadline (optional)</label>
-      <input id="eq-deadline" type="date">
+      <input id="eq-deadline" type="date" value="${e.deadline ? new Date(e.deadline).toISOString().slice(0,10) : ''}">
       <label>Estimated engagement size/value (optional)</label>
-      <input id="eq-value" placeholder="e.g. ₦2,000,000, or 'not sure yet'">
+      <input id="eq-value" placeholder="e.g. ₦2,000,000, or 'not sure yet'" value="${esc(e.estimatedValue||'')}">
       <label>Expected duration (optional)</label>
-      <input id="eq-duration" placeholder="e.g. 2 weeks, 3 months, ongoing">
+      <input id="eq-duration" placeholder="e.g. 2 weeks, 3 months, ongoing" value="${esc(e.expectedDuration||'')}">
 
       <div id="eq-dynamic-questions"></div>
 
       <div class="taxo-group-title">Location</div>
       <label>Country</label>
-      <input id="eq-country" value="Nigeria">
+      <input id="eq-country" value="${esc(e.country || 'Nigeria')}">
       <label>State</label>
-      <input id="eq-state" placeholder="e.g. Lagos">
+      <input id="eq-state" placeholder="e.g. Lagos" value="${esc(e.state||'')}">
       <label>City</label>
-      <input id="eq-city" placeholder="e.g. Ikeja">
+      <input id="eq-city" placeholder="e.g. Ikeja" value="${esc(e.city||'')}">
       <div class="checkrow">
-        <input type="checkbox" id="eq-onsite">
+        <input type="checkbox" id="eq-onsite" ${e.onSiteRequired?'checked':''}>
         <label for="eq-onsite" style="margin:0;">This requires physical/on-site presence — remote firms won't work for this</label>
       </div>
 
@@ -2012,34 +2149,40 @@ function renderEngagementForm(user){
       <p class="hint">This is an internal note to help our team pick an appropriate firm — it's never shown publicly.</p>
       ${SENSITIVITY_LEVELS.map((s,i) => `
         <div class="checkrow" style="margin-top:${i===0?'10':'12'}px;">
-          <input type="radio" name="eq-sensitivity" value="${s.id}" ${i===0?'checked':''} id="eq-sens-${s.id}">
+          <input type="radio" name="eq-sensitivity" value="${s.id}" ${(e.sensitivity ? e.sensitivity===s.id : i===0) ? 'checked' : ''} id="eq-sens-${s.id}">
           <label for="eq-sens-${s.id}" style="margin:0;"><strong style="font-weight:700;">${s.label}</strong> — <span class="hint">${s.desc}</span></label>
         </div>`).join('')}
 
-      <div style="margin-top:22px;"><button class="btn btn-brass btn-full" onclick="submitEngagement()">Submit request</button></div>
+      <div style="margin-top:22px;display:flex;gap:10px;">
+        <button class="btn btn-brass btn-full" id="eq-submit-btn" onclick="submitEngagement()">${isEdit ? 'Save changes' : 'Submit request'}</button>
+        ${isEdit ? `<button class="btn btn-outline" onclick="cancelEditEngagement()">Cancel</button>` : ''}
+      </div>
       <div id="eq-msg"></div>
     </div>`;
 }
 
-function renderDynamicEngagementQuestions(){
+function renderDynamicEngagementQuestions(prefillAnswers){
   const typeSelect = document.getElementById('eq-type');
   const container = document.getElementById('eq-dynamic-questions');
   if(!typeSelect || !container) return;
   const qs = engagementQuestionsFor(typeSelect.value);
   if(!qs.length){ container.innerHTML = ''; return; }
+  const answerMap = {};
+  (prefillAnswers||[]).forEach(a => { answerMap[a.id] = a.value; });
   container.innerHTML = `<div class="taxo-group-title">${esc(typeSelect.value)} — a few more details</div>
     <p class="hint" style="margin-top:-6px;margin-bottom:10px;">This just helps our team understand the engagement — there's no scoring, a person reviews it.</p>
-    ${qs.map(renderDynamicQuestionField).join('')}`;
+    ${qs.map(q => renderDynamicQuestionField(q, answerMap[q.id])).join('')}`;
 }
-function renderDynamicQuestionField(q){
+function renderDynamicQuestionField(q, prefillValue){
   const id = 'eqd-' + q.id;
+  const val = prefillValue || '';
   if(q.type === 'select'){
-    return `<label>${esc(q.label)}</label><select id="${id}"><option value="">Select…</option>${q.options.map(o => `<option>${esc(o)}</option>`).join('')}</select>`;
+    return `<label>${esc(q.label)}</label><select id="${id}"><option value="">Select…</option>${q.options.map(o => `<option ${val===o?'selected':''}>${esc(o)}</option>`).join('')}</select>`;
   }
   if(q.type === 'textarea'){
-    return `<label>${esc(q.label)}</label><textarea id="${id}" placeholder="${esc(q.placeholder||'')}"></textarea>`;
+    return `<label>${esc(q.label)}</label><textarea id="${id}" placeholder="${esc(q.placeholder||'')}">${esc(val)}</textarea>`;
   }
-  return `<label>${esc(q.label)}</label><input id="${id}" placeholder="${esc(q.placeholder||'')}">`;
+  return `<label>${esc(q.label)}</label><input id="${id}" placeholder="${esc(q.placeholder||'')}" value="${esc(val)}">`;
 }
 function collectDynamicEngagementAnswers(type){
   const qs = engagementQuestionsFor(type);
@@ -2112,33 +2255,83 @@ async function sendEngagementMessageFromUI(engId, viewerRole){
 }
 
 async function submitEngagement(){
+  const btn = document.getElementById('eq-submit-btn');
+  if(btn.disabled) return; // guards against double-click / repeated submits
   const details = document.getElementById('eq-details').value.trim();
   const msg = document.getElementById('eq-msg');
   if(!details){ msg.innerHTML = '<div class="msg error">Describe the problem before submitting.</div>'; return; }
   const sensitivityInput = document.querySelector('input[name="eq-sensitivity"]:checked');
   const engagementType = document.getElementById('eq-type').value;
+  const payload = {
+    company: document.getElementById('eq-company').value.trim(),
+    industry: document.getElementById('eq-industry').value,
+    businessSize: document.getElementById('eq-size').value,
+    engagementType,
+    typeAnswers: collectDynamicEngagementAnswers(engagementType),
+    details,
+    deadline: document.getElementById('eq-deadline').value || null,
+    estimatedValue: document.getElementById('eq-value').value.trim(),
+    expectedDuration: document.getElementById('eq-duration').value.trim(),
+    country: document.getElementById('eq-country').value.trim(),
+    state: document.getElementById('eq-state').value.trim(),
+    city: document.getElementById('eq-city').value.trim(),
+    onSiteRequired: document.getElementById('eq-onsite').checked,
+    sensitivity: sensitivityInput ? sensitivityInput.value : 'standard'
+  };
+  const isEdit = !!editingEngagementId;
+  if(!isEdit) payload.interestedFirmId = pendingFirmInterest || null;
+
+  const originalLabel = btn.textContent;
+  btn.disabled = true;
+  btn.innerHTML = `<span class="btn-spinner"></span>${isEdit ? 'Saving…' : 'Submitting…'}`;
   try{
-    await api.engagements.create(session.client.token, {
-      company: document.getElementById('eq-company').value.trim(),
-      industry: document.getElementById('eq-industry').value,
-      businessSize: document.getElementById('eq-size').value,
-      engagementType,
-      typeAnswers: collectDynamicEngagementAnswers(engagementType),
-      details,
-      deadline: document.getElementById('eq-deadline').value || null,
-      estimatedValue: document.getElementById('eq-value').value.trim(),
-      expectedDuration: document.getElementById('eq-duration').value.trim(),
-      country: document.getElementById('eq-country').value.trim(),
-      state: document.getElementById('eq-state').value.trim(),
-      city: document.getElementById('eq-city').value.trim(),
-      onSiteRequired: document.getElementById('eq-onsite').checked,
-      sensitivity: sensitivityInput ? sensitivityInput.value : 'standard',
-      interestedFirmId: pendingFirmInterest || null
-    });
-    pendingFirmInterest = null;
+    if(isEdit){
+      await api.engagements.update(session.client.token, editingEngagementId, payload);
+      editingEngagementId = null;
+      await renderClientDashboard();
+      showSuccessModal('Changes saved', "Your engagement request has been updated. Our team will review it as-is.");
+    } else {
+      await api.engagements.create(session.client.token, payload);
+      pendingFirmInterest = null;
+      await renderClientDashboard();
+      showSuccessModal('Request submitted', "We've received your engagement request. Our team reviews every submission personally — you'll see updates here as it progresses.");
+    }
+  } catch(err){
+    const freshMsg = document.getElementById('eq-msg');
+    if(freshMsg) freshMsg.innerHTML = `<div class="msg error">${esc(err.message)}</div>`;
+    const freshBtn = document.getElementById('eq-submit-btn');
+    if(freshBtn){ freshBtn.disabled = false; freshBtn.textContent = originalLabel; }
+  }
+}
+
+function startEditEngagement(id){
+  editingEngagementId = id;
+  renderClientDashboard().then(() => {
+    const card = document.getElementById('engagement-form-card');
+    if(card) card.scrollIntoView({behavior:'smooth', block:'start'});
+  });
+}
+function cancelEditEngagement(){
+  editingEngagementId = null;
+  renderClientDashboard();
+}
+async function withdrawEngagement(id){
+  if(!confirm('Withdraw this request? Our team will no longer act on it, but it stays visible in your history.')) return;
+  try{
+    await api.engagements.withdraw(session.client.token, id);
     renderClientDashboard();
   } catch(err){
-    msg.innerHTML = `<div class="msg error">${esc(err.message)}</div>`;
+    alert(err.message);
+  }
+}
+
+async function deleteEngagement(id){
+  if(!confirm('Permanently delete this request from your history? This cannot be undone.')) return;
+  try{
+    await api.engagements.delete(session.client.token, id);
+    renderClientDashboard();
+  } catch(err){
+    alert(err.message);
   }
 }
 
@@ -2154,7 +2347,12 @@ async function renderEngagementCard(eng){
     </div>
     <p class="hint">${esc(eng.industry)}${eng.company ? ' · ' + esc(eng.company) : ''} · submitted ${new Date(eng.createdAt).toLocaleDateString()}</p>
     <p style="font-size:14px;">${esc(eng.details)}</p>
-    ${renderTypeAnswersHtml(eng)}`;
+    ${renderTypeAnswersHtml(eng)}
+    <div class="grid-actions" style="margin-top:12px;">
+      ${statusInfo.stage === 'reviewing' ? `<button class="subtle-btn" onclick="startEditEngagement('${eng.id}')">Edit request</button>` : ''}
+      ${eng.status !== 'closed' && eng.status !== 'declined' && eng.status !== 'completed' ? `<button class="subtle-btn" onclick="withdrawEngagement('${eng.id}')">Withdraw</button>` : ''}
+      ${eng.status === 'closed' || eng.status === 'declined' || eng.status === 'completed' ? `<button class="subtle-btn" onclick="deleteEngagement('${eng.id}')">Delete</button>` : ''}
+    </div>`;
 
   if(statusInfo.stage === 'reviewing'){
     html += `<div class="msg success" style="margin-top:12px;">We're reviewing your request. Our team is identifying the most suitable specialist firm based on your requirements, location, complexity, and sensitivity.</div>`;
@@ -2294,7 +2492,8 @@ async function renderClientLeadCard(lead, user){
       </div>
     </div>
     <p class="hint">${esc(lead.budget||'')}${lead.company ? ' · ' + esc(lead.company) : ''} · submitted ${new Date(lead.createdAt).toLocaleDateString()}</p>
-    <p style="font-size:14px;">${esc(lead.details)}</p>`;
+    <p style="font-size:14px;">${esc(lead.details)}</p>
+    ${lead.status === 'pending' || lead.status === 'released' ? `<div class="grid-actions" style="margin-top:12px;"><button class="subtle-btn" onclick="deleteLead('${lead.id}')">Delete</button></div>` : ''}`;
 
   if(lead.status === 'pending'){
     html += `<p class="hint">Our team is reviewing this and will match you with two to three vetted professionals soon.</p>`;
@@ -2406,6 +2605,16 @@ async function chooseMatch(leadId, professionalId){
 async function paySim(leadId){
   try{
     await api.leads.pay(session.client.token, leadId);
+    renderClientDashboard();
+  } catch(err){
+    alert(err.message);
+  }
+}
+
+async function deleteLead(leadId){
+  if(!confirm('Permanently delete this request from your history? This cannot be undone.')) return;
+  try{
+    await api.leads.delete(session.client.token, leadId);
     renderClientDashboard();
   } catch(err){
     alert(err.message);

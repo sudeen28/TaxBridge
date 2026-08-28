@@ -11,6 +11,17 @@ const proAuthRoutes = require('./routes/auth.pro');
 const firmAuthRoutes = require('./routes/auth.firm');
 const adminAuthRoutes = require('./routes/auth.admin');
 
+const { router: engagementsRoutes } = require('./routes/engagements');
+const firmsRoutes = require('./routes/firms');
+const messagesRoutes = require('./routes/messages');
+const adminEngagementsRoutes = require('./routes/admin.engagements');
+const adminFirmsRoutes = require('./routes/admin.firms');
+const adminRoutes = require('./routes/admin');
+
+const { router: leadsRoutes } = require('./routes/leads');
+const leadsProfessionalRoutes = require('./routes/leads.professional');
+const adminLeadsRoutes = require('./routes/admin.leads');
+
 const app = express();
 
 // --- core middleware ---
@@ -42,9 +53,24 @@ app.use('/api/auth/professional', proAuthRoutes);
 app.use('/api/auth/firm', firmAuthRoutes);
 app.use('/api/auth/admin', adminAuthRoutes);
 
-// Resource routes (engagements, firms marketplace, messages, leads, admin
-// operations) land here in the next backend phase — this scaffold covers
-// project setup, the data model, and authentication first.
+// Resource routes (Phase B2)
+// Two routers share the '/api/engagements' base path — Express supports
+// this fine, they're just registered one after another.
+app.use('/api/engagements', engagementsRoutes);
+app.use('/api/engagements', messagesRoutes);
+app.use('/api/firms', firmsRoutes);
+app.use('/api/admin/engagements', adminEngagementsRoutes);
+app.use('/api/admin/firms', adminFirmsRoutes);
+app.use('/api/admin', adminRoutes);
+
+// leads.professional must be mounted BEFORE leads (client) — its
+// '/matched-to-me' path would otherwise be swallowed by leads.js's
+// '/:id' pattern (same class of bug as the engagements '/matched-to-me' fix).
+app.use('/api/leads', leadsProfessionalRoutes);
+app.use('/api/leads', leadsRoutes);
+app.use('/api/admin/leads', adminLeadsRoutes);
+
+// Frontend is still on window.storage — switching it onto this API is the next phase.
 
 // --- 404 for anything unmatched under /api ---
 app.use('/api', (req, res) => {

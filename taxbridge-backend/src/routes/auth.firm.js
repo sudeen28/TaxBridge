@@ -5,8 +5,9 @@ const { signToken } = require('../utils/jwt');
 const { asyncHandler } = require('../utils/asyncHandler');
 const { AppError } = require('../utils/AppError');
 const { requireFields, requireEmail, requirePassword } = require('../utils/validate');
-const { publicAccount } = require('../utils/serialize');
+const { presentFirm } = require('../utils/serialize');
 const { requireAuth, requireRole } = require('../middleware/auth');
+const { capacity: capacityMap, availability: availabilityMap, toDbOrThrow } = require('../utils/enumMaps');
 
 const router = express.Router();
 
@@ -61,14 +62,16 @@ router.post(
         specialisations: toStringArray(req.body.specialisations),
         industries: toStringArray(req.body.industries),
 
-        capacity: 'SMALL',
-        availability: 'ACCEPTING',
+        capacity: req.body.capacity ? toDbOrThrow(capacityMap, req.body.capacity, 'capacity') : 'SMALL',
+        availability: req.body.availability
+          ? toDbOrThrow(availabilityMap, req.body.availability, 'availability')
+          : 'ACCEPTING',
         verificationStatus: 'PENDING',
       },
     });
 
     const token = signToken({ id: firm.id, role: 'firm', email: firm.email });
-    res.status(201).json({ token, firm: publicAccount(firm) });
+    res.status(201).json({ token, firm: presentFirm(firm) });
   })
 );
 
@@ -89,7 +92,7 @@ router.post(
     }
 
     const token = signToken({ id: firm.id, role: 'firm', email: firm.email });
-    res.json({ token, firm: publicAccount(firm) });
+    res.json({ token, firm: presentFirm(firm) });
   })
 );
 
@@ -101,7 +104,7 @@ router.get(
   asyncHandler(async (req, res) => {
     const firm = await prisma.firm.findUnique({ where: { id: req.auth.id } });
     if (!firm) throw new AppError(404, 'Firm account not found.');
-    res.json({ firm: publicAccount(firm) });
+    res.json({ firm: presentFirm(firm) });
   })
 );
 
