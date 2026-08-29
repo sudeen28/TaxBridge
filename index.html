@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TaxBridge.ng — The Right Accounting Firm for the Job</title>
-<meta name="description" content="TaxBridge matches Nigerian businesses with the right specialist accounting, tax, audit, forensic and financial firm — based on the nature of the engagement, location, and sensitivity. Not a directory. A managed match.">
+<title>TaxBridge.ng: The Right Accounting Firm for the Job</title>
+<meta name="description" content="TaxBridge matches Nigerian businesses with the right specialist accounting, tax, audit, forensic and financial firm, based on the nature of the engagement, location, and sensitivity. Not a directory. A managed match.">
 <meta name="keywords" content="accounting firm Nigeria, tax firm Nigeria, forensic accounting Nigeria, tax investigation Nigeria, asset tracing Nigeria, audit firm Nigeria, litigation support Nigeria, financial due diligence Nigeria, accounting marketplace Nigeria">
-<meta property="og:title" content="TaxBridge.ng — The Right Accounting Firm for the Job">
-<meta property="og:description" content="Tell us what you're dealing with. TaxBridge matches you with a verified specialist firm — reviewed by our team, not an algorithm.">
+<meta property="og:title" content="TaxBridge.ng: The Right Accounting Firm for the Job">
+<meta property="og:description" content="Tell us what you're dealing with. TaxBridge matches you with a verified specialist firm, reviewed by our team, not an algorithm.">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="en_NG">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="TaxBridge.ng — The Right Accounting Firm for the Job">
+<meta name="twitter:title" content="TaxBridge.ng: The Right Accounting Firm for the Job">
 <meta name="twitter:description" content="Bookkeeping, tax disputes, forensic investigations and financial restructuring need very different expertise. TaxBridge matches you with the right specialist firm.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%230E9F6E'/%3E%3Ctext x='32' y='43' font-family='Arial,sans-serif' font-weight='800' font-size='28' fill='white' text-anchor='middle'%3ETB%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -242,7 +242,7 @@
     animation:cursorBlink .8s steps(1) infinite;vertical-align:-0.08em;
   }
   @keyframes cursorBlink{0%,49%{opacity:1;}50%,100%{opacity:0;}}
-  .hero .lede{font-size:20px;color:var(--ink-soft);max-width:600px;margin:26px auto 0;}
+  .hero .lede{font-size:17px;color:var(--ink-soft);max-width:600px;margin:22px auto 0;}
   .hero-ctas{display:flex;gap:14px;margin-top:36px;justify-content:center;flex-wrap:wrap;}
 
   .trust-bar{
@@ -462,7 +462,7 @@
   .footer-top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;padding-bottom:24px;border-bottom:1px solid rgba(255,255,255,.12);margin-bottom:24px;}
   .footer-top .brand-name{color:#fff;}
 
-  @media(max-width:720px){.hero h1{font-size:36px;}.band h2{font-size:28px;}}
+  @media(max-width:720px){.hero h1{font-size:36px;}.band h2{font-size:28px;}.hero .lede{font-size:15.5px;}}
 
   /* ===== shared app-view styles (portal / admin / forms) ===== */
   .section-label{
@@ -540,7 +540,8 @@
   }
 
   .ledger-strip{display:flex;gap:0;margin:22px 0 30px;border-top:1px solid var(--line-strong);border-bottom:1px solid var(--line-strong);}
-  .ledger-strip-item{flex:1;padding:14px 18px;border-right:1px solid var(--line-strong);}
+  .ledger-strip-item{flex:1;padding:14px 18px;border-right:1px solid var(--line-strong);cursor:pointer;transition:background .15s;}
+  .ledger-strip-item:hover{background:var(--paper-card);}
   .ledger-strip-item:last-child{border-right:none;}
   .ledger-strip-num{font-family:'IBM Plex Mono',monospace;font-size:26px;font-weight:700;color:var(--ink);line-height:1;}
   .ledger-strip-label{font-size:11.5px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.05em;margin-top:6px;}
@@ -841,7 +842,7 @@
       <span class="rot-wrap" id="rot-wrap"><span id="rot-text"></span><span class="rot-cursor" id="rot-cursor"></span></span>
       <span class="hero-line">for the job.</span>
     </h1>
-    <p class="lede">Tell us what you're dealing with. Our team personally reviews your request and matches you with a verified specialist firm based on the nature of the work, location, and how sensitive it is. No algorithm, no match score; a person makes the call.</p>
+    <p class="lede">Tell us what you're dealing with. Our team personally reviews your request and matches you with a verified specialist firm, based on the nature of the work, location, and how sensitive it is. No algorithm, no match score; a person makes the call.</p>
     <div class="hero-ctas">
       <button class="btn btn-orange" onclick="go('client')">Get Matched →</button>
       <button class="btn btn-outline" onclick="go('list-firm')">List My Firm</button>
@@ -881,8 +882,8 @@
         <div class="solution-copy">
           <span class="eyebrow-pill">Our solution</span>
           <h3>How TaxBridge matches you to a firm.</h3>
-          <p>Tell us the work, the industry, the location, and how sensitive it is. Our team reviews every request personally and identifies which specialist firm is the right fit — not just any accountant.</p>
-          <p>You get a short-list of firms whose specialisation, location and capacity actually fit the engagement, with our reasoning explained not a long list to sift through yourself.</p>
+          <p>Tell us the work, the industry, the location, and how sensitive it is. Our team reviews every request personally and identifies which specialist firm is the right fit, not just any accountant.</p>
+          <p>You get a short-list of firms whose specialisation, location and capacity actually fit the engagement, with our reasoning explained, not a long list to sift through yourself.</p>
           <button class="btn btn-orange" style="margin-top:22px;" onclick="go('client')">Get Matched</button>
         </div>
         <div class="phone-mock">
@@ -900,7 +901,7 @@
               </div>
             </div>
             <div class="phone-body" id="phone-body">
-              <div class="phone-bubble mine">We're facing a tax authority investigation and need the right specialist firm — ideally based in Lagos.</div>
+              <div class="phone-bubble mine">We're facing a tax authority investigation and need the right specialist firm, ideally based in Lagos.</div>
               <div class="typing-dots" id="phone-typing"><span></span><span></span><span></span></div>
             </div>
           </div>
@@ -917,7 +918,7 @@
       <h2 class="reveal">Focus on your business. Let TaxBridge find the right firm.</h2>
       <p class="band-sub reveal">Instead of searching a directory or relying only on referrals, TaxBridge gives your business a faster, more accountable way to find the specialist accounting help a matter actually needs.</p>
       <div class="fb-grid reveal-stagger">
-        <div class="fb-item stagger-child"><strong>Matched to a specialist firm</strong><span>Not a generic listing a firm chosen for this specific engagement.</span></div>
+        <div class="fb-item stagger-child"><strong>Matched to a specialist firm</strong><span>Not a generic listing: a firm chosen for this specific engagement.</span></div>
         <div class="fb-item stagger-child"><strong>Verified firms only</strong><span>Identity, credentials, and specialisation reviewed by our team.</span></div>
         <div class="fb-item stagger-child"><strong>Reasoning you can see</strong><span>We explain why a firm was recommended, not just that it was.</span></div>
         <div class="fb-item stagger-child"><strong>Confidentiality respected</strong><span>Sensitive engagements are matched with that in mind.</span></div>
@@ -933,14 +934,14 @@
         <span class="eyebrow-pill">A lighter option: individual professionals</span>
       </div>
       <h2 class="reveal">Just need one person, not a firm? That works too.</h2>
-      <p class="band-sub reveal">For smaller, simpler work, TaxBridge also runs a separate track where you're matched directly with an individual professional — contract and payment handled through TaxBridge, start to finish.</p>
+      <p class="band-sub reveal">For smaller, simpler work, TaxBridge also runs a separate track where you're matched directly with an individual professional, with contract and payment handled through TaxBridge start to finish.</p>
 
       <div class="steps-grid reveal">
         <div class="steps-list" id="steps-list">
           <div class="step-item active" data-step="0">
             <div class="step-progress"></div>
             <h4>Request</h4>
-            <p>Tell us what you need.The work, your budget, and any deadline. Takes under two minutes.</p>
+            <p>Tell us what you need: the work, your budget, and any deadline. Takes under two minutes.</p>
           </div>
           <div class="step-item" data-step="1">
             <div class="step-progress"></div>
@@ -973,7 +974,7 @@
   <div class="band band-maroon dark" id="payment-protection">
     <div class="container">
       <div style="text-align:center;" class="reveal">
-        <span class="eyebrow-pill">Payment protection — individual professional track</span>
+        <span class="eyebrow-pill">Payment protection: individual professional track</span>
       </div>
       <h2 class="reveal">Your payment is protected.</h2>
       <p class="band-sub reveal">On the individual-professional track, you don't pay a professional directly, and nothing releases until the work is actually delivered.</p>
@@ -1025,7 +1026,7 @@
           </div>
         </div>
       </div>
-      <p class="pf-disclaimer reveal">Payment is managed through our secure payment process — TaxBridge is not a bank or a regulated escrow provider. If a professional doesn't deliver, tell us and we'll re-match you at no extra cost.</p>
+      <p class="pf-disclaimer reveal">Payment is managed through our secure payment process. TaxBridge is not a bank or a regulated escrow provider. If a professional doesn't deliver, tell us and we'll re-match you at no extra cost.</p>
     </div>
   </div>
 
@@ -1035,7 +1036,7 @@
         <span class="eyebrow-pill">Not one-size-fits-all</span>
       </div>
       <h2 class="reveal">Not every accounting problem needs the same accountant.</h2>
-      <p class="band-sub reveal" style="color:var(--ink-soft);">Bookkeeping, tax disputes, forensic investigations and financial restructuring require very different expertise. Tell us the problem, we'll point you to the specialist.</p>
+      <p class="band-sub reveal" style="color:var(--ink-soft);">Bookkeeping, tax disputes, forensic investigations and financial restructuring require very different expertise. Tell us the problem, and we'll point you to the specialist.</p>
 
       <div class="biz-grid reveal-stagger">
         <div class="biz-card stagger-child">
@@ -1112,12 +1113,12 @@
   <div class="band band-green dark" id="location-matching">
     <div class="container" style="max-width:820px;text-align:center;">
       <div class="reveal">
-        <span class="eyebrow-pill">Location matters — sometimes</span>
+        <span class="eyebrow-pill">Location matters, sometimes</span>
       </div>
       <h2 class="reveal">Local when it matters. Remote when it doesn't.</h2>
-      <p class="band-sub reveal">For engagements that need someone on the ground, we prioritize firms based in or near your location. For work that can be handled remotely, geography matters a lot less — and that's factored into which firms we suggest.</p>
+      <p class="band-sub reveal">For engagements that need someone on the ground, we prioritize firms based in or near your location. For work that can be handled remotely, geography matters a lot less, and that's factored into which firms we suggest.</p>
       <div class="fb-grid reveal-stagger" style="grid-template-columns:1fr 1fr;">
-        <div class="fb-item dark stagger-child"><strong>On-site work</strong><span>Investigations, audits with physical records, and matters requiring an in-person presence get matched to firms who can actually show up — starting with firms in your city or state.</span></div>
+        <div class="fb-item dark stagger-child"><strong>On-site work</strong><span>Investigations, audits with physical records, and matters requiring an in-person presence get matched to firms who can actually show up, starting with firms in your city or state.</span></div>
         <div class="fb-item dark stagger-child"><strong>Remote-friendly work</strong><span>Bookkeeping, filings, and advisory that don't need anyone on-site open up to well-suited firms further afield, so you're not limited to who happens to be local.</span></div>
       </div>
     </div>
@@ -1129,11 +1130,11 @@
         <span class="eyebrow-pill">Joining as an individual professional</span>
       </div>
       <h2 class="reveal">Turn your expertise into new opportunities.</h2>
-      <p class="band-sub reveal">Apply once. Once we've reviewed your credentials, we bring qualified client briefs to you — you're not chasing leads on a public listing. Running a firm rather than working solo? <a href="#" onclick="go('list-firm');return false;" style="color:inherit;text-decoration:underline;">List your firm instead.</a></p>
+      <p class="band-sub reveal">Apply once. Once we've reviewed your credentials, we bring qualified client briefs to you. You're not chasing leads on a public listing. Running a firm rather than working solo? <a href="#" onclick="go('list-firm');return false;" style="color:inherit;text-decoration:underline;">List your firm instead.</a></p>
       <div class="fb-grid reveal-stagger">
         <div class="fb-item dark stagger-child"><strong>Get discovered by businesses</strong><span>Client requests come to you, matched to your specialization.</span></div>
         <div class="fb-item dark stagger-child"><strong>Build a professional profile</strong><span>Your credentials, experience, and reviews in one place.</span></div>
-        <div class="fb-item dark stagger-child"><strong>Receive relevant client requests</strong><span>No cold outreach — requests already fit what you do.</span></div>
+        <div class="fb-item dark stagger-child"><strong>Receive relevant client requests</strong><span>No cold outreach: requests already fit what you do.</span></div>
         <div class="fb-item dark stagger-child"><strong>Manage engagements</strong><span>Contract and payment status tracked per engagement.</span></div>
         <div class="fb-item dark stagger-child"><strong>Build your reputation</strong><span>Client ratings carry forward to your next match.</span></div>
         <div class="fb-item dark stagger-child"><strong>Grow your practice</strong><span>Renewals and repeat work come back through TaxBridge.</span></div>
@@ -1167,17 +1168,17 @@
       <div id="about" class="stub-block reveal">
         <div class="section-label">About</div>
         <h3 class="stub-h3">About TaxBridge</h3>
-        <p class="stub-p">TaxBridge is a managed marketplace that matches Nigerian businesses and individuals with the right accounting, tax, audit, forensic and financial specialist firm for their specific engagement not just any accountant. Instead of leaving you to find and vet someone on your own, TaxBridge reviews requests, identifies the right specialist firm, and manages the introduction.</p>
+        <p class="stub-p">TaxBridge is a managed marketplace that matches Nigerian businesses and individuals with the right accounting, tax, audit, forensic and financial specialist firm for their specific engagement, not just any accountant. Instead of leaving you to find and vet someone on your own, TaxBridge reviews requests, identifies the right specialist firm, and manages the introduction.</p>
       </div>
       <div id="contact" class="stub-block reveal">
         <div class="section-label">Contact</div>
         <h3 class="stub-h3">Get in touch</h3>
-        <p class="stub-p">TaxBridge is early the most reliable way to reach us right now is by creating a client or professional account and submitting a request or application. Dedicated support channels are still being set up.</p>
+        <p class="stub-p">TaxBridge is early. The most reliable way to reach us right now is by creating a client or professional account and submitting a request or application. Dedicated support channels are still being set up.</p>
       </div>
       <div id="legal" class="stub-block reveal">
         <div class="section-label">Terms & Privacy</div>
         <h3 class="stub-h3">Terms of Service & Privacy Policy</h3>
-        <p class="stub-p"><em>Placeholder not yet finalized.</em> TaxBridge's full Terms of Service and Privacy Policy are being drafted with legal counsel and will be published here before the platform handles real client data or payments at scale. Nothing on this page currently constitutes a binding agreement.</p>
+        <p class="stub-p"><em>Placeholder, not yet finalized.</em> TaxBridge's full Terms of Service and Privacy Policy are being drafted with legal counsel and will be published here before the platform handles real client data or payments at scale. Nothing on this page currently constitutes a binding agreement.</p>
       </div>
     </div>
   </div>
@@ -1406,16 +1407,16 @@ function initSteps(){
 
 /* FAQ */
 const faqData = [
-  {q:"How does TaxBridge work?", a:"Tell us what you're dealing with the type of work, your industry, location, and how sensitive it is. Our team reviews the request personally and identifies which specialist firm is the right fit, then makes the introduction. There's also a separate, lighter-weight option to work with an individual professional directly for smaller, simpler work."},
-  {q:"What's the difference between getting matched with a firm and finding an individual professional?", a:"Firm matching is for engagements where specialisation, location, and capacity genuinely matter tax investigations, forensic accounting, audits, asset tracing, restructuring and similar work. The individual professional track is a lighter option for smaller, routine work (like a single filing), and includes an optional contract-and-payment process through TaxBridge. Both are manually reviewed by our team; use whichever fits what you need."},
-  {q:"How are professionals and firms verified?", a:"We check identity, professional body registration (ICAN, ANAN, CITN, or equivalent), and relevant experience for individual professionals and firms alike. It's a manual review by our team, and for firms we track it at a granular level (identity, credentials, and even specific specialisations) rather than one blanket approval."},
-  {q:"How do I choose an individual professional?", a:"After you submit a request on the individual-professional track, we send you two to three matched professionals with their experience and specialisations. You pick the one that fits and we set up the contract. Firm matching works differently.TaxBridge's team makes the introduction rather than presenting you with a list to choose from."},
-  {q:"How does payment protection work?", a:"This applies to the individual-professional track: you pay TaxBridge, not the professional directly, and that payment is held until the work is marked delivered, then released minus our commission. It's not a regulated escrow service, it's a payment process designed to reduce the risk of paying upfront with no recourse. Firm engagements are currently introduction-only; TaxBridge doesn't yet process payment between you and the firm."},
+  {q:"How does TaxBridge work?", a:"Tell us what you're dealing with: the type of work, your industry, location, and how sensitive it is. Our team reviews the request personally and identifies which specialist firm is the right fit, then makes the introduction. There's also a separate, lighter-weight option to work with an individual professional directly for smaller, simpler work."},
+  {q:"What's the difference between getting matched with a firm and finding an individual professional?", a:"Firm matching is for engagements where specialisation, location, and capacity genuinely matter: tax investigations, forensic accounting, audits, asset tracing, restructuring and similar work. The individual professional track is a lighter option for smaller, routine work (like a single filing), and includes an optional contract-and-payment process through TaxBridge. Both are manually reviewed by our team; use whichever fits what you need."},
+  {q:"How are professionals and firms verified?", a:"We check identity, professional body registration (ICAN, ANAN, CITN, or equivalent), and relevant experience, for individual professionals and firms alike. It's a manual review by our team, and for firms we track it at a granular level (identity, credentials, and even specific specialisations) rather than one blanket approval."},
+  {q:"How do I choose an individual professional?", a:"After you submit a request on the individual-professional track, we send you two to three matched professionals with their experience and specialisations. You pick the one that fits and we set up the contract. Firm matching works differently: TaxBridge's team makes the introduction rather than presenting you with a list to choose from."},
+  {q:"How does payment protection work?", a:"This applies to the individual-professional track: you pay TaxBridge, not the professional directly, and that payment is held until the work is marked delivered, then released minus our commission. It's not a regulated escrow service. It's a payment process designed to reduce the risk of paying upfront with no recourse. Firm engagements are currently introduction-only; TaxBridge doesn't yet process payment between you and the firm."},
   {q:"What happens if I'm unhappy with the work?", a:"Tell us and we'll re-match you at no extra cost, whether that was a firm or an individual professional. We're also building a more structured dispute process as the platform grows."},
-  {q:"What services can I request?", a:"Everything from routine bookkeeping, tax filing (PAYE, VAT, CIT), and payroll setup, through to tax investigations and disputes, forensic accounting, fraud investigation, asset tracing, litigation support, audits, and due diligence. If your need doesn't fit neatly into one of those, tell us anyway, we'll find the right fit."},
+  {q:"What services can I request?", a:"Everything from routine bookkeeping, tax filing (PAYE, VAT, CIT), and payroll setup, through to tax investigations and disputes, forensic accounting, fraud investigation, asset tracing, litigation support, audits, and due diligence. If your need doesn't fit neatly into one of those, tell us anyway and we'll find the right fit."},
   {q:"Can businesses use TaxBridge, not just individuals?", a:"Yes, most requests come from small and growing businesses that need ongoing tax and accounting support, not a one-off filing."},
   {q:"How do professionals or firms join?", a:"Individual professionals apply through the professional portal with their registration number, expertise, and experience. Accounting and advisory firms register through 'List My Firm' instead, with details for the whole practice. Both are manually reviewed before you start receiving matched requests."},
-  {q:"When do I pay?", a:"Only on the individual-professional track, and only after you've chosen a matched professional and signed the one-page contract nothing is charged before that. Firm engagements don't currently have a payment step through TaxBridge."},
+  {q:"When do I pay?", a:"Only on the individual-professional track, and only after you've chosen a matched professional and signed the one-page contract. Nothing is charged before that. Firm engagements don't currently have a payment step through TaxBridge."},
   {q:"How does TaxBridge make money?", a:"We take a commission on individual-professional engagements, and on renewals or repeat work for a period after the introduction."}
 ];
 function initFaq(){
@@ -1639,7 +1640,7 @@ function renderVerificationLevelsHtml(firm, editable){
   ` : '';
   const levelRows = VERIFICATION_LEVEL_DEFS.map(def => {
     const on = !!levels[def.id];
-    const status = `<span class="verify-badge ${on ? 'v-verified' : 'v-pending'}">${on ? '✓ ' + def.label : def.label + ' — not yet'}</span>`;
+    const status = `<span class="verify-badge ${on ? 'v-verified' : 'v-pending'}">${on ? '✓ ' + def.label : def.label + ' (not yet)'}</span>`;
     const toggle = editable ? `<button class="subtle-btn" onclick="setFirmVerificationLevel('${firm.id}','${def.id}',${!on})">${on ? 'Revoke' : 'Mark verified'}</button>` : '';
     return `<div class="grid-actions" style="justify-content:space-between;align-items:center;margin-bottom:8px;">
       <span>${status} <span class="hint">${esc(def.desc)}</span></span>${toggle}
@@ -1666,7 +1667,7 @@ function renderVerificationLevelsHtml(firm, editable){
     <div class="taxo-group-title" style="margin-top:0;">Verification levels</div>
     ${levelRows}
     <div class="taxo-group-title">Specialist Verified</div>
-    <p class="hint" style="margin-top:-6px;margin-bottom:10px;">TaxBridge has reviewed evidence supporting these specific specialisations${editable ? ' — click to toggle' : ''}.</p>
+    <p class="hint" style="margin-top:-6px;margin-bottom:10px;">TaxBridge has reviewed evidence supporting these specific specialisations${editable ? ' (click to toggle)' : ''}.</p>
     ${specialistBlock}`;
 }
 
@@ -2041,10 +2042,10 @@ function go(view){
 function statusTag(status){
   const map = {
     pending:['Pending match','status-pending'],
-    matched:['Matched — choose a professional','status-matched'],
-    engaged:['Engaged — awaiting payment','status-engaged'],
-    paid:['Paid — work in progress','status-paid'],
-    delivered:['Delivered — awaiting release','status-paid'],
+    matched:['Matched: choose a professional','status-matched'],
+    engaged:['Engaged: awaiting payment','status-engaged'],
+    paid:['Paid: work in progress','status-paid'],
+    delivered:['Delivered: awaiting release','status-paid'],
     released:['Complete','status-paid']
   };
   const [label, cls] = map[status] || [status, 'status-pending'];
@@ -2067,8 +2068,8 @@ function renderClientPortal(){
         <div class="client-trust-panel">
           <div class="eyebrow">Client portal</div>
           <h2>Every request is read by a person before it's matched.</h2>
-          <div class="trust-step"><span class="trust-step-num">01</span><span class="trust-step-text">You describe what's going on — the more specific, the better we can match.</span></div>
-          <div class="trust-step"><span class="trust-step-num">02</span><span class="trust-step-text">Our team reviews it and identifies a specialist firm, by hand — no scoring algorithm.</span></div>
+          <div class="trust-step"><span class="trust-step-num">01</span><span class="trust-step-text">You describe what's going on. The more specific, the better we can match.</span></div>
+          <div class="trust-step"><span class="trust-step-num">02</span><span class="trust-step-text">Our team reviews it and identifies a specialist firm, by hand, with no scoring algorithm.</span></div>
           <div class="trust-step"><span class="trust-step-num">03</span><span class="trust-step-text">You accept the introduction and coordinate directly. Your case stays trackable here throughout.</span></div>
         </div>
         <div class="client-form-panel">
@@ -2120,7 +2121,10 @@ function renderClientAuthForm(){
       <div id="cl-email-fields" style="display:${emailAuthOpen.login ? 'block' : 'none'};margin-top:18px;">
         <label>Email address<span class="req-star">*</span></label>
         <input id="cl-email" type="email" placeholder="you@example.com">
-        <label>Password<span class="req-star">*</span></label>
+        <div style="display:flex;justify-content:space-between;align-items:baseline;">
+          <label style="margin-bottom:0;">Password<span class="req-star">*</span></label>
+          <a href="#" onclick="forgotPasswordPlaceholder();return false;" style="font-size:12.5px;color:var(--orange-dark);text-decoration:none;">Forgot password?</a>
+        </div>
         ${pwField('cl-pass','Your password','clientLogin')}
         <div style="margin-top:20px;"><button class="btn btn-primary btn-full" onclick="clientLogin()">Log In</button></div>
       </div>`;
@@ -2157,7 +2161,11 @@ function toggleEmailAuth(tab){
 }
 
 function socialSignInPlaceholder(provider){
-  alert(provider + ' sign-in is coming soon — for now, use email.');
+  alert(provider + ' sign-in is coming soon. For now, use email.');
+}
+
+function forgotPasswordPlaceholder(){
+  alert("Password reset isn't available yet. For now, reach out to our team to have your password reset manually.");
 }
 
 function authErrorMsg(text){
@@ -2207,7 +2215,7 @@ async function renderClientDashboard(){
   if(pendingFirmInterest){
     try{
       const { firm: f } = await api.firms.get(pendingFirmInterest);
-      if(f) interestNote = `<div class="msg success" style="margin-bottom:16px;">You're requesting a match with <strong>${esc(f.firmName)}</strong> in mind. Our team still reviews the engagement before any introduction — submit your request below and we'll factor this in.</div>`;
+      if(f) interestNote = `<div class="msg success" style="margin-bottom:16px;">You're requesting a match with <strong>${esc(f.firmName)}</strong> in mind. Our team still reviews the engagement before any introduction. Submit your request below and we'll factor this in.</div>`;
     } catch(err){ /* firm may no longer exist — silently skip the note */ }
   }
 
@@ -2241,18 +2249,18 @@ async function renderClientDashboard(){
     </div>
     <div class="section-label">Client portal</div>
     <h2 class="section-title">Get matched to a specialist firm</h2>
-    <p class="hint" style="margin-bottom:8px;">Tell us what you're dealing with — our team reviews every request personally and identifies the right firm. No algorithm, no match percentage; a person makes this call.</p>
+    <p class="hint" style="margin-bottom:8px;">Tell us what you're dealing with, and our team reviews every request personally and identifies the right firm. No algorithm, no match percentage; a person makes this call.</p>
     <div class="ledger-strip">
-      <div class="ledger-strip-item"><div class="ledger-strip-num">${openCount}</div><div class="ledger-strip-label">Awaiting review</div></div>
-      <div class="ledger-strip-item"><div class="ledger-strip-num">${activeCount}</div><div class="ledger-strip-label">Matched / active</div></div>
-      <div class="ledger-strip-item"><div class="ledger-strip-num">${doneCount}</div><div class="ledger-strip-label">Completed</div></div>
+      <div class="ledger-strip-item" onclick="scrollToStage('reviewing')" role="button" tabindex="0"><div class="ledger-strip-num">${openCount}</div><div class="ledger-strip-label">Awaiting review</div></div>
+      <div class="ledger-strip-item" onclick="scrollToStage('matched')" role="button" tabindex="0"><div class="ledger-strip-num">${activeCount}</div><div class="ledger-strip-label">Matched / active</div></div>
+      <div class="ledger-strip-item" onclick="scrollToStage('completed')" role="button" tabindex="0"><div class="ledger-strip-num">${doneCount}</div><div class="ledger-strip-label">Completed</div></div>
     </div>
     ${interestNote}
     ${renderEngagementForm(user, editingEng)}`;
 
   if(engFetchError) html += `<div class="msg error">${esc(engFetchError)}</div>`;
   if(!myEngagements.length){
-    html += `<div class="empty">No engagement requests yet — submit one above.</div>`;
+    html += `<div class="empty">No engagement requests yet. Submit one above.</div>`;
   } else {
     for(const eng of myEngagements){
       html += await renderEngagementCard(eng);
@@ -2263,7 +2271,7 @@ async function renderClientDashboard(){
     <div style="margin-top:52px;padding-top:32px;border-top:1px solid var(--line-strong);">
       <div class="section-label">Another option</div>
       <h3 style="font-size:20px;font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;">Individual professional requests</h3>
-      <p class="hint" style="margin-bottom:20px;">Prefer to work with an individual accountant rather than a firm? Submit a request here instead — same personal review, smaller-scale engagements.</p>
+      <p class="hint" style="margin-bottom:20px;">Prefer to work with an individual accountant rather than a firm? Submit a request here instead, same personal review, smaller-scale engagements.</p>
       <div id="legacy-lead-area"></div>
     </div>`;
 
@@ -2273,6 +2281,16 @@ async function renderClientDashboard(){
 }
 
 let editingEngagementId = null;
+
+function scrollToStage(stage){
+  const target = document.querySelector(`#client-dash-area [data-stage="${stage}"]`) || document.querySelector(`#legacy-lead-area [data-stage="${stage}"]`);
+  if(target){
+    target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    target.style.transition = 'box-shadow .3s ease';
+    target.style.boxShadow = '0 0 0 3px var(--orange)';
+    setTimeout(() => { target.style.boxShadow = ''; }, 1400);
+  }
+}
 
 function renderEngagementForm(user, existingEng){
   const e = existingEng || {};
@@ -2313,15 +2331,15 @@ function renderEngagementForm(user, existingEng){
       <input id="eq-city" placeholder="e.g. Ikeja" value="${esc(e.city||'')}">
       <div class="checkrow">
         <input type="checkbox" id="eq-onsite" ${e.onSiteRequired?'checked':''}>
-        <label for="eq-onsite" style="margin:0;">This requires physical/on-site presence — remote firms won't work for this</label>
+        <label for="eq-onsite" style="margin:0;">This requires physical/on-site presence; remote firms won't work for this</label>
       </div>
 
       <div class="taxo-group-title">Sensitivity</div>
-      <p class="hint">This is an internal note to help our team pick an appropriate firm — it's never shown publicly.</p>
+      <p class="hint">This is an internal note to help our team pick an appropriate firm. It's never shown publicly.</p>
       ${SENSITIVITY_LEVELS.map((s,i) => `
         <div class="checkrow" style="margin-top:${i===0?'10':'12'}px;">
           <input type="radio" name="eq-sensitivity" value="${s.id}" ${(e.sensitivity ? e.sensitivity===s.id : i===0) ? 'checked' : ''} id="eq-sens-${s.id}">
-          <label for="eq-sens-${s.id}" style="margin:0;"><strong style="font-weight:700;">${s.label}</strong> — <span class="hint">${s.desc}</span></label>
+          <label for="eq-sens-${s.id}" style="margin:0;"><strong style="font-weight:700;">${s.label}</strong>: <span class="hint">${s.desc}</span></label>
         </div>`).join('')}
 
       <div style="margin-top:22px;display:flex;gap:10px;">
@@ -2340,8 +2358,8 @@ function renderDynamicEngagementQuestions(prefillAnswers){
   if(!qs.length){ container.innerHTML = ''; return; }
   const answerMap = {};
   (prefillAnswers||[]).forEach(a => { answerMap[a.id] = a.value; });
-  container.innerHTML = `<div class="taxo-group-title">${esc(typeSelect.value)} — a few more details</div>
-    <p class="hint" style="margin-top:-6px;margin-bottom:10px;">This just helps our team understand the engagement — there's no scoring, a person reviews it.</p>
+  container.innerHTML = `<div class="taxo-group-title">${esc(typeSelect.value)}: a few more details</div>
+    <p class="hint" style="margin-top:-6px;margin-bottom:10px;">This just helps our team understand the engagement. There's no scoring; a person reviews it.</p>
     ${qs.map(q => renderDynamicQuestionField(q, answerMap[q.id])).join('')}`;
 }
 function renderDynamicQuestionField(q, prefillValue){
@@ -2465,7 +2483,7 @@ async function submitEngagement(){
       await api.engagements.create(session.client.token, payload);
       pendingFirmInterest = null;
       await renderClientDashboard();
-      showSuccessModal('Request submitted', "We've received your engagement request. Our team reviews every submission personally — most clients hear back with a firm match within 24–48 hours. You'll see updates here as it progresses, and we'll notify you as soon as a match is ready.");
+      showSuccessModal('Request submitted', "We've received your engagement request. Our team reviews every submission personally. Most clients hear back with a firm match within 24–48 hours. You'll see updates here as it progresses, and we'll notify you as soon as a match is ready.");
     }
   } catch(err){
     const freshMsg = document.getElementById('eq-msg');
@@ -2508,7 +2526,7 @@ async function deleteEngagement(id){
 
 async function renderEngagementCard(eng){
   const statusInfo = ENGAGEMENT_STATUSES[eng.status] || ENGAGEMENT_STATUSES.new;
-  let html = `<div class="case-card ${railClass(statusInfo.stage)}">
+  let html = `<div class="case-card ${railClass(statusInfo.stage)}" id="eng-card-${eng.id}" data-stage="${statusInfo.stage}">
     <div class="case-card-top">
       <h4>${esc(eng.engagementType)}</h4>
       <div style="display:flex;align-items:center;gap:10px;">
@@ -2593,7 +2611,7 @@ async function renderLegacyLeadSection(user, preloadedLeads){
   let html = `
     <div class="card" style="max-width:100%;margin-bottom:28px;">
       <h3 class="form-title">New request</h3>
-      <p class="form-sub">Submit a new need — you can have several requests open at once.</p>
+      <p class="form-sub">Submit a new need. You can have several requests open at once.</p>
       <label>What do you need?</label>
       <select id="nr-need">
         <option>Tax filing (PAYE, VAT, CIT)</option>
@@ -2614,13 +2632,13 @@ async function renderLegacyLeadSection(user, preloadedLeads){
       <label>Company (optional)</label>
       <input id="nr-company" placeholder="e.g. Bello Textiles Ltd">
       <label>Details</label>
-      <textarea id="nr-details" placeholder="Anything that helps us match you well — timeline, business size, past issues, etc."></textarea>
+      <textarea id="nr-details" placeholder="Anything that helps us match you well: timeline, business size, past issues, etc."></textarea>
       <div style="margin-top:20px;"><button class="btn btn-brass btn-full" onclick="submitNewRequest()">Submit request</button></div>
       <div id="nr-msg"></div>
     </div>`;
 
   if(!myLeads.length){
-    html += `<div class="empty">No requests yet — submit one above.</div>`;
+    html += `<div class="empty">No requests yet. Submit one above.</div>`;
   } else {
     for(const lead of myLeads){
       html += await renderClientLeadCard(lead, user);
@@ -2654,7 +2672,8 @@ function starString(avg){
 }
 
 async function renderClientLeadCard(lead, user){
-  let html = `<div class="case-card ${railClass(lead.status)}">
+  const leadStage = lead.status === 'pending' ? 'reviewing' : lead.status === 'released' ? 'completed' : 'matched';
+  let html = `<div class="case-card ${railClass(lead.status)}" id="lead-card-${lead.id}" data-stage="${leadStage}">
     <div class="case-card-top">
       <h4>${esc(lead.need)}</h4>
       <div style="display:flex;align-items:center;gap:10px;">
@@ -2699,7 +2718,7 @@ async function renderClientLeadCard(lead, user){
     </div>
     ${lead.scopeNote ? `<div class="scope-note"><strong>What's included:</strong> ${esc(lead.scopeNote)}</div>` : ''}
     <button class="btn btn-brass btn-full" style="margin-top:16px;" onclick="paySim('${lead.id}')">Pay ₦${Number(lead.feeAmount||0).toLocaleString()} to TaxBridge</button>
-    <div class="disclaimer">This is a working simulation of the payment step — no real charge happens. A production build would swap this for a live Paystack or Flutterwave checkout. Once payment clears, you'll get the professional's direct contact details.</div>`;
+    <div class="disclaimer">This is a working simulation of the payment step. No real charge happens. A production build would swap this for a live Paystack or Flutterwave checkout. Once payment clears, you'll get the professional's direct contact details.</div>`;
   }
 
   if(['paid','delivered','released'].includes(lead.status)){
@@ -2726,11 +2745,11 @@ async function renderClientLeadCard(lead, user){
     } else {
       html += `<div class="pro-card" style="margin-top:14px;">
         <h4 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:16px;">Rate this engagement</h4>
-        <p class="hint">Help future clients — how was working with this professional?</p>
+        <p class="hint">Help future clients: how was working with this professional?</p>
         <div class="star-picker" id="star-picker-${lead.id}">
           ${[1,2,3,4,5].map(n => `<button class="star-btn" data-n="${n}" onclick="setStarPick('${lead.id}',${n})">☆</button>`).join('')}
         </div>
-        <textarea id="review-text-${lead.id}" placeholder="Optional — a line or two about the experience"></textarea>
+        <textarea id="review-text-${lead.id}" placeholder="Optional: a line or two about the experience"></textarea>
         <button class="btn btn-outline btn-sm" style="margin-top:12px;" onclick="submitRating('${lead.id}')">Submit review</button>
         <div id="rating-msg-${lead.id}"></div>
       </div>`;
@@ -2946,7 +2965,7 @@ async function renderProDashboard(){
 
   html += `<h3 style="font-size:19px;margin:32px 0 4px;">Your engagements <span class="hint">(${engagements.length})</span></h3>`;
   if(!engagements.length){
-    html += `<div class="empty">Verified and ready. We'll bring client briefs to you as they're matched — check back here.</div>`;
+    html += `<div class="empty">Verified and ready. We'll bring client briefs to you as they're matched. Check back here.</div>`;
   } else {
     for(const lead of engagements){
       html += `<div class="pro-card">
@@ -2956,7 +2975,7 @@ async function renderProDashboard(){
         </div>
         <p class="hint">${esc(lead.details).slice(0,160)}${lead.details.length>160?'…':''}</p>`;
       if(['paid','delivered','released'].includes(lead.status)){
-        html += `<p style="font-size:14px;margin-top:8px;"><strong>Client contact:</strong> ${esc(lead.name)} — ${esc(lead.contact)}</p>`;
+        html += `<p style="font-size:14px;margin-top:8px;"><strong>Client contact:</strong> ${esc(lead.name)}, ${esc(lead.contact)}</p>`;
         if(lead.scopeNote) html += `<div class="scope-note"><strong>What's included:</strong> ${esc(lead.scopeNote)}</div>`;
         if(lead.status === 'paid'){
           html += `<button class="btn btn-outline btn-sm" style="margin-top:12px;" onclick="markDelivered('${lead.id}')">Mark work delivered</button>`;
@@ -3094,7 +3113,7 @@ function renderFirmAuthForm(){
     <textarea id="fs-desc" placeholder="Who you are, what you do, and the kind of engagements you take on."></textarea>
 
     <div class="taxo-group-title">Professional credentials</div>
-    <p class="hint">Enter registration numbers where applicable — our team reviews these before your firm shows as verified.</p>
+    <p class="hint">Enter registration numbers where applicable. Our team reviews these before your firm shows as verified.</p>
     <label>ICAN registration number (optional)</label>
     <input id="fs-ican" placeholder="Leave blank if not applicable">
     <label>ANAN registration number (optional)</label>
@@ -3107,7 +3126,7 @@ function renderFirmAuthForm(){
     <textarea id="fs-verify-docs" placeholder="Links to scanned certificates, registration documents, CAC certificate, etc. (Google Drive, Dropbox, or similar). Our team may request more before verifying your firm."></textarea>
 
     <div class="taxo-group-title">Specialisations</div>
-    <p class="hint">Select every area your firm genuinely practices in — this is what drives matching.</p>
+    <p class="hint">Select every area your firm genuinely practices in. This is what drives matching.</p>
     <div id="fs-spec-chips"></div>
 
     <div class="taxo-group-title">Industries served</div>
@@ -3241,14 +3260,14 @@ async function firmDashOverviewHtml(firm){
   const awaitingFirmAccept = matchedToMe.filter(e => e.status === 'client_accepted');
 
   return `
-    <div class="biz-grid" style="grid-template-columns:repeat(3,1fr);margin-top:0;">
+    <div class="biz-grid" style="margin-top:0;">
       <div class="firm-sidebar-card"><h4>Active engagements</h4><p style="font-size:22px;font-weight:800;font-family:'Plus Jakarta Sans',sans-serif;">${active.length}</p></div>
       <div class="firm-sidebar-card"><h4>Awaiting your acceptance</h4><p style="font-size:22px;font-weight:800;font-family:'Plus Jakarta Sans',sans-serif;">${awaitingFirmAccept.length}</p></div>
       <div class="firm-sidebar-card"><h4>Completed</h4><p style="font-size:22px;font-weight:800;font-family:'Plus Jakarta Sans',sans-serif;">${completed.length}</p></div>
     </div>
     <div class="card" style="max-width:100%;margin-top:20px;">
       <h3 class="form-title">Profile summary</h3>
-      <p class="form-sub">${esc(firm.description) || 'No description added yet — add one in Firm Profile.'}</p>
+      <p class="form-sub">${esc(firm.description) || 'No description added yet, add one in Firm Profile.'}</p>
       <div class="firm-tags">${(firm.specialisations||[]).map(s => `<span class="firm-tag">${esc(s)}</span>`).join('') || '<span class="hint">No specialisations selected yet.</span>'}</div>
       <div class="grid-actions">
         <button class="btn btn-outline btn-sm" onclick="selectedFirmId='${firm.id}';go('firm-profile')">View public profile</button>
@@ -3324,7 +3343,7 @@ function firmDashCapacityHtml(firm){
   return `
     <div class="card" style="max-width:100%;">
       <h3 class="form-title">Capacity & availability</h3>
-      <p class="form-sub">Keep this current — TaxBridge's team uses it when manually matching engagements to your firm.</p>
+      <p class="form-sub">Keep this current. TaxBridge's team uses it when manually matching engagements to your firm.</p>
       <label>Typical engagement capacity</label>
       <select id="fc-capacity">${CAPACITY_LEVELS.map(c => `<option value="${c.id}" ${c.id===firm.capacity?'selected':''}>${c.label}</option>`).join('')}</select>
       <label>Current availability</label>
@@ -3415,7 +3434,7 @@ async function firmDashEngagementsHtml(firm){
         <p class="hint">${esc(eng.industry)} · ${[eng.city, eng.state].filter(Boolean).map(esc).join(', ')}${eng.onSiteRequired ? ' · On-site required' : ' · Remote OK'}</p>
         <p style="font-size:14px;">${esc(eng.details).slice(0,180)}${eng.details.length>180?'…':''}</p>
         ${eng.matchReasonNote ? `<div class="scope-note"><strong>Why TaxBridge matched you:</strong> ${esc(eng.matchReasonNote)}</div>` : ''}
-        ${eng.contactVisible ? `<p style="font-size:14px;margin-top:10px;"><strong>Client contact:</strong> ${esc(eng.clientName)} — ${esc(eng.clientEmail)}${eng.clientPhone ? ' · ' + esc(eng.clientPhone) : ''}</p>` : `<p class="hint">Client contact details appear once they accept the introduction.</p>`}
+        ${eng.contactVisible ? `<p style="font-size:14px;margin-top:10px;"><strong>Client contact:</strong> ${esc(eng.clientName)}, ${esc(eng.clientEmail)}${eng.clientPhone ? ' · ' + esc(eng.clientPhone) : ''}</p>` : `<p class="hint">Client contact details appear once they accept the introduction.</p>`}
         ${eng.status === 'client_accepted' ? `<button class="btn btn-brass btn-sm" style="margin-top:10px;" onclick="firmAcceptEngagement('${eng.id}')">Accept this engagement</button>` : ''}
         ${eng.contactVisible ? await renderMessageThreadHtml(eng.id, 'firm') : ''}
       </div>`;
@@ -3447,7 +3466,7 @@ function firmDashVerificationHtml(firm){
       <div style="margin:10px 0 18px;">${verifyBadgeHtml(firm.verificationStatus)}</div>
       ${firm.verificationStatus === 'verified' ? '<p class="hint">Your firm identity and credentials have been reviewed by TaxBridge.</p>' : ''}
       ${firm.verificationStatus === 'pending' ? '<p class="hint">Our team is reviewing your credentials. This usually takes a day or two.</p>' : ''}
-      ${firm.verificationStatus === 'info_required' ? '<p class="hint" style="color:var(--amber-deep);">TaxBridge needs more information before verifying your firm — check your credentials in the Credentials tab, or wait to hear from our team.</p>' : ''}
+      ${firm.verificationStatus === 'info_required' ? '<p class="hint" style="color:var(--amber-deep);">TaxBridge needs more information before verifying your firm. Check your credentials in the Credentials tab, or wait to hear from our team.</p>' : ''}
       ${firm.verificationStatus === 'rejected' ? '<p class="hint" style="color:#B0442E;">Your firm was not approved. Contact TaxBridge if you believe this is in error.</p>' : ''}
       <div style="margin-top:6px;">${renderVerificationLevelsHtml(firm, false)}</div>
     </div>`;
@@ -3496,7 +3515,7 @@ async function renderFirmsMarketplace(){
     <div class="section-label">Browse firms</div>
     <h2 class="section-title">Explore accounting and financial professional firms</h2>
     <div class="msg success" style="margin-bottom:24px;">
-      <strong>Not sure which firm fits?</strong> <a href="#" onclick="go('client');return false;">Get matched</a> instead — tell TaxBridge what you need and our team will personally identify suitable firms for you. That's the recommended way to use TaxBridge; browsing below is just for exploring on your own.
+      <strong>Not sure which firm fits?</strong> <a href="#" onclick="go('client');return false;">Get matched</a> instead: tell TaxBridge what you need and our team will personally identify suitable firms for you. That's the recommended way to use TaxBridge; browsing below is just for exploring on your own.
     </div>
     <div class="firms-toolbar">
       <div class="firms-search-row">
@@ -3648,6 +3667,7 @@ async function renderFirmProfile(){
   if(f.credentials?.other) credentialBadges.push(f.credentials.other);
 
   const completedCount = f.completedCount;
+  const isOwnProfile = !!(session.firm && session.firm.user.id === f.id);
 
   area.innerHTML = `
     <button class="subtle-btn" onclick="go('firms')" style="margin-bottom:20px;">← Back to firms</button>
@@ -3708,11 +3728,16 @@ async function renderFirmProfile(){
           <p style="font-size:14px;">${completedCount > 0 ? `${completedCount} engagement${completedCount>1?'s':''} completed via TaxBridge` : 'No completed engagements via TaxBridge yet.'}</p>
         </div>
         ${f.website ? `<div class="firm-sidebar-card"><h4>Website</h4><p style="font-size:14px;word-break:break-all;">${esc(f.website)}</p></div>` : ''}
+        ${isOwnProfile ? `
+        <div class="firm-sidebar-card" style="background:var(--maroon);">
+          <h4 style="color:rgba(255,255,255,.7);">This is your public profile</h4>
+          <p style="font-size:13px;color:rgba(255,255,255,.7);">This is what prospective clients see when TaxBridge introduces them to your firm.</p>
+        </div>` : `
         <div class="firm-sidebar-card" style="background:var(--maroon);">
           <h4 style="color:rgba(255,255,255,.7);">Is this the right firm for your problem?</h4>
-          <p style="font-size:13px;color:rgba(255,255,255,.7);margin-bottom:14px;">TaxBridge still reviews every engagement before an introduction is made — this isn't a direct-hire button.</p>
+          <p style="font-size:13px;color:rgba(255,255,255,.7);margin-bottom:14px;">TaxBridge still reviews every engagement before an introduction is made. This isn't a direct-hire button.</p>
           <button class="btn btn-orange btn-full" onclick="requestMatchWithFirm('${f.id}')">Get Matched</button>
-        </div>
+        </div>`}
       </div>
     </div>`;
 }
@@ -3814,7 +3839,7 @@ async function renderAdmin(){
 
   html += `<div id="admin-tab-engagements" style="display:${adminTab==='engagements'?'block':'none'};">`;
   html += `<h3 style="font-size:19px;margin:0 0 4px;">Engagement requests <span class="hint">(${engagements.length})</span></h3>`;
-  html += `<p class="hint" style="margin-bottom:16px;">Manual matching only — search and select firms yourself below. Nothing here is auto-assigned.</p>`;
+  html += `<p class="hint" style="margin-bottom:16px;">Manual matching only: search and select firms yourself below. Nothing here is auto-assigned.</p>`;
   if(!engagements.length){
     html += `<div class="empty">No engagement requests yet.</div>`;
   } else {
@@ -3856,7 +3881,7 @@ async function renderAdmin(){
       html += `<tr>
         <td>${esc(f.firmName)}</td>
         <td class="mono">${esc(f.email)}</td>
-        <td>${esc(f.headquarters)||'—'}</td>
+        <td>${esc(f.headquarters)||'N/A'}</td>
         <td>${(f.specialisations||[]).slice(0,3).map(esc).join(', ')}${(f.specialisations||[]).length>3?'…':''}</td>
         <td>${activeCount} active · ${pastCount} past</td>
         <td>${verifyBadgeHtml(f.verificationStatus)}</td>
@@ -3891,7 +3916,7 @@ async function renderAdmin(){
         <td class="mono">${esc(p.email)}</td>
         <td>${esc(p.professionalBody)} · ${esc(p.registrationNumber)}</td>
         <td>${esc(p.expertise)}</td>
-        <td>${rating ? `${rating.avg.toFixed(1)}★ (${rating.count})` : '—'}</td>
+        <td>${rating ? `${rating.avg.toFixed(1)}★ (${rating.count})` : 'No ratings yet'}</td>
         <td>${p.verified ? '<span class="stamp">Verified</span>' : '<span class="stamp pending">Pending</span>'}</td>
         <td>${p.verified ? '' : `<button class="subtle-btn" onclick="verifyPro('${p.id}')">Verify</button>`}</td>
       </tr>`;
@@ -3913,7 +3938,7 @@ async function renderAdmin(){
       }
       html += `<div class="pro-card">
         <div class="pro-card-top">
-          <h4>${esc(lead.need)} — ${esc(lead.name)}</h4>
+          <h4>${esc(lead.need)}: ${esc(lead.name)}</h4>
           ${statusTag(lead.status)}
         </div>
         <p class="hint">${esc(lead.budget||'')} · ${esc(lead.contact)}</p>
@@ -3939,10 +3964,10 @@ async function renderAdmin(){
         <div style="display:flex;gap:8px;max-width:280px;">
           <input id="fee-${lead.id}" type="number" value="${lead.feeAmount||200000}">
         </div>
-        <label style="margin-top:12px;">What's included (optional — shown to the client)</label>
+        <label style="margin-top:12px;">What's included (optional, shown to the client)</label>
         <textarea id="scope-${lead.id}" placeholder="e.g. VAT filing for Q1–Q2, one advisory call, filed receipts included">${esc(lead.scopeNote||'')}</textarea>
         <button class="btn btn-outline btn-sm" style="margin-top:10px;" onclick="setFee('${lead.id}')">Save</button>
-        <p class="hint" style="margin-top:8px;">Matched with ${esc(chosenProName)} — awaiting client payment.</p>`;
+        <p class="hint" style="margin-top:8px;">Matched with ${esc(chosenProName)}, awaiting client payment.</p>`;
       }
 
       if(lead.status === 'paid'){
@@ -3962,9 +3987,9 @@ async function renderAdmin(){
       }
 
       if(lead.status === 'released'){
-        html += `<p class="hint" style="color:var(--green);">Payment released. Engagement complete — non-circumvention term applies for 12–24 months.</p>`;
+        html += `<p class="hint" style="color:var(--green);">Payment released. Engagement complete. Non-circumvention term applies for 12–24 months.</p>`;
         if(typeof lead.rating === 'number'){
-          html += `<p class="rating-line" style="margin-top:6px;">${starString(lead.rating)} <span class="hint">${lead.rating}/5${lead.review ? ' — "' + esc(lead.review) + '"' : ''}</span></p>`;
+          html += `<p class="rating-line" style="margin-top:6px;">${starString(lead.rating)} <span class="hint">${lead.rating}/5${lead.review ? ': "' + esc(lead.review) + '"' : ''}</span></p>`;
         }
       }
 
@@ -4023,11 +4048,11 @@ async function renderAdminEngagementCard(eng, allFirms){
 
   return `<div class="pro-card">
     <div class="pro-card-top">
-      <h4>${esc(eng.engagementType)} — ${esc(eng.clientName)}${eng.company ? ' (' + esc(eng.company) + ')' : ''}</h4>
+      <h4>${esc(eng.engagementType)}: ${esc(eng.clientName)}${eng.company ? ' (' + esc(eng.company) + ')' : ''}</h4>
       ${engagementStatusTag(eng.status)}
     </div>
     <p class="hint">${esc(eng.industry)} · ${esc(eng.businessSize)} · ${[eng.city, eng.state, eng.country].filter(Boolean).map(esc).join(', ')}${eng.onSiteRequired ? ' · On-site required' : ' · Remote OK'}</p>
-    <p class="hint"><strong>Sensitivity:</strong> ${sensitivity.label} · <strong>Suggested capacity:</strong> ${suggestedCapacity.label} <span class="hint">(based on business size — a hint for you, not a filter)</span></p>
+    <p class="hint"><strong>Sensitivity:</strong> ${sensitivity.label} · <strong>Suggested capacity:</strong> ${suggestedCapacity.label} <span class="hint">(based on business size, a hint for you, not a filter)</span></p>
     <p style="font-size:14px;">${esc(eng.details)}</p>
     <p class="hint">Deadline: ${eng.deadline ? new Date(eng.deadline).toLocaleDateString() : 'not specified'} · Est. value: ${esc(eng.estimatedValue)||'not specified'} · Duration: ${esc(eng.expectedDuration)||'not specified'}</p>
     ${renderTypeAnswersHtml(eng)}
@@ -4084,7 +4109,7 @@ function toggleAdminFirmSearch(engId){
       </div>
       <div id="afs-results-${engId}"></div>
       <label style="margin-top:14px;">Why this firm was selected</label>
-      <p class="hint" style="margin-top:-4px;margin-bottom:8px;">Quick-insert a line, then edit the [bracketed] part — you write the final wording.</p>
+      <p class="hint" style="margin-top:-4px;margin-bottom:8px;">Quick-insert a line, then edit the [bracketed] part. You write the final wording.</p>
       <div class="grid-actions" style="margin-bottom:8px;">
         ${REASON_SNIPPETS.map(r => `<button type="button" class="subtle-btn" onclick="insertReasonSnippet('${engId}', ${JSON.stringify(r.text).replace(/"/g,'&quot;')})">+ ${esc(r.label)}</button>`).join('')}
       </div>
