@@ -51,6 +51,7 @@
     font-size:16px;
     line-height:1.55;
     -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
   }
   h1,h2,h3,.display{
     font-family:'Plus Jakarta Sans',sans-serif;
@@ -84,11 +85,11 @@
   }
   .app-loader.hidden{opacity:0;visibility:hidden;pointer-events:none;}
   .app-loader-mark{
-    width:64px;height:64px;background:var(--orange);border-radius:18px;
+    width:112px;height:112px;background:var(--orange);border-radius:28px;
     display:flex;align-items:center;justify-content:center;
-    font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:26px;color:#fff;
+    font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:46px;color:#fff;
     animation:tbBeat 1.15s ease-in-out infinite;
-    box-shadow:0 10px 28px rgba(0,0,0,.14);
+    box-shadow:0 18px 44px rgba(0,0,0,.18);
   }
   @keyframes tbBeat{
     0%{transform:scale(1);}
@@ -173,6 +174,20 @@
     .nav-burger{display:flex !important;}
   }
 
+  .nav-bell{
+    position:relative;background:none;border:none;color:var(--ink);width:40px;height:40px;
+    border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-left:2px;
+    transition:background .15s;
+  }
+  .nav-bell:hover{background:rgba(0,0,0,0.05);}
+  .nav-bell svg{width:20px;height:20px;}
+  .nav-bell-badge{
+    position:absolute;top:2px;right:2px;min-width:16px;height:16px;padding:0 4px;
+    background:var(--orange-dark);color:#fff;border-radius:999px;font-size:10px;font-weight:800;
+    display:flex;align-items:center;justify-content:center;line-height:1;
+  }
+  .drawer-link .nav-bell-badge{position:static;display:inline-flex;margin-left:8px;}
+
   .nav-drawer-overlay{
     position:fixed;inset:0;background:rgba(26,20,16,.5);z-index:90;
     opacity:0;pointer-events:none;transition:opacity .3s ease;
@@ -255,15 +270,15 @@
 
   /* hero tape composition — overlapping diagonal service ribbons, replaces the old photo-strip cards */
   .tape-field{
-    position:relative;width:100%;height:340px;margin-top:52px;
+    position:relative;width:100vw;left:50%;margin-left:-50vw;
+    height:clamp(240px,30vw,520px);margin-top:52px;margin-bottom:0;
     overflow:hidden;isolation:isolate;
   }
   .tape{
-    position:absolute;left:-25%;width:150%;top:var(--tape-top);height:52px;
+    position:absolute;left:-15%;width:130%;top:var(--tape-top);height:52px;
     z-index:var(--tape-z);
-    background:linear-gradient(100deg,var(--amber),var(--amber-deep));
+    background:linear-gradient(100deg,var(--orange),var(--orange-dark));
     border-radius:9px;
-    box-shadow:0 16px 32px rgba(7,20,38,.2), 0 3px 8px rgba(7,20,38,.13);
     transform:rotate(var(--tape-rotate));
     opacity:var(--tape-opacity,1);
     display:flex;align-items:center;overflow:hidden;
@@ -276,18 +291,17 @@
   .tape-group{
     display:inline-flex;align-items:center;gap:14px;padding:0 16px;
     font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:15px;
-    letter-spacing:.07em;color:var(--ink);text-transform:uppercase;
+    letter-spacing:.07em;color:#fff;text-transform:uppercase;
   }
-  .tape-dot{opacity:.55;font-weight:700;}
+  .tape-dot{opacity:.65;font-weight:700;}
   @keyframes tapeScrollLeft{from{transform:translateX(0);}to{transform:translateX(-50%);}}
   @keyframes tapeScrollRight{from{transform:translateX(-50%);}to{transform:translateX(0);}}
   @media(max-width:720px){
-    .tape-field{height:190px;margin-top:34px;}
+    .tape-field{margin-top:34px;}
     .tape{height:32px;border-radius:7px;}
     .tape-group{font-size:11px;gap:8px;padding:0 10px;letter-spacing:.05em;}
   }
   @media(max-width:420px){
-    .tape-field{height:150px;}
     .tape{height:26px;}
     .tape-group{font-size:9.5px;gap:6px;padding:0 8px;}
   }
@@ -742,6 +756,24 @@
     .auth-screen{min-height:64vh;display:flex;flex-direction:column;justify-content:center;}
   }
   .app-section{padding:56px 0 80px;}
+
+  .notif-item{
+    display:flex;gap:14px;align-items:flex-start;padding:16px 18px;
+    border:1px solid var(--line-strong);border-radius:var(--radius-sm);margin-bottom:10px;
+    background:var(--paper-card);cursor:pointer;transition:background .15s;
+  }
+  .notif-item:hover{background:#fff;}
+  .notif-item.unread{border-color:var(--orange);background:#fff;}
+  .notif-item .notif-dot{
+    flex:0 0 auto;width:9px;height:9px;border-radius:50%;margin-top:6px;
+    background:var(--orange);visibility:hidden;
+  }
+  .notif-item.unread .notif-dot{visibility:visible;}
+  .notif-item .notif-body{flex:1;min-width:0;}
+  .notif-item .notif-title{font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:14.5px;margin-bottom:3px;}
+  .notif-item .notif-text{font-size:13.5px;color:var(--ink-soft);line-height:1.5;}
+  .notif-item .notif-time{font-size:11.5px;color:var(--ink-soft);margin-top:6px;}
+  .notif-empty{text-align:center;padding:64px 20px;color:var(--ink-soft);}
 </style>
 </head>
 <body>
@@ -764,6 +796,10 @@
       <button class="nav-link" onclick="go('client')">Log in</button>
       <button class="nav-link nav-cta-outline" onclick="go('list-firm')">List My Firm</button>
       <button class="nav-link nav-cta" onclick="go('client')">Get Matched</button>
+      <button class="nav-bell" id="nav-bell" onclick="go('notifications')" aria-label="Notifications" style="display:none;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 8a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6"/><path d="M10 21a2 2 0 0 0 4 0"/></svg>
+        <span class="nav-bell-badge" id="nav-bell-badge" style="display:none;">0</span>
+      </button>
       <button class="nav-burger" onclick="openDrawer()" aria-label="Open menu">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
       </button>
@@ -781,6 +817,7 @@
   <button class="drawer-link" onclick="go('pro');closeDrawer()">For Professionals</button>
   <button class="drawer-link" onclick="scrollToSection('faqs');closeDrawer()">FAQs</button>
   <button class="drawer-link" onclick="go('client');closeDrawer()">Log in</button>
+  <button class="drawer-link" id="drawer-bell" onclick="go('notifications');closeDrawer()" style="display:none;">Notifications <span class="nav-bell-badge" id="drawer-bell-badge" style="display:none;">0</span></button>
   <button class="drawer-link" onclick="go('list-firm');closeDrawer()">List My Firm</button>
   <button class="drawer-cta" onclick="go('client');closeDrawer()">Get Matched</button>
 </div>
@@ -1201,6 +1238,17 @@
   </div>
 </section>
 
+<!-- NOTIFICATIONS -->
+<section class="view" id="view-notifications">
+  <div class="container app-section">
+    <div class="session-bar">
+      <div class="section-label" style="margin:0;">Notifications</div>
+      <button class="subtle-btn" id="notif-mark-all-btn" onclick="markAllNotificationsRead()">Mark all as read</button>
+    </div>
+    <div id="notifications-list"></div>
+  </div>
+</section>
+
 <!-- ADMIN -->
 <section class="view" id="view-admin">
   <div class="container app-section">
@@ -1270,11 +1318,8 @@ function initRotatingWord(){
    pure CSS transform/keyframes, so this never touches layout after init. */
 const TAPE_SERVICES = ['BOOKKEEPING', 'TAX DISPUTES', 'FORENSIC ACCOUNTING', 'AUDIT', 'RESTRUCTURING', 'TAX ADVISORY', 'FINANCIAL REPORTING', 'COMPLIANCE', 'PAYROLL'];
 const TAPE_CONFIG = [
-  { rotate: -11, top: 4,  duration: 27, dir: 'left',  z: 2, opacity: .92 },
-  { rotate: 9,   top: 24, duration: 19, dir: 'right', z: 4, opacity: 1   },
-  { rotate: -15, top: 46, duration: 33, dir: 'left',  z: 1, opacity: .88 },
-  { rotate: 13,  top: 66, duration: 16, dir: 'right', z: 3, opacity: 1   },
-  { rotate: -7,  top: 85, duration: 24, dir: 'left',  z: 5, opacity: .95 }
+  { rotate: -11, top: 20, duration: 27, dir: 'left',  z: 2, opacity: 1   },
+  { rotate: 12,  top: 58, duration: 19, dir: 'right', z: 1, opacity: .94 }
 ];
 function initTapeField(){
   const field = document.getElementById('tape-field');
@@ -1441,6 +1486,7 @@ function scrollToSection(id){
 
 document.addEventListener('DOMContentLoaded', () => {
   loadSessionFromStorage();
+  refreshNotificationBell();
   initRotatingWord();
   initTapeField();
   initPhoneMock();
@@ -1813,6 +1859,11 @@ const api = {
     interestedInMe: (token) => apiFetch('/leads/interested-in-me', { token }),
     delete: (token, id) => apiFetch(`/leads/${id}`, { method: 'DELETE', token }),
   },
+  notifications: {
+    mine: (token) => apiFetch('/notifications', { token }),
+    markRead: (token, id) => apiFetch(`/notifications/${id}/read`, { method: 'PATCH', token }),
+    markAllRead: (token) => apiFetch('/notifications/read-all', { method: 'POST', token }),
+  },
   admin: {
     stats: (token) => apiFetch('/admin/stats', { token }),
     professionals: {
@@ -1861,6 +1912,7 @@ function saveSessionToStorage(){
   try{
     localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify({ session, adminSession }));
   } catch(e){ /* localStorage unavailable — session just won't survive a refresh */ }
+  refreshNotificationBell();
 }
 function loadSessionFromStorage(){
   try{
@@ -1875,6 +1927,86 @@ function loadSessionFromStorage(){
 /* ---------- session ---------- */
 let session = { client: null, pro: null, firm: null }; // each holds { token, user } or null
 let adminSession = null; // { token, admin } or null
+
+/* ---------- notifications (bell + notifications page) ---------- */
+function activeAccounts(){
+  const list = [];
+  if(session.client) list.push({ role: 'client', token: session.client.token });
+  if(session.pro) list.push({ role: 'professional', token: session.pro.token });
+  if(session.firm) list.push({ role: 'firm', token: session.firm.token });
+  if(adminSession) list.push({ role: 'admin', token: adminSession.token });
+  return list;
+}
+
+async function refreshNotificationBell(){
+  const accounts = activeAccounts();
+  const bell = document.getElementById('nav-bell');
+  const badge = document.getElementById('nav-bell-badge');
+  const drawerBell = document.getElementById('drawer-bell');
+  const drawerBadge = document.getElementById('drawer-bell-badge');
+  if(!accounts.length){
+    if(bell) bell.style.display = 'none';
+    if(drawerBell) drawerBell.style.display = 'none';
+    return;
+  }
+  if(bell) bell.style.display = 'flex';
+  if(drawerBell) drawerBell.style.display = 'block';
+  try{
+    const results = await Promise.all(accounts.map(a => api.notifications.mine(a.token)));
+    const unread = results.reduce((sum, r) => sum + (r.unreadCount || 0), 0);
+    [badge, drawerBadge].forEach(el => {
+      if(!el) return;
+      el.textContent = unread > 99 ? '99+' : String(unread);
+      el.style.display = unread > 0 ? 'flex' : 'none';
+    });
+  } catch(err){ /* bell just won't update this cycle — not worth surfacing to the user */ }
+}
+
+async function renderNotifications(){
+  const list = document.getElementById('notifications-list');
+  const accounts = activeAccounts();
+  if(!accounts.length){
+    list.innerHTML = `<div class="notif-empty">Log in to see your notifications.</div>`;
+    return;
+  }
+  list.innerHTML = `<div class="notif-empty">Loading…</div>`;
+  try{
+    const results = await Promise.all(accounts.map(a => api.notifications.mine(a.token).then(r => ({ ...a, ...r }))));
+    const items = [];
+    results.forEach(r => r.notifications.forEach(n => items.push({ ...n, _role: r.role, _token: r.token })));
+    items.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    if(!items.length){
+      list.innerHTML = `<div class="notif-empty">No notifications yet.</div>`;
+      return;
+    }
+    list.innerHTML = items.map(n => `
+      <div class="notif-item ${n.read ? '' : 'unread'}" onclick="openNotification('${n._role}','${n._token}','${n.id}')">
+        <div class="notif-dot"></div>
+        <div class="notif-body">
+          <div class="notif-title">${esc(n.title)}</div>
+          <div class="notif-text">${esc(n.body)}</div>
+          <div class="notif-time">${new Date(n.createdAt).toLocaleString()}</div>
+        </div>
+      </div>`).join('');
+  } catch(err){
+    list.innerHTML = `<div class="notif-empty">${esc(err.message)}</div>`;
+  }
+}
+
+async function openNotification(role, token, id){
+  try{ await api.notifications.markRead(token, id); } catch(err){ /* not critical if this fails */ }
+  await renderNotifications();
+  refreshNotificationBell();
+}
+
+async function markAllNotificationsRead(){
+  const accounts = activeAccounts();
+  try{
+    await Promise.all(accounts.map(a => api.notifications.markAllRead(a.token)));
+  } catch(err){ /* ignore — the list refresh below still shows current state */ }
+  await renderNotifications();
+  refreshNotificationBell();
+}
 
 /* ---------- nav ---------- */
 function go(view){
@@ -1891,6 +2023,7 @@ function go(view){
   if(view === 'firms') renderFirmsMarketplace();
   if(view === 'firm-profile') renderFirmProfile();
   if(view === 'list-firm') renderFirmPortal();
+  if(view === 'notifications') renderNotifications();
 }
 
 function statusTag(status){
@@ -1945,48 +2078,74 @@ function renderClientPortal(){
 
 function setClientAuthTab(tab){ clientAuthTab = tab; renderClientPortal(); }
 
+let emailAuthOpen = { login: false, signup: false };
+
 function renderClientAuthForm(){
   const el = document.getElementById('client-auth-form');
-  const socialButtons = `
-    <div class="auth-divider"><span>Or</span></div>
+  const googleBtn = `
     <button type="button" class="btn btn-social btn-full" onclick="socialSignInPlaceholder('Google')">
       <svg viewBox="0 0 24 24"><path fill="#4285F4" d="M23.52 12.27c0-.85-.08-1.67-.22-2.45H12v4.64h6.47a5.53 5.53 0 0 1-2.4 3.63v3h3.88c2.27-2.09 3.57-5.17 3.57-8.82z"/><path fill="#34A853" d="M12 24c3.24 0 5.96-1.07 7.95-2.91l-3.88-3c-1.08.72-2.45 1.15-4.07 1.15-3.13 0-5.78-2.11-6.73-4.96H1.26v3.12A12 12 0 0 0 12 24z"/><path fill="#FBBC05" d="M5.27 14.28A7.2 7.2 0 0 1 4.89 12c0-.79.14-1.56.38-2.28V6.6H1.26A12 12 0 0 0 0 12c0 1.94.46 3.77 1.26 5.4l4.01-3.12z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.44-3.44C17.95 1.19 15.24 0 12 0 7.31 0 3.26 2.69 1.26 6.6l4.01 3.12C6.22 6.86 8.87 4.75 12 4.75z"/></svg>
-      Sign in with Google
-    </button>
+      Continue with Google
+    </button>`;
+  const appleBtn = `
     <button type="button" class="btn btn-social btn-full" onclick="socialSignInPlaceholder('Apple')">
       <svg viewBox="0 0 24 24" fill="#000"><path d="M16.36 1.43c0 1.14-.42 2.2-1.24 3.06-.87.92-2.09 1.62-3.28 1.53-.14-1.16.41-2.32 1.16-3.09.83-.87 2.29-1.55 3.36-1.5zm3.68 16.9c-.5 1.15-.73 1.66-1.37 2.68-.9 1.42-2.16 3.19-3.73 3.2-1.4.02-1.76-.9-3.66-.89-1.9.01-2.29.9-3.69.89-1.57-.02-2.76-1.61-3.66-3.03-2.52-3.95-2.78-8.59-1.23-11.06.9-1.42 2.36-2.42 3.98-2.42 1.6 0 2.6.87 3.93.87 1.28 0 2.06-.87 3.94-.87 1.36 0 2.87.71 3.86 1.99-3.39 1.85-2.84 6.65.63 8.64z"/></svg>
-      Sign in with Apple
+      Continue with Apple
+    </button>`;
+  const emailToggleBtn = (tab, label) => `
+    <button type="button" class="btn btn-social btn-full" onclick="toggleEmailAuth('${tab}')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+      ${label}
     </button>`;
 
   if(clientAuthTab === 'login'){
     el.innerHTML = `
       <h2 class="auth-card-title">Log In</h2>
       <div id="cl-msg"></div>
-      <label>Email address<span class="req-star">*</span></label>
-      <input id="cl-email" type="email" placeholder="you@example.com">
-      <label>Password<span class="req-star">*</span></label>
-      ${pwField('cl-pass','Your password','clientLogin')}
-      <div style="margin-top:20px;"><button class="btn btn-primary btn-full" onclick="clientLogin()">Log In</button></div>
-      ${socialButtons}`;
+      ${googleBtn}
+      ${appleBtn}
+      ${emailToggleBtn('login', 'Continue with email')}
+      <div id="cl-email-fields" style="display:${emailAuthOpen.login ? 'block' : 'none'};margin-top:18px;">
+        <label>Email address<span class="req-star">*</span></label>
+        <input id="cl-email" type="email" placeholder="you@example.com">
+        <label>Password<span class="req-star">*</span></label>
+        ${pwField('cl-pass','Your password','clientLogin')}
+        <div style="margin-top:20px;"><button class="btn btn-primary btn-full" onclick="clientLogin()">Log In</button></div>
+      </div>`;
   } else {
     el.innerHTML = `
       <h2 class="auth-card-title">Create your account</h2>
       <div id="cl-msg"></div>
-      <label>Full name<span class="req-star">*</span></label>
-      <input id="cs-name" placeholder="e.g. Amina Bello">
-      <label>Email address<span class="req-star">*</span></label>
-      <input id="cs-email" type="email" placeholder="you@example.com">
-      <label>Phone (optional)</label>
-      <input id="cs-phone" placeholder="For matches to reach you if needed">
-      <label>Password<span class="req-star">*</span></label>
-      ${pwField('cs-pass','At least 8 characters')}
-      <div style="margin-top:20px;"><button class="btn btn-primary btn-full" onclick="clientSignup()">Create account</button></div>
-      ${socialButtons}`;
+      ${googleBtn}
+      ${appleBtn}
+      ${emailToggleBtn('signup', 'Continue with email')}
+      <div id="cs-email-fields" style="display:${emailAuthOpen.signup ? 'block' : 'none'};margin-top:18px;">
+        <label>Full name<span class="req-star">*</span></label>
+        <input id="cs-name" placeholder="e.g. Amina Bello">
+        <label>Email address<span class="req-star">*</span></label>
+        <input id="cs-email" type="email" placeholder="you@example.com">
+        <label>Phone (optional)</label>
+        <input id="cs-phone" placeholder="For matches to reach you if needed">
+        <label>Password<span class="req-star">*</span></label>
+        ${pwField('cs-pass','At least 8 characters')}
+        <div style="margin-top:20px;"><button class="btn btn-primary btn-full" onclick="clientSignup()">Create account</button></div>
+      </div>`;
+  }
+}
+
+function toggleEmailAuth(tab){
+  emailAuthOpen[tab] = !emailAuthOpen[tab];
+  const fields = document.getElementById(tab === 'login' ? 'cl-email-fields' : 'cs-email-fields');
+  if(!fields) return;
+  fields.style.display = emailAuthOpen[tab] ? 'block' : 'none';
+  if(emailAuthOpen[tab]){
+    const focusTarget = document.getElementById(tab === 'login' ? 'cl-email' : 'cs-name');
+    if(focusTarget) focusTarget.focus();
   }
 }
 
 function socialSignInPlaceholder(provider){
-  alert(provider + ' sign-in is coming soon — for now, use email and password.');
+  alert(provider + ' sign-in is coming soon — for now, use email.');
 }
 
 function authErrorMsg(text){
@@ -2294,7 +2453,7 @@ async function submitEngagement(){
       await api.engagements.create(session.client.token, payload);
       pendingFirmInterest = null;
       await renderClientDashboard();
-      showSuccessModal('Request submitted', "We've received your engagement request. Our team reviews every submission personally — you'll see updates here as it progresses.");
+      showSuccessModal('Request submitted', "We've received your engagement request. Our team reviews every submission personally — most clients hear back with a firm match within 24–48 hours. You'll see updates here as it progresses, and we'll notify you as soon as a match is ready.");
     }
   } catch(err){
     const freshMsg = document.getElementById('eq-msg');

@@ -23,6 +23,7 @@ const availability = buildMap(['accepting', 'limited', 'fully_booked']);
 const verificationStatus = buildMap(['pending', 'verified', 'info_required', 'rejected']);
 const messageSenderRole = buildMap(['client', 'firm', 'admin']);
 const leadStatus = buildMap(['pending', 'matched', 'engaged', 'paid', 'delivered', 'released']);
+const notificationType = buildMap(['engagement_matched', 'firm_verified', 'firm_info_required', 'firm_rejected']);
 
 const engagementStatus = buildMap([
   'new',
@@ -73,6 +74,7 @@ module.exports = {
   verificationStatus,
   messageSenderRole,
   leadStatus,
+  notificationType,
   engagementStatus,
   STATUS_STAGE,
   CONTACT_VISIBLE_STATUSES,

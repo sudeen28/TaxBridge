@@ -4,6 +4,7 @@ const { asyncHandler } = require('../utils/asyncHandler');
 const { AppError } = require('../utils/AppError');
 const { presentEngagement } = require('../utils/serialize');
 const { requireAuth, requireRole } = require('../middleware/auth');
+const { notifyClient } = require('../utils/notify');
 const {
   engagementStatus: statusMap,
   STATUS_STAGE,
@@ -91,6 +92,21 @@ router.patch(
         status: nextStatus,
       },
     });
+
+    // Only the first time an engagement actually gets matched is worth
+    // notifying the client about — re-saving firmIds/reason on an
+    // already-matched engagement (a rematch, editing the note) shouldn't
+    // re-fire the same notification.
+    if (STATUS_STAGE[currentStatus] === 'reviewing') {
+      await notifyClient(
+        eng.clientId,
+        'ENGAGEMENT_MATCHED',
+        "You've been matched with a firm",
+        `We've matched your request (${eng.refCode}) with a specialist firm. Review the introduction in your dashboard.`,
+        eng.id
+      );
+    }
+
     res.json({ engagement: presentEngagement(updated) });
   })
 );

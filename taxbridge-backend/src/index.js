@@ -70,6 +70,8 @@ app.use('/api/leads', leadsProfessionalRoutes);
 app.use('/api/leads', leadsRoutes);
 app.use('/api/admin/leads', adminLeadsRoutes);
 
+app.use('/api/notifications', require('./routes/notifications'));
+
 // Frontend is still on window.storage — switching it onto this API is the next phase.
 
 // --- 404 for anything unmatched under /api ---

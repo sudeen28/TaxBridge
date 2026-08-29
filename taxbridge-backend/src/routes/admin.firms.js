@@ -5,6 +5,7 @@ const { AppError } = require('../utils/AppError');
 const { presentFirm } = require('../utils/serialize');
 const { requireAuth, requireRole } = require('../middleware/auth');
 const { verificationStatus: verificationStatusMap, toDbOrThrow } = require('../utils/enumMaps');
+const { notifyFirm } = require('../utils/notify');
 
 const router = express.Router();
 
@@ -26,6 +27,23 @@ async function loadFirmOr404(id) {
 }
 
 // PATCH /api/admin/firms/:id/verification-status — body: { status }
+const VERIFICATION_NOTIFICATIONS = {
+  VERIFIED: [
+    'FIRM_VERIFIED',
+    'Your firm is now verified',
+    "Congratulations — your firm has been successfully onboarded and verified on TaxBridge. You're now eligible to be matched with client engagements.",
+  ],
+  INFO_REQUIRED: [
+    'FIRM_INFO_REQUIRED',
+    'More information needed',
+    'Our team reviewed your firm profile and needs a bit more information before verification can be completed. Please check your credentials and documents.',
+  ],
+  REJECTED: [
+    'FIRM_REJECTED',
+    'Firm verification unsuccessful',
+    "We weren't able to verify your firm at this time. Reach out to our team if you'd like more detail.",
+  ],
+};
 router.patch(
   '/:id/verification-status',
   asyncHandler(async (req, res) => {
@@ -37,6 +55,12 @@ router.patch(
       where: { id: req.params.id },
       data: { verificationStatus: statusDb },
     });
+
+    const notif = VERIFICATION_NOTIFICATIONS[statusDb];
+    if (notif) {
+      await notifyFirm(updated.id, notif[0], notif[1], notif[2]);
+    }
+
     res.json({ firm: presentFirm(updated) });
   })
 );

@@ -75,6 +75,15 @@ enum LeadStatus {
   RELEASED
 }
 
+/// Kinds of in-app notification. Each maps to one of the trigger points
+/// wired up in src/routes/admin.engagements.js and admin.firms.js.
+enum NotificationType {
+  ENGAGEMENT_MATCHED
+  FIRM_VERIFIED
+  FIRM_INFO_REQUIRED
+  FIRM_REJECTED
+}
+
 // ---------- models ----------
 
 /// Individual users — both clients and individual professionals (legacy track).
@@ -98,9 +107,10 @@ model User {
   bio                String?
   verified           Boolean @default(false)
 
-  engagements Engagement[]
-  leads       Lead[]
-  messages    Message[]
+  engagements   Engagement[]
+  leads         Lead[]
+  messages      Message[]
+  notifications Notification[]
 
   @@map("users")
 }
@@ -148,7 +158,8 @@ model Firm {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  messages Message[]
+  messages      Message[]
+  notifications Notification[]
 
   @@map("firms")
 }
@@ -240,11 +251,15 @@ model Lead {
 
   status LeadStatus @default(PENDING)
 
-  /// Array of matched professional snapshots offered to the client.
-  matches    Json?
+  /// Ids of professionals offered to the client — a live reference, not a
+  /// snapshot, mirroring the frontend's original by-id behavior.
+  matches    String[] @default([])
   chosenPro  String?
-  feeAmount  String?
+  /// Whole-naira amount — arithmetic (commission calc), not free text.
+  feeAmount  Int?
   scopeNote  String? @db.Text
+  /// Set once POST /:id/pay runs (simulated payment — see README).
+  paidAt     DateTime?
 
   rating Int?
   review String? @db.Text
@@ -265,5 +280,35 @@ model Admin {
   name         String?
   createdAt    DateTime @default(now())
 
+  notifications Notification[]
+
   @@map("admins")
+}
+
+/// In-app notifications — client/firm/admin bell + notifications page.
+/// Recipient is exactly one of the three optional relations below, matching
+/// the same per-role-relation pattern Message already uses for its sender.
+model Notification {
+  id    String           @id @default(uuid())
+  type  NotificationType
+  title String
+  body  String           @db.Text
+  /// Optional pointer for the frontend to deep-link into — an engagement id,
+  /// a firm id, etc. Interpreted client-side per notification type.
+  link  String?
+  read  Boolean          @default(false)
+
+  recipientUser    User?   @relation(fields: [recipientUserId], references: [id], onDelete: Cascade)
+  recipientUserId  String?
+  recipientFirm    Firm?   @relation(fields: [recipientFirmId], references: [id], onDelete: Cascade)
+  recipientFirmId  String?
+  recipientAdmin   Admin?  @relation(fields: [recipientAdminId], references: [id], onDelete: Cascade)
+  recipientAdminId String?
+
+  createdAt DateTime @default(now())
+
+  @@index([recipientUserId, read])
+  @@index([recipientFirmId, read])
+  @@index([recipientAdminId, read])
+  @@map("notifications")
 }

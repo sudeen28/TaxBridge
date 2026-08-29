@@ -5,7 +5,7 @@ function publicAccount(record) {
   return safe;
 }
 
-const { sensitivity, capacity, availability, verificationStatus, engagementStatus, messageSenderRole, leadStatus } = require('./enumMaps');
+const { sensitivity, capacity, availability, verificationStatus, engagementStatus, messageSenderRole, leadStatus, notificationType } = require('./enumMaps');
 
 /**
  * Reshapes a Firm DB record into the flatter/nested shape the frontend
@@ -63,5 +63,24 @@ function presentLead(lead) {
   };
 }
 
-module.exports = { publicAccount, presentFirm, presentEngagement, presentMessage, presentLead };
+/**
+ * Reshapes a Notification DB record: converts the type enum back to a
+ * lowercase id, and collapses the three optional recipient*Id columns into
+ * a single { role, id } pair — a caller only ever needs to know it belongs
+ * to *their* account (already enforced by the query), not which column.
+ */
+function presentNotification(n) {
+  if (!n) return n;
+  const { recipientUserId, recipientFirmId, recipientAdminId, ...rest } = n;
+  let recipient = null;
+  if (recipientUserId) recipient = { role: 'client', id: recipientUserId };
+  else if (recipientFirmId) recipient = { role: 'firm', id: recipientFirmId };
+  else if (recipientAdminId) recipient = { role: 'admin', id: recipientAdminId };
+  return {
+    ...rest,
+    type: notificationType.fromDb[n.type],
+    recipient,
+  };
+}
 
+module.exports = { publicAccount, presentFirm, presentEngagement, presentMessage, presentLead, presentNotification };
