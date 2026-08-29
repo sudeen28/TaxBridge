@@ -76,12 +76,13 @@ enum LeadStatus {
 }
 
 /// Kinds of in-app notification. Each maps to one of the trigger points
-/// wired up in src/routes/admin.engagements.js and admin.firms.js.
+/// wired up in src/routes/admin.engagements.js, admin.firms.js, and messages.js.
 enum NotificationType {
   ENGAGEMENT_MATCHED
   FIRM_VERIFIED
   FIRM_INFO_REQUIRED
   FIRM_REJECTED
+  MESSAGE_RECEIVED
 }
 
 // ---------- models ----------

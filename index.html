@@ -230,11 +230,12 @@
 
   /* HERO */
   .hero{padding:32px 0 56px;text-align:center;}
-  .hero h1{font-size:64px;max-width:880px;margin:0 auto;line-height:1.15;}
+  .hero h1{font-size:64px;max-width:880px;margin:0 auto;line-height:1.15;contain:layout style;}
   .hero h1 .hero-line{display:block;}
   .hero h1 .rot-wrap{
     display:block;position:relative;color:var(--orange);
     white-space:nowrap;margin:4px 0;
+    contain:layout style;
   }
   .hero h1 .rot-cursor{
     display:inline-block;width:3px;height:0.85em;margin-left:3px;background:var(--orange);
@@ -483,6 +484,11 @@
   input[type="checkbox"],input[type="radio"]{width:16px;height:16px;padding:0;border:1px solid var(--line-strong);background:var(--cream);flex:0 0 auto;}
   input:focus,select:focus,textarea:focus{outline:2px solid var(--orange);outline-offset:1px;border-color:var(--orange);}
   textarea{min-height:90px;resize:vertical;}
+  @media(max-width:720px){
+    /* iOS Safari auto-zooms the page on focus for any input under 16px —
+       bump to 16px only on mobile so the page never gets yanked in on tap. */
+    input,select,textarea{font-size:16px;}
+  }
   .hint{font-size:12.5px;color:var(--ink-soft);margin-top:4px;}
   .form-title{font-size:22px;margin-bottom:6px;font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;}
   .form-sub{color:var(--ink-soft);font-size:14px;margin-bottom:8px;}
@@ -835,7 +841,7 @@
       <span class="rot-wrap" id="rot-wrap"><span id="rot-text"></span><span class="rot-cursor" id="rot-cursor"></span></span>
       <span class="hero-line">for the job.</span>
     </h1>
-    <p class="lede">Tell us what you're dealing with. Our team personally reviews your request and matches you with a verified specialist firm — based on the nature of the work, location, and how sensitive it is. No algorithm, no match score; a person makes the call.</p>
+    <p class="lede">Tell us what you're dealing with. Our team personally reviews your request and matches you with a verified specialist firm based on the nature of the work, location, and how sensitive it is. No algorithm, no match score; a person makes the call.</p>
     <div class="hero-ctas">
       <button class="btn btn-orange" onclick="go('client')">Get Matched →</button>
       <button class="btn btn-outline" onclick="go('list-firm')">List My Firm</button>
@@ -876,7 +882,7 @@
           <span class="eyebrow-pill">Our solution</span>
           <h3>How TaxBridge matches you to a firm.</h3>
           <p>Tell us the work, the industry, the location, and how sensitive it is. Our team reviews every request personally and identifies which specialist firm is the right fit — not just any accountant.</p>
-          <p>You get a short-list of firms whose specialisation, location and capacity actually fit the engagement, with our reasoning explained — not a long list to sift through yourself.</p>
+          <p>You get a short-list of firms whose specialisation, location and capacity actually fit the engagement, with our reasoning explained not a long list to sift through yourself.</p>
           <button class="btn btn-orange" style="margin-top:22px;" onclick="go('client')">Get Matched</button>
         </div>
         <div class="phone-mock">
@@ -911,7 +917,7 @@
       <h2 class="reveal">Focus on your business. Let TaxBridge find the right firm.</h2>
       <p class="band-sub reveal">Instead of searching a directory or relying only on referrals, TaxBridge gives your business a faster, more accountable way to find the specialist accounting help a matter actually needs.</p>
       <div class="fb-grid reveal-stagger">
-        <div class="fb-item stagger-child"><strong>Matched to a specialist firm</strong><span>Not a generic listing — a firm chosen for this specific engagement.</span></div>
+        <div class="fb-item stagger-child"><strong>Matched to a specialist firm</strong><span>Not a generic listing a firm chosen for this specific engagement.</span></div>
         <div class="fb-item stagger-child"><strong>Verified firms only</strong><span>Identity, credentials, and specialisation reviewed by our team.</span></div>
         <div class="fb-item stagger-child"><strong>Reasoning you can see</strong><span>We explain why a firm was recommended, not just that it was.</span></div>
         <div class="fb-item stagger-child"><strong>Confidentiality respected</strong><span>Sensitive engagements are matched with that in mind.</span></div>
@@ -934,7 +940,7 @@
           <div class="step-item active" data-step="0">
             <div class="step-progress"></div>
             <h4>Request</h4>
-            <p>Tell us what you need — the work, your budget, and any deadline. Takes under two minutes.</p>
+            <p>Tell us what you need.The work, your budget, and any deadline. Takes under two minutes.</p>
           </div>
           <div class="step-item" data-step="1">
             <div class="step-progress"></div>
@@ -1029,7 +1035,7 @@
         <span class="eyebrow-pill">Not one-size-fits-all</span>
       </div>
       <h2 class="reveal">Not every accounting problem needs the same accountant.</h2>
-      <p class="band-sub reveal" style="color:var(--ink-soft);">Bookkeeping, tax disputes, forensic investigations and financial restructuring require very different expertise. Tell us the problem — we'll point you to the specialist.</p>
+      <p class="band-sub reveal" style="color:var(--ink-soft);">Bookkeeping, tax disputes, forensic investigations and financial restructuring require very different expertise. Tell us the problem, we'll point you to the specialist.</p>
 
       <div class="biz-grid reveal-stagger">
         <div class="biz-card stagger-child">
@@ -1161,17 +1167,17 @@
       <div id="about" class="stub-block reveal">
         <div class="section-label">About</div>
         <h3 class="stub-h3">About TaxBridge</h3>
-        <p class="stub-p">TaxBridge is a managed marketplace that matches Nigerian businesses and individuals with the right accounting, tax, audit, forensic and financial specialist firm for their specific engagement — not just any accountant. Instead of leaving you to find and vet someone on your own, TaxBridge reviews requests, identifies the right specialist firm, and manages the introduction.</p>
+        <p class="stub-p">TaxBridge is a managed marketplace that matches Nigerian businesses and individuals with the right accounting, tax, audit, forensic and financial specialist firm for their specific engagement not just any accountant. Instead of leaving you to find and vet someone on your own, TaxBridge reviews requests, identifies the right specialist firm, and manages the introduction.</p>
       </div>
       <div id="contact" class="stub-block reveal">
         <div class="section-label">Contact</div>
         <h3 class="stub-h3">Get in touch</h3>
-        <p class="stub-p">TaxBridge is early — the most reliable way to reach us right now is by creating a client or professional account and submitting a request or application. Dedicated support channels are still being set up.</p>
+        <p class="stub-p">TaxBridge is early the most reliable way to reach us right now is by creating a client or professional account and submitting a request or application. Dedicated support channels are still being set up.</p>
       </div>
       <div id="legal" class="stub-block reveal">
         <div class="section-label">Terms & Privacy</div>
         <h3 class="stub-h3">Terms of Service & Privacy Policy</h3>
-        <p class="stub-p"><em>Placeholder — not yet finalized.</em> TaxBridge's full Terms of Service and Privacy Policy are being drafted with legal counsel and will be published here before the platform handles real client data or payments at scale. Nothing on this page currently constitutes a binding agreement.</p>
+        <p class="stub-p"><em>Placeholder not yet finalized.</em> TaxBridge's full Terms of Service and Privacy Policy are being drafted with legal counsel and will be published here before the platform handles real client data or payments at scale. Nothing on this page currently constitutes a binding agreement.</p>
       </div>
     </div>
   </div>
@@ -1400,16 +1406,16 @@ function initSteps(){
 
 /* FAQ */
 const faqData = [
-  {q:"How does TaxBridge work?", a:"Tell us what you're dealing with — the type of work, your industry, location, and how sensitive it is. Our team reviews the request personally and identifies which specialist firm is the right fit, then makes the introduction. There's also a separate, lighter-weight option to work with an individual professional directly for smaller, simpler work."},
-  {q:"What's the difference between getting matched with a firm and finding an individual professional?", a:"Firm matching is for engagements where specialisation, location, and capacity genuinely matter — tax investigations, forensic accounting, audits, asset tracing, restructuring and similar work. The individual professional track is a lighter option for smaller, routine work (like a single filing), and includes an optional contract-and-payment process through TaxBridge. Both are manually reviewed by our team; use whichever fits what you need."},
-  {q:"How are professionals and firms verified?", a:"We check identity, professional body registration (ICAN, ANAN, CITN, or equivalent), and relevant experience — for individual professionals and firms alike. It's a manual review by our team, and for firms we track it at a granular level (identity, credentials, and even specific specialisations) rather than one blanket approval."},
-  {q:"How do I choose an individual professional?", a:"After you submit a request on the individual-professional track, we send you two to three matched professionals with their experience and specialisations. You pick the one that fits and we set up the contract. Firm matching works differently — TaxBridge's team makes the introduction rather than presenting you with a list to choose from."},
-  {q:"How does payment protection work?", a:"This applies to the individual-professional track: you pay TaxBridge, not the professional directly, and that payment is held until the work is marked delivered, then released minus our commission. It's not a regulated escrow service — it's a payment process designed to reduce the risk of paying upfront with no recourse. Firm engagements are currently introduction-only; TaxBridge doesn't yet process payment between you and the firm."},
+  {q:"How does TaxBridge work?", a:"Tell us what you're dealing with the type of work, your industry, location, and how sensitive it is. Our team reviews the request personally and identifies which specialist firm is the right fit, then makes the introduction. There's also a separate, lighter-weight option to work with an individual professional directly for smaller, simpler work."},
+  {q:"What's the difference between getting matched with a firm and finding an individual professional?", a:"Firm matching is for engagements where specialisation, location, and capacity genuinely matter tax investigations, forensic accounting, audits, asset tracing, restructuring and similar work. The individual professional track is a lighter option for smaller, routine work (like a single filing), and includes an optional contract-and-payment process through TaxBridge. Both are manually reviewed by our team; use whichever fits what you need."},
+  {q:"How are professionals and firms verified?", a:"We check identity, professional body registration (ICAN, ANAN, CITN, or equivalent), and relevant experience for individual professionals and firms alike. It's a manual review by our team, and for firms we track it at a granular level (identity, credentials, and even specific specialisations) rather than one blanket approval."},
+  {q:"How do I choose an individual professional?", a:"After you submit a request on the individual-professional track, we send you two to three matched professionals with their experience and specialisations. You pick the one that fits and we set up the contract. Firm matching works differently.TaxBridge's team makes the introduction rather than presenting you with a list to choose from."},
+  {q:"How does payment protection work?", a:"This applies to the individual-professional track: you pay TaxBridge, not the professional directly, and that payment is held until the work is marked delivered, then released minus our commission. It's not a regulated escrow service, it's a payment process designed to reduce the risk of paying upfront with no recourse. Firm engagements are currently introduction-only; TaxBridge doesn't yet process payment between you and the firm."},
   {q:"What happens if I'm unhappy with the work?", a:"Tell us and we'll re-match you at no extra cost, whether that was a firm or an individual professional. We're also building a more structured dispute process as the platform grows."},
-  {q:"What services can I request?", a:"Everything from routine bookkeeping, tax filing (PAYE, VAT, CIT), and payroll setup, through to tax investigations and disputes, forensic accounting, fraud investigation, asset tracing, litigation support, audits, and due diligence. If your need doesn't fit neatly into one of those, tell us anyway — we'll find the right fit."},
-  {q:"Can businesses use TaxBridge, not just individuals?", a:"Yes — most requests come from small and growing businesses that need ongoing tax and accounting support, not a one-off filing."},
+  {q:"What services can I request?", a:"Everything from routine bookkeeping, tax filing (PAYE, VAT, CIT), and payroll setup, through to tax investigations and disputes, forensic accounting, fraud investigation, asset tracing, litigation support, audits, and due diligence. If your need doesn't fit neatly into one of those, tell us anyway, we'll find the right fit."},
+  {q:"Can businesses use TaxBridge, not just individuals?", a:"Yes, most requests come from small and growing businesses that need ongoing tax and accounting support, not a one-off filing."},
   {q:"How do professionals or firms join?", a:"Individual professionals apply through the professional portal with their registration number, expertise, and experience. Accounting and advisory firms register through 'List My Firm' instead, with details for the whole practice. Both are manually reviewed before you start receiving matched requests."},
-  {q:"When do I pay?", a:"Only on the individual-professional track, and only after you've chosen a matched professional and signed the one-page contract — nothing is charged before that. Firm engagements don't currently have a payment step through TaxBridge."},
+  {q:"When do I pay?", a:"Only on the individual-professional track, and only after you've chosen a matched professional and signed the one-page contract nothing is charged before that. Firm engagements don't currently have a payment step through TaxBridge."},
   {q:"How does TaxBridge make money?", a:"We take a commission on individual-professional engagements, and on renewals or repeat work for a period after the introduction."}
 ];
 function initFaq(){
@@ -1797,7 +1803,7 @@ function engagementStatusTag(status){
    Talks to the real TaxBridge backend. Point this at your deployed API —
    during local development the default below assumes the backend is
    running on localhost:4000 (see taxbridge-backend/README.md). */
-const API_BASE = window.TAXBRIDGE_API_BASE || 'http://localhost:4000/api';
+const API_BASE = window.TAXBRIDGE_API_BASE || 'https://taxbridge-4ki9.onrender.com/api';
 
 class ApiError extends Error {}
 
@@ -1938,13 +1944,18 @@ function activeAccounts(){
   return list;
 }
 
-async function refreshNotificationBell(){
+async function refreshNotificationBell(view){
   const accounts = activeAccounts();
   const bell = document.getElementById('nav-bell');
   const badge = document.getElementById('nav-bell-badge');
   const drawerBell = document.getElementById('drawer-bell');
   const drawerBadge = document.getElementById('drawer-bell-badge');
-  if(!accounts.length){
+  if(!view){
+    const activeSection = document.querySelector('.view.active');
+    view = activeSection ? activeSection.id.replace('view-', '') : 'home';
+  }
+  const eligible = accounts.length > 0 && view !== 'home';
+  if(!eligible){
     if(bell) bell.style.display = 'none';
     if(drawerBell) drawerBell.style.display = 'none';
     return;
@@ -2024,6 +2035,7 @@ function go(view){
   if(view === 'firm-profile') renderFirmProfile();
   if(view === 'list-firm') renderFirmPortal();
   if(view === 'notifications') renderNotifications();
+  refreshNotificationBell(view);
 }
 
 function statusTag(status){
