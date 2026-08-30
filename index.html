@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <script>window.TAXBRIDGE_GOOGLE_CLIENT_ID = '80585747564-389kjaj0g5i67pjfnlttmvf1h4t7ihn5.apps.googleusercontent.com';</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TaxBridge.ng: The Right Accounting Firm for the Job</title>
@@ -783,6 +782,7 @@
   .notif-item .notif-time{font-size:11.5px;color:var(--ink-soft);margin-top:6px;}
   .notif-empty{text-align:center;padding:64px 20px;color:var(--ink-soft);}
 </style>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body>
 
@@ -1495,6 +1495,7 @@ function scrollToSection(id){
 document.addEventListener('DOMContentLoaded', () => {
   loadSessionFromStorage();
   refreshNotificationBell();
+  initGoogleAuth();
   initRotatingWord();
   initTapeField();
   initPhoneMock();
@@ -1817,6 +1818,11 @@ function engagementStatusTag(status){
    during local development the default below assumes the backend is
    running on localhost:4000 (see taxbridge-backend/README.md). */
 const API_BASE = window.TAXBRIDGE_API_BASE || 'https://taxbridge-4ki9.onrender.com/api';
+// Set window.TAXBRIDGE_GOOGLE_CLIENT_ID before this script loads (or edit the
+// fallback below) once you've created your OAuth Client ID in Google Cloud
+// Console. Leaving it unset just disables the Google buttons gracefully —
+// they still render, but explain sign-in isn't set up yet if clicked.
+const GOOGLE_CLIENT_ID = window.TAXBRIDGE_GOOGLE_CLIENT_ID || '';
 
 class ApiError extends Error {}
 
@@ -2108,13 +2114,17 @@ function setClientAuthTab(tab){ clientAuthTab = tab; renderClientPortal(); }
 
 let emailAuthOpen = { login: false, signup: false };
 
-function renderClientAuthForm(){
-  const el = document.getElementById('client-auth-form');
-  const googleBtn = `
-    <button type="button" class="btn btn-social btn-full" onclick="socialSignInPlaceholder('Google')">
+function googleAuthButton(role){
+  return `
+    <button type="button" class="btn btn-social btn-full" onclick="signInWithGoogle('${role}')">
       <svg viewBox="0 0 24 24"><path fill="#4285F4" d="M23.52 12.27c0-.85-.08-1.67-.22-2.45H12v4.64h6.47a5.53 5.53 0 0 1-2.4 3.63v3h3.88c2.27-2.09 3.57-5.17 3.57-8.82z"/><path fill="#34A853" d="M12 24c3.24 0 5.96-1.07 7.95-2.91l-3.88-3c-1.08.72-2.45 1.15-4.07 1.15-3.13 0-5.78-2.11-6.73-4.96H1.26v3.12A12 12 0 0 0 12 24z"/><path fill="#FBBC05" d="M5.27 14.28A7.2 7.2 0 0 1 4.89 12c0-.79.14-1.56.38-2.28V6.6H1.26A12 12 0 0 0 0 12c0 1.94.46 3.77 1.26 5.4l4.01-3.12z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.44-3.44C17.95 1.19 15.24 0 12 0 7.31 0 3.26 2.69 1.26 6.6l4.01 3.12C6.22 6.86 8.87 4.75 12 4.75z"/></svg>
       Continue with Google
     </button>`;
+}
+
+function renderClientAuthForm(){
+  const el = document.getElementById('client-auth-form');
+  const googleBtn = googleAuthButton('client');
   const appleBtn = `
     <button type="button" class="btn btn-social btn-full" onclick="socialSignInPlaceholder('Apple')">
       <svg viewBox="0 0 24 24" fill="#000"><path d="M16.36 1.43c0 1.14-.42 2.2-1.24 3.06-.87.92-2.09 1.62-3.28 1.53-.14-1.16.41-2.32 1.16-3.09.83-.87 2.29-1.55 3.36-1.5zm3.68 16.9c-.5 1.15-.73 1.66-1.37 2.68-.9 1.42-2.16 3.19-3.73 3.2-1.4.02-1.76-.9-3.66-.89-1.9.01-2.29.9-3.69.89-1.57-.02-2.76-1.61-3.66-3.03-2.52-3.95-2.78-8.59-1.23-11.06.9-1.42 2.36-2.42 3.98-2.42 1.6 0 2.6.87 3.93.87 1.28 0 2.06-.87 3.94-.87 1.36 0 2.87.71 3.86 1.99-3.39 1.85-2.84 6.65.63 8.64z"/></svg>
@@ -2177,6 +2187,65 @@ function toggleEmailAuth(tab){
 
 function socialSignInPlaceholder(provider){
   alert(provider + ' sign-in is coming soon. For now, use email.');
+}
+
+/* ---------- real Google sign-in ---------- */
+let googleTokenClient = null;
+function initGoogleAuth(){
+  if(!GOOGLE_CLIENT_ID || !window.google || !window.google.accounts || !window.google.accounts.oauth2) return;
+  googleTokenClient = google.accounts.oauth2.initTokenClient({
+    client_id: GOOGLE_CLIENT_ID,
+    scope: 'openid email profile',
+    callback: () => {} // replaced per-call in signInWithGoogle, before requesting
+  });
+}
+
+function signInWithGoogle(role){
+  if(!GOOGLE_CLIENT_ID){
+    alert('Google sign-in is not set up yet on this site.');
+    return;
+  }
+  if(!googleTokenClient){
+    // The GIS library may not have finished loading yet (it's async/defer) — try once more.
+    initGoogleAuth();
+    if(!googleTokenClient){
+      alert('Google sign-in is still loading — give it a second and try again.');
+      return;
+    }
+  }
+  googleTokenClient.callback = async (tokenResponse) => {
+    if(tokenResponse.error){
+      if(tokenResponse.error !== 'popup_closed_by_user' && tokenResponse.error !== 'access_denied'){
+        alert('Google sign-in failed. Please try again.');
+      }
+      return;
+    }
+    await completeGoogleAuth(role, tokenResponse.access_token);
+  };
+  googleTokenClient.requestAccessToken();
+}
+
+async function completeGoogleAuth(role, accessToken){
+  try{
+    if(role === 'client'){
+      const data = await apiFetch('/auth/client/google', { method:'POST', body:{ accessToken } });
+      session.client = { token: data.token, user: data.user };
+      saveSessionToStorage();
+      renderClientPortal();
+    } else if(role === 'firm'){
+      const data = await apiFetch('/auth/firm/google', { method:'POST', body:{ accessToken } });
+      session.firm = { token: data.token, user: data.firm };
+      saveSessionToStorage();
+      renderFirmPortal();
+    } else if(role === 'professional'){
+      const data = await apiFetch('/auth/professional/google', { method:'POST', body:{ accessToken } });
+      session.pro = { token: data.token, user: data.user };
+      saveSessionToStorage();
+      renderProPortal();
+    }
+  } catch(err){
+    alert(err.message);
+  }
 }
 
 function forgotPasswordPlaceholder(){
@@ -2862,6 +2931,8 @@ function renderProAuthForm(){
   const el = document.getElementById('pro-auth-form');
   if(proAuthTab === 'login'){
     el.innerHTML = `
+      ${googleAuthButton('professional')}
+      <div class="auth-divider"><span>Or</span></div>
       <label>Email</label>
       <input id="pl-email" type="email" placeholder="you@example.com">
       <label>Password</label>
@@ -3087,6 +3158,8 @@ function renderFirmAuthForm(){
   const el = document.getElementById('firm-auth-form');
   if(firmAuthTab === 'login'){
     el.innerHTML = `
+      ${googleAuthButton('firm')}
+      <div class="auth-divider"><span>Or</span></div>
       <label>Firm email</label>
       <input id="fl-email" type="email" placeholder="you@yourfirm.com">
       <label>Password</label>

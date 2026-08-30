@@ -1,4 +1,5 @@
 const express = require('express');
+const crypto = require('crypto');
 const prisma = require('../db');
 const { hashPassword, verifyPassword } = require('../utils/password');
 const { signToken } = require('../utils/jwt');
@@ -7,6 +8,7 @@ const { AppError } = require('../utils/AppError');
 const { requireFields, requireEmail, requirePassword } = require('../utils/validate');
 const { publicAccount } = require('../utils/serialize');
 const { requireAuth, requireRole } = require('../middleware/auth');
+const { verifyGoogleAccessToken } = require('../utils/googleAuth');
 
 const router = express.Router();
 
@@ -53,6 +55,47 @@ router.post(
     const ok = await verifyPassword(req.body.password, user.passwordHash);
     if (!ok) {
       throw new AppError(401, 'Incorrect password.');
+    }
+
+    const token = signToken({ id: user.id, role: 'client', email: user.email });
+    res.json({ token, user: publicAccount(user) });
+  })
+);
+
+/**
+ * POST /api/auth/client/google — body: { accessToken }
+ * Logs in an existing client account, links Google to an existing
+ * email/password account (only when Google reports the email verified),
+ * or creates a brand-new client account — same response shape as
+ * /login and /signup, so the frontend treats all three identically.
+ */
+router.post(
+  '/google',
+  asyncHandler(async (req, res) => {
+    const g = await verifyGoogleAccessToken(req.body.accessToken);
+
+    let user = await prisma.user.findUnique({ where: { email: g.email } });
+
+    if (user && user.role !== 'CLIENT') {
+      throw new AppError(409, 'This email is already registered as a different account type.');
+    }
+
+    if (!user) {
+      // Google accounts have no password — store an unguessable random
+      // hash so the column stays non-null without ever being usable for
+      // an actual email/password login.
+      const passwordHash = await hashPassword(crypto.randomBytes(32).toString('hex'));
+      user = await prisma.user.create({
+        data: {
+          email: g.email,
+          passwordHash,
+          role: 'CLIENT',
+          name: g.name,
+          googleId: g.googleId,
+        },
+      });
+    } else if (!user.googleId && g.emailVerified) {
+      user = await prisma.user.update({ where: { id: user.id }, data: { googleId: g.googleId } });
     }
 
     const token = signToken({ id: user.id, role: 'client', email: user.email });

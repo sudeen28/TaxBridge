@@ -1,4 +1,5 @@
 const express = require('express');
+const crypto = require('crypto');
 const prisma = require('../db');
 const { hashPassword, verifyPassword } = require('../utils/password');
 const { signToken } = require('../utils/jwt');
@@ -7,6 +8,7 @@ const { AppError } = require('../utils/AppError');
 const { requireFields, requireEmail, requirePassword } = require('../utils/validate');
 const { publicAccount } = require('../utils/serialize');
 const { requireAuth, requireRole } = require('../middleware/auth');
+const { verifyGoogleAccessToken } = require('../utils/googleAuth');
 
 const router = express.Router();
 
@@ -60,6 +62,47 @@ router.post(
     const ok = await verifyPassword(req.body.password, user.passwordHash);
     if (!ok) {
       throw new AppError(401, 'Incorrect password.');
+    }
+
+    const token = signToken({ id: user.id, role: 'professional', email: user.email });
+    res.json({ token, user: publicAccount(user) });
+  })
+);
+
+/**
+ * POST /api/auth/professional/google — body: { accessToken }
+ * Logs in / links / creates same as the client route, but a brand-new
+ * account here starts with professionalBody/registrationNumber/expertise
+ * left blank (all nullable in schema) and verified: false — Google can't
+ * supply credentialing info, so this account is incomplete until the
+ * professional fills in the rest from their dashboard. They won't be
+ * eligible for leads until an admin verifies them either way.
+ */
+router.post(
+  '/google',
+  asyncHandler(async (req, res) => {
+    const g = await verifyGoogleAccessToken(req.body.accessToken);
+
+    let user = await prisma.user.findUnique({ where: { email: g.email } });
+
+    if (user && user.role !== 'PROFESSIONAL') {
+      throw new AppError(409, 'This email is already registered as a different account type.');
+    }
+
+    if (!user) {
+      const passwordHash = await hashPassword(crypto.randomBytes(32).toString('hex'));
+      user = await prisma.user.create({
+        data: {
+          email: g.email,
+          passwordHash,
+          role: 'PROFESSIONAL',
+          name: g.name,
+          googleId: g.googleId,
+          verified: false,
+        },
+      });
+    } else if (!user.googleId && g.emailVerified) {
+      user = await prisma.user.update({ where: { id: user.id }, data: { googleId: g.googleId } });
     }
 
     const token = signToken({ id: user.id, role: 'professional', email: user.email });

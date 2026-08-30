@@ -1,4 +1,5 @@
 const express = require('express');
+const crypto = require('crypto');
 const prisma = require('../db');
 const { hashPassword, verifyPassword } = require('../utils/password');
 const { signToken } = require('../utils/jwt');
@@ -8,6 +9,7 @@ const { requireFields, requireEmail, requirePassword } = require('../utils/valid
 const { presentFirm } = require('../utils/serialize');
 const { requireAuth, requireRole } = require('../middleware/auth');
 const { capacity: capacityMap, availability: availabilityMap, toDbOrThrow } = require('../utils/enumMaps');
+const { verifyGoogleAccessToken } = require('../utils/googleAuth');
 
 const router = express.Router();
 
@@ -89,6 +91,43 @@ router.post(
     const ok = await verifyPassword(req.body.password, firm.passwordHash);
     if (!ok) {
       throw new AppError(401, 'Incorrect password.');
+    }
+
+    const token = signToken({ id: firm.id, role: 'firm', email: firm.email });
+    res.json({ token, firm: presentFirm(firm) });
+  })
+);
+
+/**
+ * POST /api/auth/firm/google — body: { accessToken }
+ * Logs in / links / creates same pattern as the client and professional
+ * routes. A brand-new firm starts with just a name and email from Google —
+ * capacity/availability/verificationStatus fall back to the same schema
+ * defaults as a normal signup, and everything else (specialisations,
+ * credentials, etc.) gets filled in later from the firm dashboard.
+ */
+router.post(
+  '/google',
+  asyncHandler(async (req, res) => {
+    const g = await verifyGoogleAccessToken(req.body.accessToken);
+
+    let firm = await prisma.firm.findUnique({ where: { email: g.email } });
+
+    if (!firm) {
+      const passwordHash = await hashPassword(crypto.randomBytes(32).toString('hex'));
+      firm = await prisma.firm.create({
+        data: {
+          email: g.email,
+          passwordHash,
+          firmName: g.name,
+          googleId: g.googleId,
+          capacity: 'SMALL',
+          availability: 'ACCEPTING',
+          verificationStatus: 'PENDING',
+        },
+      });
+    } else if (!firm.googleId && g.emailVerified) {
+      firm = await prisma.firm.update({ where: { id: firm.id }, data: { googleId: g.googleId } });
     }
 
     const token = signToken({ id: firm.id, role: 'firm', email: firm.email });
