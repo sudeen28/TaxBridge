@@ -36,7 +36,7 @@ router.post(
     const client = await prisma.user.findUnique({ where: { id: req.auth.id } });
     if (!client) throw new AppError(404, 'Account not found.');
 
-    const refCode = await generateUniqueRefCode(prisma.lead, 'TXB');
+    const refCode = await generateUniqueRefCode(prisma.lead, 'FPL');
 
     const lead = await prisma.lead.create({
       data: {

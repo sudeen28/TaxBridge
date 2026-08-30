@@ -31,7 +31,7 @@ const VERIFICATION_NOTIFICATIONS = {
   VERIFIED: [
     'FIRM_VERIFIED',
     'Your firm is now verified',
-    "Congratulations — your firm has been successfully onboarded and verified on TaxBridge. You're now eligible to be matched with client engagements.",
+    "Congratulations, your firm has been successfully onboarded and verified on FinProMatch. You're now eligible to be matched with client engagements.",
   ],
   INFO_REQUIRED: [
     'FIRM_INFO_REQUIRED',

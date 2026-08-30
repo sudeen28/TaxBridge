@@ -1,4 +1,4 @@
-// TaxBridge.ng — Prisma schema
+// FinProMatch — Prisma schema
 // Mirrors the data model built in the frontend prototype 1:1 so migrating
 // off window.storage is mechanical rather than a redesign. Postgres (Neon).
 

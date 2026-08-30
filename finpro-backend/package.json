@@ -1,7 +1,7 @@
 {
-  "name": "taxbridge-backend",
+  "name": "finpromatch-backend",
   "version": "0.1.0",
-  "description": "TaxBridge.ng backend API — auth, engagements, firms, messaging, admin",
+  "description": "FinProMatch backend API — auth, engagements, firms, messaging, admin",
   "private": true,
   "main": "src/index.js",
   "scripts": {

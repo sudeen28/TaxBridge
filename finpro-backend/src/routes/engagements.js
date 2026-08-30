@@ -57,7 +57,7 @@ router.post(
       ? toDbOrThrow(sensitivityMap, req.body.sensitivity, 'sensitivity')
       : 'STANDARD';
 
-    const refCode = await generateUniqueRefCode(prisma.engagement, 'ENG');
+    const refCode = await generateUniqueRefCode(prisma.engagement, 'FPM');
 
     const eng = await prisma.engagement.create({
       data: {

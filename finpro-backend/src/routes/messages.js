@@ -24,7 +24,7 @@ function canPostToEngagement(eng, auth) {
 function senderNameFor(eng, auth, account) {
   if (auth.role === 'client') return eng.clientName;
   if (auth.role === 'firm') return account.firmName;
-  return account.name || 'TaxBridge team';
+  return account.name || 'FinProMatch team';
 }
 
 /**
