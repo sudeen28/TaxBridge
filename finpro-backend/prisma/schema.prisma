@@ -85,6 +85,13 @@ enum NotificationType {
   MESSAGE_RECEIVED
 }
 
+enum GuestBriefStatus {
+  NEW
+  CONTACTED
+  CONVERTED
+  CLOSED
+}
+
 // ---------- models ----------
 
 /// Individual users — both clients and individual professionals (legacy track).
@@ -318,4 +325,18 @@ model Notification {
   @@index([recipientFirmId, read])
   @@index([recipientAdminId, read])
   @@map("notifications")
+}
+
+/// A no-account-needed quick brief from a prospective client who doesn't
+/// want to sign up first. Captured here AND emailed to the team inbox —
+/// the row is the source of truth even if the email bounces or gets missed.
+model GuestBrief {
+  id        String           @id @default(uuid())
+  name      String
+  contact   String
+  brief     String           @db.Text
+  status    GuestBriefStatus @default(NEW)
+  createdAt DateTime         @default(now())
+
+  @@map("guest_briefs")
 }

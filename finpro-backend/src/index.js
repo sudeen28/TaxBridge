@@ -11,6 +11,9 @@ const proAuthRoutes = require('./routes/auth.pro');
 const firmAuthRoutes = require('./routes/auth.firm');
 const adminAuthRoutes = require('./routes/auth.admin');
 
+app.use('/api/guest-briefs', require('./routes/guestBriefs'))
+app.use('/api/admin/guest-briefs', require('./routes/admin.guestBriefs'))
+
 const { router: engagementsRoutes } = require('./routes/engagements');
 const firmsRoutes = require('./routes/firms');
 const messagesRoutes = require('./routes/messages');

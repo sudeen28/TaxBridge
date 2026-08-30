@@ -246,6 +246,11 @@
   @keyframes cursorBlink{0%,49%{opacity:1;}50%,100%{opacity:0;}}
   .hero .lede{font-size:17px;color:var(--ink-soft);max-width:600px;margin:22px auto 0;}
   .hero-ctas{display:flex;gap:14px;margin-top:36px;justify-content:center;flex-wrap:wrap;}
+  .quick-brief-link{
+    display:block;margin:16px auto 0;background:none;border:none;color:var(--ink-soft);
+    font-size:13.5px;text-decoration:underline;text-underline-offset:3px;cursor:pointer;
+  }
+  .quick-brief-link:hover{color:var(--ink);}
 
   .trust-bar{
     display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;
@@ -322,12 +327,15 @@
   .band-amber h2{color:var(--ink);}
 
   .eyebrow-pill{
-    display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.08em;
-    text-transform:uppercase;padding:7px 16px;border-radius:var(--radius-pill);margin-bottom:20px;
-    background:rgba(0,0,0,0.08);color:var(--ink-soft);
+    display:inline-flex;align-items:center;gap:8px;
+    font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:12px;letter-spacing:.04em;
+    text-transform:uppercase;padding:8px 18px 8px 14px;border-radius:var(--radius-pill);margin-bottom:20px;
+    background:rgba(0,0,0,0.06);color:var(--ink);border:1px solid rgba(0,0,0,0.08);
+    box-shadow:0 1px 2px rgba(0,0,0,.04);
   }
-  .band.dark .eyebrow-pill{background:rgba(255,255,255,0.14);color:rgba(255,255,255,.85);}
-  .band-amber .eyebrow-pill{background:rgba(7,20,38,0.08);color:var(--ink);}
+  .eyebrow-pill::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green);flex:0 0 auto;}
+  .band.dark .eyebrow-pill{background:rgba(255,255,255,0.1);color:#fff;border-color:rgba(255,255,255,.16);}
+  .band-amber .eyebrow-pill{background:rgba(7,20,38,0.06);color:var(--ink);border-color:rgba(7,20,38,.12);}
 
   .band h2{font-size:38px;text-align:center;max-width:760px;margin:0 auto;}
   .band .band-sub{text-align:center;color:var(--ink-soft);max-width:520px;margin:16px auto 0;font-size:16px;}
@@ -353,6 +361,10 @@
   .broken-card{border-left-style:dashed;border-color:rgba(255,107,91,.4);}
   .bt-connector{opacity:0;transition:opacity .5s ease .5s;}
   .bt-wrap.reveal-stagger.in-view .bt-connector{opacity:1;}
+  /* alternating slide-in: steps 1,3,5 (odd) slide in from the left, steps 2,4 (even) from the right */
+  .bt-wrap.reveal-stagger .bt-step.stagger-child{transform:translateX(-60px);}
+  .bt-wrap.reveal-stagger .bt-step.stagger-child:nth-child(4n+3){transform:translateX(60px);}
+  .bt-wrap.reveal-stagger.in-view .bt-step.stagger-child{transform:translateX(0);}
   .bt-wrap.reveal-stagger .stagger-child:nth-child(1){transition-delay:0s;}
   .bt-wrap.reveal-stagger .stagger-child:nth-child(3){transition-delay:.15s;}
   .bt-wrap.reveal-stagger .stagger-child:nth-child(5){transition-delay:.3s;}
@@ -597,7 +609,7 @@
   @keyframes btn-spin{to{transform:rotate(360deg);}}
   button:disabled{opacity:.65;cursor:not-allowed;}
   .client-trust-panel{background:var(--maroon-deep);color:#fff;padding:40px 36px;display:flex;flex-direction:column;justify-content:center;}
-  .client-trust-panel .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--green);margin-bottom:14px;}
+  .client-trust-panel .eyebrow{font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--green);margin-bottom:14px;}
   .client-trust-panel h2{font-size:26px;color:#fff;margin-bottom:18px;}
   .trust-step{display:flex;gap:12px;margin-top:16px;}
   .trust-step-num{font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:var(--green);flex-shrink:0;padding-top:2px;}
@@ -900,6 +912,7 @@
       <button class="btn btn-orange" onclick="go('client')">Get Matched →</button>
       <button class="btn btn-outline" onclick="go('list-firm')">List My Firm</button>
     </div>
+    <button class="quick-brief-link" onclick="openQuickBriefModal()">Prefer not to create an account? Send a quick brief instead →</button>
     <div class="trust-bar" id="trust-bar">
       <span class="trust-item">✓ Verified firms</span>
       <span class="trust-dot">·</span>
@@ -1697,6 +1710,51 @@ function showSuccessModal(title, body){
     <button class="btn btn-brass btn-full" onclick="closeModal()">Done</button>
   `);
 }
+
+function openQuickBriefModal(){
+  showModal(`
+    <h3>Send a quick brief</h3>
+    <p style="color:var(--ink-soft);font-size:14px;margin:6px 0 18px;">No account needed. Tell us what's going on and our team will reach out directly.</p>
+    <div id="qb-msg"></div>
+    <label>Your name<span class="req-star">*</span></label>
+    <input id="qb-name" placeholder="e.g. Amina Bello">
+    <label>Email or phone<span class="req-star">*</span></label>
+    <input id="qb-contact" placeholder="How should we reach you?">
+    <label>What's going on?<span class="req-star">*</span></label>
+    <textarea id="qb-brief" placeholder="A few sentences about what you need help with"></textarea>
+    <div style="margin-top:20px;"><button class="btn btn-primary btn-full" id="qb-submit-btn" onclick="submitQuickBrief()">Send brief</button></div>
+  `);
+}
+
+async function submitQuickBrief(){
+  const name = document.getElementById('qb-name').value.trim();
+  const contact = document.getElementById('qb-contact').value.trim();
+  const brief = document.getElementById('qb-brief').value.trim();
+  const msg = document.getElementById('qb-msg');
+  const btn = document.getElementById('qb-submit-btn');
+
+  if(!name || !contact || !brief){
+    msg.innerHTML = authErrorMsg('Please fill in your name, contact info, and a brief.');
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Sending…';
+  try{
+    await api.guestBriefs.submit({ name, contact, brief });
+    showModal(`
+      <div class="modal-icon">✓</div>
+      <h3>Brief received</h3>
+      <p>Thanks, ${esc(name)}. Our team will review this and reach out to you directly at ${esc(contact)}, usually within 24–48 hours. If it turns into a match, we'll walk you through creating an account then, no need to do it now.</p>
+      <button class="btn btn-brass btn-full" onclick="closeModal()">Done</button>
+    `);
+  } catch(err){
+    msg.innerHTML = authErrorMsg(err.message);
+    btn.disabled = false;
+    btn.textContent = 'Send brief';
+  }
+}
+
 function togglePasswordVisibility(inputId, btn){
   const input = document.getElementById(inputId);
   if(!input) return;
@@ -1938,12 +1996,15 @@ function engagementStatusTag(status){
    Talks to the real FinProMatch backend. Point this at your deployed API —
    during local development the default below assumes the backend is
    running on localhost:4000 (see taxbridge-backend/README.md). */
-const API_BASE = window.TAXBRIDGE_API_BASE || 'https://taxbridge-4ki9.onrender.com/api';
-// Set window.TAXBRIDGE_GOOGLE_CLIENT_ID before this script loads (or edit the
+// Checks the new FINPROMATCH_* name first, falling back to the old
+// TAXBRIDGE_* name so nothing breaks mid-rename if the inline config
+// snippet on the live site hasn't been updated yet.
+const API_BASE = window.FINPROMATCH_API_BASE || window.TAXBRIDGE_API_BASE || 'https://taxbridge-4ki9.onrender.com/api';
+// Set window.FINPROMATCH_GOOGLE_CLIENT_ID before this script loads (or edit the
 // fallback below) once you've created your OAuth Client ID in Google Cloud
 // Console. Leaving it unset just disables the Google buttons gracefully —
 // they still render, but explain sign-in isn't set up yet if clicked.
-const GOOGLE_CLIENT_ID = window.TAXBRIDGE_GOOGLE_CLIENT_ID || '';
+const GOOGLE_CLIENT_ID = window.FINPROMATCH_GOOGLE_CLIENT_ID || window.TAXBRIDGE_GOOGLE_CLIENT_ID || '';
 
 class ApiError extends Error {}
 
@@ -2010,6 +2071,9 @@ const api = {
     markRead: (token, id) => apiFetch(`/notifications/${id}/read`, { method: 'PATCH', token }),
     markAllRead: (token) => apiFetch('/notifications/read-all', { method: 'POST', token }),
   },
+  guestBriefs: {
+    submit: (body) => apiFetch('/guest-briefs', { method: 'POST', body }),
+  },
   admin: {
     stats: (token) => apiFetch('/admin/stats', { token }),
     professionals: {
@@ -2034,6 +2098,10 @@ const api = {
       setFee: (token, id, feeAmount, scopeNote) => apiFetch(`/admin/leads/${id}/fee`, { method: 'PATCH', token, body: { feeAmount, scopeNote } }),
       releasePayment: (token, id) => apiFetch(`/admin/leads/${id}/release-payment`, { method: 'POST', token }),
     },
+    guestBriefs: {
+      list: (token) => apiFetch('/admin/guest-briefs', { token }),
+      setStatus: (token, id, status) => apiFetch(`/admin/guest-briefs/${id}/status`, { method: 'PATCH', token, body: { status } }),
+    },
   },
   messages: {
     list: (token, engId) => apiFetch(`/engagements/${encodeURIComponent(engId)}/messages`, {token}),
@@ -2052,7 +2120,7 @@ function tokenForRole(role){
 /* ---------- session persistence ----------
    Real tokens now, so sessions survive a page refresh via localStorage —
    unlike the old prototype, which was in-memory only. */
-const SESSION_STORAGE_KEY = 'taxbridge_session_v1';
+const SESSION_STORAGE_KEY = 'finpromatch_session_v1';
 
 function saveSessionToStorage(){
   try{
@@ -3999,27 +4067,28 @@ function applyAdminEngFilters(){
 
 /* Cache of the last-fetched admin data, so subordinate renderers (firm search,
    match modal) don't need a fresh network round-trip on every keystroke. */
-let adminCache = { engagements: [], firms: [], pros: [], leads: [] };
+let adminCache = { engagements: [], firms: [], pros: [], leads: [], guestBriefs: [] };
 
 async function renderAdmin(){
   const content = document.getElementById('admin-content');
   content.innerHTML = '<div class="loading">Loading dashboard…</div>';
 
-  let stats, engagements, firms, pros, leads;
+  let stats, engagements, firms, pros, leads, guestBriefs;
   try{
     const token = adminSession.token;
-    [stats, engagements, firms, pros, leads] = await Promise.all([
+    [stats, engagements, firms, pros, leads, guestBriefs] = await Promise.all([
       api.admin.stats(token).then(d => d),
       api.admin.engagements.list(token).then(d => d.engagements),
       api.admin.firms.list(token).then(d => d.firms),
       api.admin.professionals.list(token).then(d => d.professionals),
-      api.admin.leads.list(token).then(d => d.leads)
+      api.admin.leads.list(token).then(d => d.leads),
+      api.admin.guestBriefs.list(token).then(d => d.briefs)
     ]);
   } catch(err){
     content.innerHTML = `<div class="msg error">${esc(err.message)}</div>`;
     return;
   }
-  adminCache = { engagements, firms, pros, leads };
+  adminCache = { engagements, firms, pros, leads, guestBriefs };
   const verifiedPros = pros.filter(p => p.verified);
 
   const reviewingCount = stats.awaitingReview;
@@ -4044,6 +4113,7 @@ async function renderAdmin(){
       <button class="${adminTab==='firms'?'active':''}" onclick="setAdminTab('firms')">Firms <span class="hint">(${firms.length})</span></button>
       <button class="${adminTab==='pros'?'active':''}" onclick="setAdminTab('pros')">Professionals <span class="hint">(${pros.length})</span></button>
       <button class="${adminTab==='leads'?'active':''}" onclick="setAdminTab('leads')">Individual Requests <span class="hint">(${activeLeadCount})</span></button>
+      <button class="${adminTab==='briefs'?'active':''}" onclick="setAdminTab('briefs')">Quick Briefs <span class="hint">(${guestBriefs.filter(b => b.status === 'NEW').length})</span></button>
     </div>`;
 
   html += `<div id="admin-tab-engagements" style="display:${adminTab==='engagements'?'block':'none'};">`;
@@ -4207,7 +4277,45 @@ async function renderAdmin(){
   }
   html += `</div>`;
 
+  html += `<div id="admin-tab-briefs" style="display:${adminTab==='briefs'?'block':'none'};">`;
+  html += `<h3 style="font-size:19px;margin:0 0 4px;">Quick briefs <span class="hint">(${guestBriefs.length})</span></h3>`;
+  html += `<p class="hint" style="margin-bottom:16px;">Submitted directly from the homepage, no account created. Also emailed to the team inbox when it comes in.</p>`;
+  if(!guestBriefs.length){
+    html += `<div class="empty">No quick briefs yet.</div>`;
+  } else {
+    for(const b of guestBriefs){
+      html += `<div class="case-card">
+        <div class="case-card-top">
+          <div><strong>${esc(b.name)}</strong> <span class="hint">${esc(b.contact)}</span></div>
+          <span class="stamp ${b.status !== 'NEW' ? 'pending' : ''}">${esc(b.status)}</span>
+        </div>
+        <p style="font-size:14px;margin:10px 0;">${esc(b.brief)}</p>
+        <p class="hint" style="margin-bottom:10px;">Submitted ${new Date(b.createdAt).toLocaleString()}</p>
+        <div class="grid-actions">
+          <select onchange="setGuestBriefStatus('${b.id}', this.value)">
+            <option value="">Update status…</option>
+            <option value="new" ${b.status==='NEW'?'selected':''}>New</option>
+            <option value="contacted" ${b.status==='CONTACTED'?'selected':''}>Contacted</option>
+            <option value="converted" ${b.status==='CONVERTED'?'selected':''}>Converted</option>
+            <option value="closed" ${b.status==='CLOSED'?'selected':''}>Closed</option>
+          </select>
+        </div>
+      </div>`;
+    }
+  }
+  html += `</div>`;
+
   content.innerHTML = html;
+}
+
+async function setGuestBriefStatus(id, status){
+  if(!status) return;
+  try{
+    await api.admin.guestBriefs.setStatus(adminSession.token, id, status);
+    renderAdmin();
+  } catch(err){
+    alert(err.message);
+  }
 }
 
 /* ---------- admin: engagement requests (manual matching only) ---------- */
