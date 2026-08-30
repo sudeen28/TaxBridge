@@ -229,7 +229,7 @@
   @keyframes fadein{from{opacity:0;}to{opacity:1;}}
 
   /* HERO */
-  .hero{padding:32px 0 56px;text-align:center;}
+  .hero{padding-top:32px;padding-bottom:56px;text-align:center;}
   .hero h1{font-size:64px;max-width:880px;margin:0 auto;line-height:1.15;contain:layout style;}
   .hero h1 .hero-line{display:block;}
   .hero h1 .rot-wrap{
@@ -762,7 +762,7 @@
   @media(max-width:640px){
     .auth-screen{min-height:64vh;display:flex;flex-direction:column;justify-content:center;}
   }
-  .app-section{padding:56px 0 80px;}
+  .app-section{padding-top:56px;padding-bottom:80px;}
 
   .notif-item{
     display:flex;gap:14px;align-items:flex-start;padding:16px 18px;
@@ -1117,7 +1117,7 @@
       </div>
       <h2 class="reveal">Local when it matters. Remote when it doesn't.</h2>
       <p class="band-sub reveal">For engagements that need someone on the ground, we prioritize firms based in or near your location. For work that can be handled remotely, geography matters a lot less, and that's factored into which firms we suggest.</p>
-      <div class="fb-grid reveal-stagger" style="grid-template-columns:1fr 1fr;">
+      <div class="fb-grid reveal-stagger">
         <div class="fb-item dark stagger-child"><strong>On-site work</strong><span>Investigations, audits with physical records, and matters requiring an in-person presence get matched to firms who can actually show up, starting with firms in your city or state.</span></div>
         <div class="fb-item dark stagger-child"><strong>Remote-friendly work</strong><span>Bookkeeping, filings, and advisory that don't need anyone on-site open up to well-suited firms further afield, so you're not limited to who happens to be local.</span></div>
       </div>
@@ -1502,6 +1502,17 @@ document.addEventListener('DOMContentLoaded', () => {
   initRevealObserver();
   initScrollTop();
   if(window.location.hash === '#admin'){ go('admin'); }
+});
+
+// Hidden admin entry point — no visible link anywhere in the UI (by design).
+// Press Ctrl+Shift+A (Cmd+Shift+A on Mac) from any page to jump straight to
+// the admin gate, without needing to type/edit the URL each time.
+document.addEventListener('keydown', (e) => {
+  const usingModifier = e.ctrlKey || e.metaKey;
+  if(usingModifier && e.shiftKey && e.key.toLowerCase() === 'a'){
+    e.preventDefault();
+    go('admin');
+  }
 });
 const LOADER_MIN_MS = 2000;
 const loaderStartedAt = Date.now();
@@ -1945,16 +1956,16 @@ function activeAccounts(){
   return list;
 }
 
-async function refreshNotificationBell(view){
+async function refreshNotificationBell(){
   const accounts = activeAccounts();
   const bell = document.getElementById('nav-bell');
   const badge = document.getElementById('nav-bell-badge');
   const drawerBell = document.getElementById('drawer-bell');
   const drawerBadge = document.getElementById('drawer-bell-badge');
-  if(!view){
-    const activeSection = document.querySelector('.view.active');
-    view = activeSection ? activeSection.id.replace('view-', '') : 'home';
-  }
+  // Always read the DOM directly rather than trusting a passed-in view name —
+  // this is the one source of truth for "what page is actually showing right now".
+  const activeSection = document.querySelector('.view.active');
+  const view = activeSection ? activeSection.id.replace('view-', '') : 'home';
   const eligible = accounts.length > 0 && view !== 'home';
   if(!eligible){
     if(bell) bell.style.display = 'none';
@@ -2001,7 +2012,10 @@ async function renderNotifications(){
         </div>
       </div>`).join('');
   } catch(err){
-    list.innerHTML = `<div class="notif-empty">${esc(err.message)}</div>`;
+    // A fetch failure here (missing route, still-migrating backend, etc.) is
+    // not something the person needs to see as a raw error — an empty state
+    // reads the same to them either way, and is a lot less alarming.
+    list.innerHTML = `<div class="notif-empty">No notifications yet.</div>`;
   }
 }
 
@@ -2036,7 +2050,7 @@ function go(view){
   if(view === 'firm-profile') renderFirmProfile();
   if(view === 'list-firm') renderFirmPortal();
   if(view === 'notifications') renderNotifications();
-  refreshNotificationBell(view);
+  refreshNotificationBell();
 }
 
 function statusTag(status){
