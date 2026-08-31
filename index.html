@@ -438,10 +438,10 @@
   .step-item:last-child{border-bottom:none;}
   .step-item:not(.active):hover{background:rgba(7,20,38,.05);}
   .step-item h4{font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:17px;position:relative;z-index:2;}
-  .step-item p{margin:8px 0 0;font-size:14px;color:var(--ink-soft);max-height:0;overflow:hidden;transition:max-height .35s ease, margin .35s ease;position:relative;z-index:2;}
+  .step-item p{margin:8px 0 0;font-size:14px;color:var(--ink-soft);height:0;overflow:hidden;transition:height .35s ease, margin .35s ease;position:relative;z-index:2;}
   .step-item.active{background:var(--maroon-deep);color:#fff;}
   .step-item.active h4{color:#fff;}
-  .step-item.active p{color:rgba(255,255,255,.8);max-height:100px;margin-top:10px;}
+  .step-item.active p{color:rgba(255,255,255,.8);height:66px;margin-top:10px;}
   .step-progress{position:absolute;bottom:0;left:0;height:3px;background:var(--orange);width:0%;z-index:1;}
   .step-item.active .step-progress{animation:stepfill 4.5s linear forwards;}
   @keyframes stepfill{from{width:0%;}to{width:100%;}}
@@ -2004,7 +2004,7 @@ const API_BASE = window.FINPROMATCH_API_BASE || window.TAXBRIDGE_API_BASE || 'ht
 // fallback below) once you've created your OAuth Client ID in Google Cloud
 // Console. Leaving it unset just disables the Google buttons gracefully —
 // they still render, but explain sign-in isn't set up yet if clicked.
-const GOOGLE_CLIENT_ID = window.FINPROMATCH_GOOGLE_CLIENT_ID || window.TAXBRIDGE_GOOGLE_CLIENT_ID || '';
+const GOOGLE_CLIENT_ID = window.FINPROMATCH_GOOGLE_CLIENT_ID || window.TAXBRIDGE_GOOGLE_CLIENT_ID || '80585747564-389kjaj0g5i67pjfnlttmvf1h4t7ihn5.apps.googleusercontent.com';
 
 class ApiError extends Error {}
 
