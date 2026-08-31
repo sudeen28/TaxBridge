@@ -2050,7 +2050,7 @@ const api = {
     mine: (token) => apiFetch('/engagements/mine', {token}),
     matchedToMe: (token) => apiFetch('/engagements/matched-to-me', {token}),
     get: (token, id) => apiFetch('/engagements/' + encodeURIComponent(id), {token}),
-    accept: (token, id) => apiFetch(`/engagements/${encodeURIComponent(id)}/accept`, {method:'POST', token}),
+    accept: (token, id, firmId) => apiFetch(`/engagements/${encodeURIComponent(id)}/accept`, {method:'POST', token, body: firmId ? {firmId} : undefined}),
     firmAccept: (token, id) => apiFetch(`/engagements/${encodeURIComponent(id)}/firm-accept`, {method:'POST', token})
   },
   leads: {
@@ -2834,7 +2834,7 @@ async function renderEngagementCard(eng){
         ${eng.matchReasonNote ? `<div class="scope-note"><strong>Why we selected them:</strong> ${esc(eng.matchReasonNote)}</div>` : ''}
         <div class="grid-actions">
           <button class="btn btn-outline btn-sm" onclick="selectedFirmId='${f.id}';go('firm-profile')">View Firm</button>
-          ${eng.status !== 'client_accepted' && eng.status !== 'active' && eng.status !== 'completed' ? `<button class="btn btn-brass btn-sm" onclick="acceptIntroduction('${eng.id}')">Accept Introduction</button>` : `<span class="stamp">Introduction accepted</span>`}
+          ${eng.status !== 'client_accepted' && eng.status !== 'active' && eng.status !== 'completed' ? `<button class="btn btn-brass btn-sm" onclick="acceptIntroduction('${eng.id}','${f.id}')">Accept Introduction</button>` : `<span class="stamp">Introduction accepted</span>`}
         </div>
       </div>`;
     }
@@ -2856,9 +2856,9 @@ async function renderEngagementCard(eng){
   return html;
 }
 
-async function acceptIntroduction(engId){
+async function acceptIntroduction(engId, firmId){
   try{
-    await api.engagements.accept(session.client.token, engId);
+    await api.engagements.accept(session.client.token, engId, firmId);
     renderClientDashboard();
   } catch(err){
     alert(err.message);

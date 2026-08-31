@@ -249,7 +249,12 @@ router.get(
   })
 );
 
-// POST /api/engagements/:id/accept — client accepts the introduction to a matched firm
+// POST /api/engagements/:id/accept — client accepts the introduction to a matched firm.
+// body: { firmId } — required when more than one firm was offered, so the
+// client explicitly picks one. That firm is the only one who keeps contact
+// visibility and thread access going forward; any other candidates offered
+// alongside it are dropped from selectedFirmIds at this point, since both
+// of those permissions are gated purely on membership in that array.
 router.post(
   '/:id/accept',
   requireAuth,
@@ -264,9 +269,24 @@ router.post(
     if (!acceptableFrom.includes(currentStatus)) {
       throw new AppError(400, 'This engagement is not awaiting your acceptance.');
     }
+
+    let chosenFirmId = req.body.firmId ? String(req.body.firmId) : null;
+    if (eng.selectedFirmIds.length > 1) {
+      if (!chosenFirmId) {
+        throw new AppError(400, "Select which firm you'd like to work with.");
+      }
+      if (!eng.selectedFirmIds.includes(chosenFirmId)) {
+        throw new AppError(400, 'That firm was not offered for this engagement.');
+      }
+    } else if (eng.selectedFirmIds.length === 1) {
+      chosenFirmId = eng.selectedFirmIds[0];
+    } else {
+      throw new AppError(400, 'No firm has been offered for this engagement yet.');
+    }
+
     const updated = await prisma.engagement.update({
       where: { id: eng.id },
-      data: { status: 'CLIENT_ACCEPTED' },
+      data: { status: 'CLIENT_ACCEPTED', selectedFirmIds: [chosenFirmId] },
     });
     res.json({ engagement: presentEngagement(updated) });
   })
