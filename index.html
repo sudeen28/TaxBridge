@@ -712,6 +712,7 @@
   .verify-badge.v-pending::before{content:"…";}
   .verify-badge.v-rejected{border-color:#B0442E;color:#B0442E;background:#FBE4DD;}
   .verify-badge.v-rejected::before{content:"×";font-weight:700;}
+  .verify-badge.v-unverified{border-color:var(--line-strong);color:var(--ink-soft);background:var(--paper-card);}
 
   /* firm marketplace */
   .firms-toolbar{
@@ -2828,7 +2829,7 @@ async function renderEngagementCard(eng){
       html += `<div class="pro-card">
         <div class="pro-card-top">
           <h4>${esc(f.firmName)}</h4>
-          ${verifyBadgeHtml(f.verificationStatus)}
+          ${publicVerifyBadgeHtml(f.verificationStatus)}
         </div>
         <p class="hint">${(f.specialisations||[]).slice(0,3).map(esc).join(', ')} · ${esc(f.headquarters)||'Location not set'}</p>
         ${eng.matchReasonNote ? `<div class="scope-note"><strong>Why we selected them:</strong> ${esc(eng.matchReasonNote)}</div>` : ''}
@@ -3483,6 +3484,19 @@ function verifyBadgeHtml(status){
   return `<span class="verify-badge ${v.cls}">${v.label}</span>`;
 }
 
+/**
+ * Simplified badge for anything a prospective client actually sees
+ * (marketplace cards, public firm profiles, a client's own matched-firm
+ * view) — collapses pending/info_required/rejected down to one plain
+ * "Unverified", since a client has no use for FinProMatch's internal
+ * review workflow states. Admin views and a firm's own dashboard keep
+ * the full detail via verifyBadgeHtml() above.
+ */
+function publicVerifyBadgeHtml(status){
+  if(status === 'verified') return `<span class="verify-badge v-verified">Verified</span>`;
+  return `<span class="verify-badge v-unverified">Unverified</span>`;
+}
+
 let firmDashTab = 'overview';
 function setFirmDashTab(tab){ firmDashTab = tab; renderFirmDashboard(); }
 
@@ -3898,7 +3912,7 @@ function renderFirmCard(f, completedCount){
         <div class="firm-card-head">
           <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;">
             <h4>${esc(f.firmName)}</h4>
-            ${verifyBadgeHtml(f.verificationStatus)}
+            ${publicVerifyBadgeHtml(f.verificationStatus)}
           </div>
           <div class="firm-meta-line">${esc(f.headquarters || 'Location not set')}${years ? ' · ' + years + ' yrs in practice' : ''}${f.remoteAvailable ? ' · Remote available' : ''}</div>
           ${(capacityLabel || availabilityLabel) ? `<div class="firm-meta-line">${[capacityLabel, availabilityLabel].filter(Boolean).join(' · ')}</div>` : ''}
@@ -3953,7 +3967,7 @@ async function renderFirmProfile(){
       <div class="firm-hero-info">
         <h1>${esc(f.firmName)}</h1>
         <div class="firm-meta-line" style="margin-top:6px;">${esc(f.headquarters || 'Location not set')}${years ? ' · ' + years + ' yrs in practice' : ''}</div>
-        <div style="margin-top:10px;">${verifyBadgeHtml(f.verificationStatus)}</div>
+        <div style="margin-top:10px;">${publicVerifyBadgeHtml(f.verificationStatus)}</div>
       </div>
     </div>
 
