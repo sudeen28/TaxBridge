@@ -11,8 +11,6 @@ const proAuthRoutes = require('./routes/auth.pro');
 const firmAuthRoutes = require('./routes/auth.firm');
 const adminAuthRoutes = require('./routes/auth.admin');
 
-app.use('/api/guest-briefs', require('./routes/guestBriefs'))
-app.use('/api/admin/guest-briefs', require('./routes/admin.guestBriefs'))
 
 const { router: engagementsRoutes } = require('./routes/engagements');
 const firmsRoutes = require('./routes/firms');
@@ -29,9 +27,9 @@ const app = express();
 
 // --- core middleware ---
 const allowedOrigins = (process.env.CORS_ORIGINS || '')
-  .split(',')
-  .map((s) => s.trim())
-  .filter(Boolean);
+.split(',')
+.map((s) => s.trim())
+.filter(Boolean);
 
 app.use(
   cors({
@@ -42,6 +40,8 @@ app.use(
 app.use(express.json({ limit: '1mb' }));
 app.use(cookieParser());
 app.use(attachAuth); // decodes a bearer token into req.auth on every request, if present
+app.use('/api/guest-briefs', require('./routes/guestBriefs'))
+app.use('/api/admin/guest-briefs', require('./routes/admin.guestBriefs'))
 
 // --- health check (useful for Render's health checks / uptime monitors) ---
 app.get('/health', (req, res) => {
